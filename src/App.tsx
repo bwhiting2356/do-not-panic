@@ -7,6 +7,7 @@ import { selectTodosDueLater, selectTodosDueToday } from './features/todos/todoS
 import { useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
+import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -35,12 +36,15 @@ function App() {
         <hr />
         <h3>New Todo <AddIconButton onClick={() => setShowNewTodo(true)} /></h3>
         {showNewTodo && <NewTodoForm />}
+        <hr />
 
         <h3>Today</h3>
         <TodoTable todos={todayTodos} due="today" />
         <hr />
         <h3>Later</h3>
         <TodoTable todos={laterTodos} due="later" />
+        <hr />
+        <KeyboardShortcuts />
       </Container>
     </div >
   );
