@@ -105,10 +105,6 @@ export function NewTodoForm(props: Props) {
             <div style={{ alignSelf: "flex-end" }}>
               <AddIconButton onClick={addLink} />
             </div>
-
-            {/* <div style={{ alignSelf: "flex-end", marginTop: "10px" }}>
-                            <AddIconButton onClick={() => { }} />
-                        </div> */}
           </td>
           <td style={{ textAlign: "center" }}>
             <ButtonGroup>
