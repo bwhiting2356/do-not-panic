@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { ButtonGroup, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { padUrlWithHttp } from "../shared/util";
-import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 
 interface Props {
   url: string;
@@ -22,19 +21,20 @@ export function Link({ url, onEditLink, onDeleteLink }: Props) {
     onEditLink(padUrlWithHttp(newUrl));
   };
 
-  const toggleSetEditing = () => setEditing((editing) => !editing);
+  const toggleSetEditing = (e: any) => {
+    if (!e.target.classList.contains("url")) {
+      setEditing((editing) => !editing);
+    }
+  };
 
   if (!editing) {
     return (
-      <div className="editable-item">
+      <div className="editable-item" style={{ height: "100%" }}>
         <div className="content" onClick={toggleSetEditing}>
-          <a target="_blank" rel="noreferrer" href={url}>
+          <a className="url" target="_blank" rel="noreferrer" href={url}>
             {url}
           </a>
         </div>
-        <ButtonGroup className="button-group">
-          <DeleteIconButton onClick={onDeleteLink} />
-        </ButtonGroup>
       </div>
     );
   }

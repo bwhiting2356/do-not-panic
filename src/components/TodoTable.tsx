@@ -1,6 +1,5 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch } from "../app/hooks";
 import { editTodo, deleteTodo } from "../features/todos/todoSlice";

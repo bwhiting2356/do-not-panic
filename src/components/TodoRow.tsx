@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { ButtonGroup, Form } from "react-bootstrap";
 import { ID } from "../shared/id.type";
 import { Todo } from "../shared/todo.interface";
 import { Link } from "./Link";
 import { TextField } from "./TextField";
 import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
-import { AddIconButton } from "./icon-buttons/AddIconButton";
 import { MoveDownIconButton } from "./icon-buttons/MoveDownIconButton";
 import { MoveUpIconButton } from "./icon-buttons/MoveUpIconButton";
+import { WarningModal } from "./WarningModal";
 
 interface Props {
   todo: Todo;
@@ -32,7 +32,9 @@ export function TodoRow({
   onDeleteLink,
   oppositeDue,
 }: Props) {
+  const [showModal, setShowModal] = useState(false);
   const { id, done, name, poms, links } = todo;
+
   return (
     <tr key={id}>
       <td className="done">
@@ -54,10 +56,7 @@ export function TodoRow({
           onEditText={(newPoms) => onEditPoms(todo, newPoms)}
         />
       </td>
-      <td
-        className="links"
-        style={{ display: "flex", flexDirection: "column", width: "100%" }}
-      >
+      <td className="links">
         <div>
           {links.map(({ id, url }, i) => (
             <Link
@@ -77,8 +76,15 @@ export function TodoRow({
             <MoveUpIconButton onClick={() => onMoveTodoDue(todo)} />
           )}
 
-          <DeleteIconButton onClick={() => onDeleteTodo(todo.id)} />
+          <DeleteIconButton onClick={() => setShowModal(true)} />
         </ButtonGroup>
+        <WarningModal
+          show={showModal}
+          heading="Delete Todo"
+          body="Are you sure you want to delete this todo?"
+          handleClose={() => setShowModal(false)}
+          handleConfirm={() => onDeleteTodo(todo.id)}
+        />
       </td>
     </tr>
   );

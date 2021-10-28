@@ -5,20 +5,10 @@ import { Todo } from "../../shared/todo.interface";
 
 export interface TodoState {
     todos: Todo[],
-    focus: {
-        todoId: number,
-        columnId: number,
-        childId: number
-    }
 };
 
 const initialState: TodoState = {
     todos: [],
-    focus: {
-        todoId: 0,
-        columnId: 0,
-        childId: 0
-    }
 }
 
 export const todoSlice = createSlice({
