@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <h1>Do Not Panic</h1>
+        <h1>🎵 To Do Ron Ron 🎵</h1>
         <hr />
         <h3>Today</h3>
         <TodoTable todos={todayTodos} due="today" />
