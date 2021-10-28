@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ButtonGroup, Form } from "react-bootstrap";
 import { padUrlWithHttp } from "../shared/util";
 import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
-import { EditIconButton } from "./icon-buttons/EditIconButton";
 
 interface Props {
   url: string;
@@ -23,16 +22,17 @@ export function Link({ url, onEditLink, onDeleteLink }: Props) {
     onEditLink(padUrlWithHttp(newUrl));
   };
 
+  const toggleSetEditing = () => setEditing((editing) => !editing);
+
   if (!editing) {
     return (
       <div className="editable-item">
-        <div className="content">
+        <div className="content" onClick={toggleSetEditing}>
           <a target="_blank" rel="noreferrer" href={url}>
             {url}
           </a>
         </div>
         <ButtonGroup className="button-group">
-          <EditIconButton onClick={() => setEditing((editing) => !editing)} />
           <DeleteIconButton onClick={onDeleteLink} />
         </ButtonGroup>
       </div>

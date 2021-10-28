@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import { EditIconButton } from "./icon-buttons/EditIconButton";
 
 interface Props {
   text: string;
@@ -23,9 +22,6 @@ export function TextField({ text, onEditText }: Props) {
     return (
       <div onClick={() => setEditing(true)} className="editable-item">
         <div className="content">{text}</div>
-        <div>
-          <EditIconButton />
-        </div>
       </div>
     );
   }

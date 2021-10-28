@@ -18,7 +18,6 @@ interface Props {
   onDeleteTodo: (id: ID) => void;
   onEditLink: (todo: Todo, linkId: ID, newUrl: string) => void;
   onDeleteLink: (todo: Todo, linkId: ID) => void;
-  onAddLink: (todo: Todo) => void;
   oppositeDue: string;
 }
 
@@ -31,7 +30,6 @@ export function TodoRow({
   onDeleteTodo,
   onEditLink,
   onDeleteLink,
-  onAddLink,
   oppositeDue,
 }: Props) {
   const { id, done, name, poms, links } = todo;
@@ -69,10 +67,6 @@ export function TodoRow({
               onDeleteLink={() => onDeleteLink(todo, id)}
             />
           ))}
-        </div>
-
-        <div style={{ alignSelf: "flex-end", marginTop: "10px" }}>
-          <AddIconButton onClick={() => onAddLink(todo)} />
         </div>
       </td>
       <td className="actions">

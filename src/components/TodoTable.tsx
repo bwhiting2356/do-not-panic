@@ -59,24 +59,6 @@ export function TodoTable({ todos, due }: Props) {
     );
   };
 
-  const onAddLink = (todo: Todo) => {
-    dispatch(
-      editTodo({
-        id: todo.id,
-        newTodo: {
-          ...todo,
-          links: [
-            ...todo.links,
-            {
-              id: uuidv4(),
-              url: "",
-            },
-          ],
-        },
-      })
-    );
-  };
-
   const onEditName = (todo: Todo, newName: string) => {
     dispatch(
       editTodo({
@@ -125,7 +107,6 @@ export function TodoTable({ todos, due }: Props) {
                 onDeleteTodo={onDeleteTodo}
                 onEditLink={onEditLink}
                 onDeleteLink={onDeleteLink}
-                onAddLink={onAddLink}
                 onEditName={onEditName}
                 onEditPoms={onEditPoms}
                 oppositeDue={oppositeDue}

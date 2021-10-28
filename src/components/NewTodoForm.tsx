@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ButtonGroup, Form, Table } from "react-bootstrap";
 import { addTodo } from "../features/todos/todoSlice";
@@ -10,20 +10,19 @@ import { AddIconButton } from "./icon-buttons/AddIconButton";
 import { padUrlWithHttp } from "../shared/util";
 import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 
-interface Props {}
+const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
-export function NewTodoForm(props: Props) {
+export function NewTodoForm() {
   const dispatch = useAppDispatch();
-  const [name, setName] = useState("");
-  const [poms, setPoms] = useState("");
-  const [links, setLinks] = useState([""]);
-
-  console.log("links", links);
+  const [name, setName] = useState<string>("");
+  const [poms, setPoms] = useState<string>("");
+  const [links, setLinks] = useState<Link[]>([generateNewLink()]);
+  const [autoFocusedLinkId, setAutoFocusedLinkId] = useState<string>("");
 
   const onSubmit = (due: "later" | "today") => {
-    const newLinks: Link[] = links.map((url) => ({
-      id: uuidv4(),
-      url: padUrlWithHttp(url),
+    const newLinks = links.map((link) => ({
+      ...link,
+      url: padUrlWithHttp(link.url),
     }));
     dispatch(
       addTodo({
@@ -32,13 +31,23 @@ export function NewTodoForm(props: Props) {
     );
     setName("");
     setPoms("");
-    setLinks([""]);
+    setLinks([generateNewLink()]);
   };
+
+  useEffect(() => {
+    const listenForEnterKey = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        onSubmit("today");
+      }
+    };
+    window.addEventListener("keydown", listenForEnterKey);
+    return () => window.removeEventListener("keydown", listenForEnterKey);
+  });
 
   const editLink = (index: number, newUrl: string) => {
     setLinks((links) =>
       links.map((link, i) => {
-        if (index === i) return newUrl;
+        if (index === i) return { ...link, url: newUrl };
         return link;
       })
     );
@@ -51,7 +60,16 @@ export function NewTodoForm(props: Props) {
   };
 
   const addLink = () => {
-    setLinks((links) => [...links, ""]);
+    const newLink = generateNewLink();
+    setLinks((links) => [...links, newLink]);
+    setAutoFocusedLinkId(newLink.id);
+  };
+
+  const onLinkTabKey = (e: any) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      addLink();
+    }
   };
 
   return (
@@ -74,6 +92,7 @@ export function NewTodoForm(props: Props) {
           <td></td>
           <td>
             <Form.Control
+              autoFocus
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -88,14 +107,20 @@ export function NewTodoForm(props: Props) {
           </td>
           <td
             className="links"
-            style={{ display: "flex", flexDirection: "column", width: "100%" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
           >
             <div>
               {links.map((link, i) => (
-                <div key={i} className="editable-item">
+                <div key={link.id} className="editable-item">
                   <Form.Control
+                    autoFocus={autoFocusedLinkId === link.id}
                     type="text"
-                    value={link}
+                    value={link.url}
+                    onKeyDown={onLinkTabKey}
                     onChange={(e) => editLink(i, e.target.value)}
                   />
                   <DeleteIconButton onClick={() => deleteLink(i)} />
