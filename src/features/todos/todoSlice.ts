@@ -35,7 +35,6 @@ export const todoSlice = createSlice({
         addTodo: (state, action: PayloadAction<{ todo: Todo }>) => {
             const newTodos = [...state.todos, action.payload.todo];
             return addNewStateGoingForward(state, newTodos);
-            // return { ...state, todos: [...state.todos, action.payload.todo] };
         },
         editTodo: (state, action: PayloadAction<{ id: ID, newTodo: Todo }>) => {
             const { todos } = state;
@@ -48,20 +47,10 @@ export const todoSlice = createSlice({
                 }
             })
             return addNewStateGoingForward(state, newTodos);
-            // return { ...state, todos: newTodos };
-
-
-
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
-
             const newTodos = state.todos.filter(todo => todo.id !== action.payload.id);
             return addNewStateGoingForward(state, newTodos);
-
-            // return {
-            //     ...state,
-            //     todos: state.todos.filter(todo => todo.id !== action.payload.id)
-            // }
         },
         undo: (state: TodoState) => {
             const { pastTodos, todos, futureTodos } = state;
