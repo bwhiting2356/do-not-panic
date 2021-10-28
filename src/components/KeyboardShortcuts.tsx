@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "react-bootstrap";
+import { MAX_TODO_HISTORY } from "../shared/maxTodoHistory";
 
 export function KeyboardShortcuts() {
   return (
@@ -15,9 +16,19 @@ export function KeyboardShortcuts() {
         </thead>
         <tbody>
           <tr>
-            <td>⌘↵ (Command Enter) </td>
+            <td>⌘↵</td>
             <td>Anywhere</td>
             <td>Open 'New Todo' form</td>
+          </tr>
+          <tr>
+            <td>⌘Z</td>
+            <td>Anywhere</td>
+            <td>Undo (maximum history {MAX_TODO_HISTORY})</td>
+          </tr>
+          <tr>
+            <td>⌘⇧Z</td>
+            <td>Anywhere</td>
+            <td>Redo</td>
           </tr>
           <tr>
             <td>Esc</td>
@@ -26,12 +37,12 @@ export function KeyboardShortcuts() {
           </tr>
           <tr>
             <td>Tab</td>
-            <td>While 'New Todo' form is open</td>
+            <td>While 'New Todo' field is focused</td>
             <td>Move to next field OR add new link</td>
           </tr>
           <tr>
             <td>Enter</td>
-            <td>While 'New Todo' form is open</td>
+            <td>While 'New Todo' field is focused</td>
             <td>Submit current todo to 'today'</td>
           </tr>
         </tbody>

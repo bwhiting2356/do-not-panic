@@ -3,13 +3,14 @@ import './App.css';
 import { Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { selectTodosDueLater, selectTodosDueToday } from './features/todos/todoSlice';
-import { useAppSelector } from './app/hooks';
+import { undo, redo, selectTodosDueLater, selectTodosDueToday } from './features/todos/todoSlice';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 
 function App() {
+  const dispatch = useAppDispatch();
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
   const [showNewTodo, setShowNewTodo] = useState(false);
@@ -22,6 +23,14 @@ function App() {
 
       if (event.key === 'Escape') {
         setShowNewTodo(false);
+      }
+
+      if (event.metaKey && event.key === 'z') {
+        if (event.shiftKey) {
+          dispatch(redo());
+        } else {
+          dispatch(undo());
+        }
       }
 
     }
@@ -43,6 +52,7 @@ function App() {
         <hr />
         <h3>Later</h3>
         <TodoTable todos={laterTodos} due="later" />
+        <hr />
         <hr />
         <KeyboardShortcuts />
       </Container>

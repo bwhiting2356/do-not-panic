@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ButtonGroup, Form, Table } from "react-bootstrap";
 import { addTodo } from "../features/todos/todoSlice";
@@ -34,15 +34,11 @@ export function NewTodoForm() {
     setLinks([generateNewLink()]);
   };
 
-  useEffect(() => {
-    const listenForEnterKey = (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
-        onSubmit("today");
-      }
-    };
-    window.addEventListener("keydown", listenForEnterKey);
-    return () => window.removeEventListener("keydown", listenForEnterKey);
-  });
+  const listenForSubmit = (e: any) => {
+    if (e.key === "Enter") {
+      onSubmit("today");
+    }
+  };
 
   const editLink = (index: number, newUrl: string) => {
     setLinks((links) =>
@@ -65,10 +61,13 @@ export function NewTodoForm() {
     setAutoFocusedLinkId(newLink.id);
   };
 
-  const onLinkTabKey = (e: any) => {
+  const onLinkKeyDown = (e: any) => {
     if (e.key === "Tab") {
       e.preventDefault();
       addLink();
+    }
+    if (e.key === "Enter") {
+      onSubmit("today");
     }
   };
 
@@ -95,6 +94,7 @@ export function NewTodoForm() {
               autoFocus
               type="text"
               value={name}
+              onKeyDown={listenForSubmit}
               onChange={(e) => setName(e.target.value)}
             />
           </td>
@@ -102,6 +102,7 @@ export function NewTodoForm() {
             <Form.Control
               type="text"
               value={poms}
+              onKeyDown={listenForSubmit}
               onChange={(e) => setPoms(e.target.value)}
             />
           </td>
@@ -120,7 +121,7 @@ export function NewTodoForm() {
                     autoFocus={autoFocusedLinkId === link.id}
                     type="text"
                     value={link.url}
-                    onKeyDown={onLinkTabKey}
+                    onKeyDown={onLinkKeyDown}
                     onChange={(e) => editLink(i, e.target.value)}
                   />
                   <DeleteIconButton onClick={() => deleteLink(i)} />

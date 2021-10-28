@@ -1,14 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { ID } from '../../shared/id.type';
+import { MAX_TODO_HISTORY } from '../../shared/maxTodoHistory';
 import { Todo } from "../../shared/todo.interface";
 
 export interface TodoState {
+    pastTodos: Todo[][],
     todos: Todo[],
+    futureTodos: Todo[][]
 };
 
 const initialState: TodoState = {
     todos: [],
+    pastTodos: [],
+    futureTodos: []
+}
+
+const addNewStateGoingForward = (prevState: TodoState, newTodos: Todo[]): TodoState => {
+    const newPastTodos = [
+        ...prevState.pastTodos || [],
+        prevState.todos
+    ].slice(MAX_TODO_HISTORY * -1);
+    return {
+        pastTodos: newPastTodos,
+        todos: newTodos,
+        futureTodos: []
+    }
 }
 
 export const todoSlice = createSlice({
@@ -16,7 +33,9 @@ export const todoSlice = createSlice({
     initialState,
     reducers: {
         addTodo: (state, action: PayloadAction<{ todo: Todo }>) => {
-            return { ...state, todos: [...state.todos, action.payload.todo] };
+            const newTodos = [...state.todos, action.payload.todo];
+            return addNewStateGoingForward(state, newTodos);
+            // return { ...state, todos: [...state.todos, action.payload.todo] };
         },
         editTodo: (state, action: PayloadAction<{ id: ID, newTodo: Todo }>) => {
             const { todos } = state;
@@ -28,25 +47,63 @@ export const todoSlice = createSlice({
                     return todo;
                 }
             })
-            return { ...state, todos: newTodos };
+            return addNewStateGoingForward(state, newTodos);
+            // return { ...state, todos: newTodos };
+
+
+
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
-            return {
-                ...state,
-                todos: state.todos.filter(todo => todo.id !== action.payload.id)
-            }
+
+            const newTodos = state.todos.filter(todo => todo.id !== action.payload.id);
+            return addNewStateGoingForward(state, newTodos);
+
+            // return {
+            //     ...state,
+            //     todos: state.todos.filter(todo => todo.id !== action.payload.id)
+            // }
         },
+        undo: (state: TodoState) => {
+            const { pastTodos, todos, futureTodos } = state;
+            const prevTodos = pastTodos[pastTodos.length - 1];
+            const newPastTodos = pastTodos.slice(0, pastTodos.length - 1);
+
+            if (prevTodos) {
+                return {
+                    pastTodos: newPastTodos,
+                    todos: prevTodos,
+                    futureTodos: [todos, ...futureTodos]
+                }
+            } else {
+                return {
+                    pastTodos,
+                    todos,
+                    futureTodos
+                }
+            }
+
+        },
+        redo: (state: TodoState) => {
+            const { pastTodos, todos, futureTodos } = state;
+            const nextTodos = futureTodos[0] || todos;
+            const newFutureTodos = futureTodos.slice(1) || [];
+            return {
+                pastTodos: [...pastTodos, todos],
+                todos: nextTodos,
+                futureTodos: newFutureTodos
+            }
+        }
     }
 })
 
-export const { editTodo, deleteTodo, addTodo } = todoSlice.actions;
+export const { editTodo, deleteTodo, addTodo, undo, redo } = todoSlice.actions;
 
-export const selectTodosDueToday = (state: RootState) => state.todos.todos.filter(
+export const selectTodosDueToday = (state: RootState) => state.todos?.todos?.filter(
     todo => todo.due === 'today'
-);
+) || [];
 
-export const selectTodosDueLater = (state: RootState) => state.todos.todos.filter(
+export const selectTodosDueLater = (state: RootState) => state.todos?.todos?.filter(
     todo => todo.due === 'later'
-);
+) || [];
 
 export default todoSlice.reducer;
