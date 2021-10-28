@@ -15,11 +15,11 @@ jobs:
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:
-          node_version: 12
+          node_version: ${{ matrix.node_version }}
 
       - name: run CI
         run: |
-          yarn install
+          yarn install --ignore-engines
           yarn lint
           yarn test
           yarn build
