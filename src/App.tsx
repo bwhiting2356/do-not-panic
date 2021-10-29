@@ -10,6 +10,7 @@ import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 import { selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
+import { Due } from './shared/due.type';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -53,17 +54,19 @@ function App() {
           <TodalToday />
         </div>
 
-
         <hr />
         <h3>New Todo <AddIconButton onClick={() => setShowNewTodo(true)} /></h3>
         {showNewTodo && <NewTodoForm />}
         <hr />
 
         <h3>Today</h3>
-        <TodoTable todos={todayTodos} due="today" />
+        <TodoTable todos={todayTodos} due={Due.Today} />
         <hr />
         <h3>Later</h3>
-        <TodoTable todos={laterTodos} due="later" />
+        <TodoTable todos={laterTodos} due={Due.Later} />
+        <hr />
+        <h3>Archive</h3>
+        <TodoTable todos={laterTodos} due={Due.Archived} />
         <hr />
         <hr />
         <KeyboardShortcuts />

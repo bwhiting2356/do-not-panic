@@ -1,3 +1,4 @@
+import { Due } from "./due.type";
 import { ID } from "./id.type";
 import { Link } from "./link.interface";
 
@@ -7,5 +8,5 @@ export interface Todo {
   name: string;
   poms: string;
   links: Link[];
-  due: "today" | "later";
+  due: Due;
 }
