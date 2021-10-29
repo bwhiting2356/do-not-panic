@@ -7,7 +7,7 @@ import { Todo } from "../shared/todo.interface";
 import { convertMinutesToHours, convertStringPoms } from "../shared/util";
 
 const sumPomodoros = (acc: number, curr: Todo) => {
-  acc += convertStringPoms(curr.poms);
+  acc += convertStringPoms(curr.poms) || 0;
   return acc;
 };
 

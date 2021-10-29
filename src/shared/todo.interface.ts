@@ -9,4 +9,5 @@ export interface Todo {
   poms: string;
   links: Link[];
   due: Due;
+  archivedDate?: Date;
 }

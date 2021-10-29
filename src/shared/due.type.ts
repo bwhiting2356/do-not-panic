@@ -1,5 +1,5 @@
 export enum Due {
-    Today = 'today',
-    Later = 'later',
-    Archived = 'archived'
+  Today = "today",
+  Later = "later",
+  Archived = "archived",
 }

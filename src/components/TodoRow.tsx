@@ -32,20 +32,22 @@ export function TodoRow({
     onDeleteLink,
     due,
 }: Props) {
-    const { id, done, name, poms, links } = todo;
-    const oppositeDue = due === Due.Today ? Due.Later : Due.Today;
-
+    const { id, done, name, poms, links, archivedDate } = todo;
     return (
         <tr
             key={id}
             className={done === false && due === Due.Today ? "highlight" : ""}
         >
             <td className="done">
-                <Form.Check
-                    type="checkbox"
-                    checked={done}
-                    onChange={(e: any) => onSetTodoDone(todo, e.target.checked)}
-                />
+                {due === Due.Archived ? (
+                    <div>{new Date(archivedDate || '')?.toLocaleDateString("en-US")}</div>
+                ) : (
+                    <Form.Check
+                        type="checkbox"
+                        checked={done}
+                        onChange={(e: any) => onSetTodoDone(todo, e.target.checked)}
+                    />
+                )}
             </td>
             <td className="name">
                 <TextField
@@ -73,7 +75,7 @@ export function TodoRow({
             </td>
             <td className="actions">
                 <ButtonGroup>
-                    {oppositeDue === Due.Later ? (
+                    {due === Due.Today ? (
                         <MoveDownIconButton onClick={() => onMoveTodoDue(todo)} />
                     ) : (
                         <MoveUpIconButton onClick={() => onMoveTodoDue(todo)} />

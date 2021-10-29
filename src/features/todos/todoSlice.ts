@@ -3,6 +3,7 @@ import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
 import { sortTodos } from '../../shared/util';
+import { Due } from '../../shared/due.type';
 
 export interface TodoState {
     pastTodos: Todo[][],
@@ -56,6 +57,15 @@ export const todoSlice = createSlice({
             newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, newTodos);
         },
+        archiveAllCompletedTodos: (state) => {
+            const newTodos = state.todos.map(todo => {
+                if (todo.due !== Due.Archived && todo.done) {
+                    return { ...todo, due: Due.Archived, archivedDate: new Date() };
+                }
+                return todo;
+            })
+            return addNewStateGoingForward(state, newTodos);
+        },
         undo: (state: TodoState) => {
             const { pastTodos, todos, futureTodos } = state;
             const prevTodos = pastTodos[pastTodos.length - 1];
@@ -89,6 +99,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { editTodo, deleteTodo, addTodo, undo, redo } = todoSlice.actions;
+export const { editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

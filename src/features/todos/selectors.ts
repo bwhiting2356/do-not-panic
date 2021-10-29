@@ -13,3 +13,8 @@ export const selectTodosDueLater = createSelector(
     selectTodos,
     todos => todos.filter(todo => todo.due === Due.Later)
 )
+
+export const selectArchivedTodos = createSelector(
+    selectTodos,
+    todos => todos.filter(todo => todo.due == Due.Archived)
+)
