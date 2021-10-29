@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { RootState } from '../../app/store';
 import { Due } from '../../shared/due.type';
 
-const selectTodos = (state: RootState) => state.todos?.todos;
+const selectTodos = (state: RootState) => state.todos.currentState.todos;
 
 export const selectTodosDueToday = createSelector(
     selectTodos,
@@ -16,5 +16,5 @@ export const selectTodosDueLater = createSelector(
 
 export const selectArchivedTodos = createSelector(
     selectTodos,
-    todos => todos.filter(todo => todo.due == Due.Archived)
+    todos => todos.filter(todo => todo.due === Due.Archived)
 )

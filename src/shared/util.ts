@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+import { Due } from "./due.type";
 import { Todo } from "./todo.interface";
 
 export const padUrlWithHttp = (url: string) => {
@@ -29,3 +31,12 @@ export const convertMinutesToHours = (minutes: number) => {
   const remainingMinutes = minutes % 60;
   return `${hours}:${remainingMinutes}`;
 };
+
+export const generateNewTodo = (): Todo => ({
+  id: uuidv4(),
+  name: "",
+  poms: "",
+  links: [],
+  due: Due.Today,
+  done: false,
+});
