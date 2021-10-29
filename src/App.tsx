@@ -9,6 +9,7 @@ import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 import { selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
+import { TodalToday } from './components/TotalToday';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -47,7 +48,12 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <h1>🎵 To Do Ron Ron 🎵</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div><h1>🎵 To Do Ron Ron 🎵</h1></div>
+          <TodalToday />
+        </div>
+
+
         <hr />
         <h3>New Todo <AddIconButton onClick={() => setShowNewTodo(true)} /></h3>
         {showNewTodo && <NewTodoForm />}

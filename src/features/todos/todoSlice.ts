@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
-import { MAX_TODO_HISTORY } from '../../shared/maxTodoHistory';
+import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
 import { sortTodos } from '../../shared/util';
 
