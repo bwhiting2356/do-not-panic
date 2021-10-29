@@ -13,7 +13,6 @@ import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
 import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
-import { ProjectAnalytics } from './components/ProjectAnalytics';
 
 function App() {
   const dispatch = useAppDispatch();
