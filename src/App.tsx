@@ -36,12 +36,6 @@ function App() {
       }
 
       if (event.metaKey && event.key === 'z') {
-        if (showNewTodo) {
-          alert('undo/redo disabled while form is open (future UX TBD...)');
-          return;
-        }
-
-
         if (event.shiftKey) {
           dispatch(redo());
         } else {
@@ -56,7 +50,7 @@ function App() {
 
   const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
-    <div className="App">
+    <div>
       <Container>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div><h1>🎵 To Do Ron Ron 🎵</h1></div>

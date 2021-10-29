@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
-import { generateNewTodo, sortTodos } from '../../shared/util';
+import { generateNewTodo, padUrlWithHttp, sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 
 interface TodoState {
@@ -44,10 +44,24 @@ export const todoSlice = createSlice({
     name: 'counter',
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<{ todo: Todo }>) => {
-            const newTodos = [...state.currentState.todos, action.payload.todo];
+        addTodo: (state) => {
+            const { newTodo } = state.currentState;
+            const paddedLinks = newTodo.links.map(link => ({
+                ...link,
+                url: padUrlWithHttp(link.url),
+            }));
+            const newTodos = [
+                ...state.currentState.todos,
+                { ...newTodo, links: paddedLinks }
+            ];
             newTodos.sort(sortTodos);
-            return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
+            return addNewStateGoingForward(
+                state, {
+                ...state.currentState,
+                todos: newTodos,
+                newTodo: generateNewTodo()
+            }
+            );
         },
         editTodo: (state, action: PayloadAction<{ id: ID, newTodo: Todo }>) => {
             const { todos } = state.currentState;
@@ -75,6 +89,9 @@ export const todoSlice = createSlice({
                 return todo;
             })
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
+        },
+        editNewTodo: (state, action: PayloadAction<Todo>) => {
+            return addNewStateGoingForward(state, { ...state.currentState, newTodo: action.payload });
         },
         undo: (state) => {
             const { pastState, currentState, futureState } = state;
@@ -104,10 +121,10 @@ export const todoSlice = createSlice({
                 currentState: nextState,
                 futureState: newFutureState
             }
-        }
+        },
     }
 })
 
-export const { editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, undo, redo } = todoSlice.actions;
+export const { editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

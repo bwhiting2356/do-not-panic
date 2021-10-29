@@ -1,24 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ButtonGroup, Form, Table } from "react-bootstrap";
-import { addTodo } from "../features/todos/todoSlice";
+import { addTodo, editNewTodo } from "../features/todos/todoSlice";
 import { MoveDownIconButton } from "./icon-buttons/MoveDownIconButton";
 import { MoveUpIconButton } from "./icon-buttons/MoveUpIconButton";
-import { Link } from "../shared/link.interface";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { AddIconButton } from "./icon-buttons/AddIconButton";
-import { padUrlWithHttp } from "../shared/util";
 import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 import { Due } from "../shared/due.type";
+import { selectNewTodo } from "../features/todos/selectors";
 
 const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
 export function NewTodoForm() {
   const dispatch = useAppDispatch();
+  const newTodo = useAppSelector(selectNewTodo);
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState<string>("");
-  const [poms, setPoms] = useState<string>("");
-  const [links, setLinks] = useState<Link[]>([generateNewLink()]);
   const [autoFocusedLinkId, setAutoFocusedLinkId] = useState<string>("");
 
   const focusNameInput = () => {
@@ -28,18 +25,7 @@ export function NewTodoForm() {
   };
 
   const onSubmit = (due: Due) => {
-    const newLinks = links.map((link) => ({
-      ...link,
-      url: padUrlWithHttp(link.url),
-    }));
-    dispatch(
-      addTodo({
-        todo: { id: uuidv4(), name, poms, links: newLinks, due, done: false },
-      })
-    );
-    setName("");
-    setPoms("");
-    setLinks([generateNewLink()]);
+    dispatch(addTodo());
     focusNameInput();
   };
 
@@ -61,23 +47,55 @@ export function NewTodoForm() {
   };
 
   const editLink = (index: number, newUrl: string) => {
-    setLinks((links) =>
-      links.map((link, i) => {
-        if (index === i) return { ...link, url: newUrl };
-        return link;
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        links: newTodo.links.map((link, i) => {
+          if (index === i) return { ...link, url: newUrl };
+          return link;
+        }),
       })
     );
   };
 
   const deleteLink = (index: number) => {
-    const linksCopy = links.slice();
+    const linksCopy = newTodo.links.slice();
     linksCopy.splice(index, 1);
-    setLinks(linksCopy);
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        links: linksCopy,
+      })
+    );
+  };
+
+  const setName = (newName: string) => {
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        name: newName,
+      })
+    );
+  };
+
+  const setPoms = (newPoms: string) => {
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        poms: newPoms,
+      })
+    );
   };
 
   const addLink = () => {
     const newLink = generateNewLink();
-    setLinks((links) => [...links, newLink]);
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        links: [...newTodo.links, newLink],
+      })
+    );
+
     setAutoFocusedLinkId(newLink.id);
   };
 
@@ -114,7 +132,7 @@ export function NewTodoForm() {
               ref={nameInputRef}
               autoFocus
               type="text"
-              value={name}
+              value={newTodo.name}
               onKeyDown={listenForSubmit}
               onChange={(e) => setName(e.target.value)}
             />
@@ -122,7 +140,7 @@ export function NewTodoForm() {
           <td>
             <Form.Control
               type="text"
-              value={poms}
+              value={newTodo.poms}
               onKeyDown={listenForSubmit}
               onChange={(e) => setPoms(e.target.value)}
             />
@@ -136,7 +154,7 @@ export function NewTodoForm() {
             }}
           >
             <div>
-              {links.map((link, i) => (
+              {newTodo.links.map((link, i) => (
                 <div key={link.id} className="editable-item">
                   <Form.Control
                     autoFocus={autoFocusedLinkId === link.id}

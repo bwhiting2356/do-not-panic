@@ -32,11 +32,13 @@ export const convertMinutesToHours = (minutes: number) => {
   return `${hours}:${remainingMinutes}`;
 };
 
+export const generateNewLink = () => ({ id: uuidv4(), url: "" });
+
 export const generateNewTodo = (): Todo => ({
   id: uuidv4(),
   name: "",
   poms: "",
-  links: [],
+  links: [generateNewLink()],
   due: Due.Today,
   done: false,
 });
