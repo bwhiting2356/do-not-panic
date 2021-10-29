@@ -1,17 +1,17 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { ThunkAction, Action, createStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import todosReducer from "../features/todos/todoSlice";
-import { loadState, saveState } from "./localStorage";
 
-export const store = configureStore({
-  reducer: {
-    todos: todosReducer,
-  },
-  preloadedState: loadState(),
-});
+const persistConfig = {
+  key: "root",
+  storage,
+};
+const persistedReducer = persistReducer(persistConfig, todosReducer);
 
-store.subscribe(() => {
-  saveState(store.getState());
-});
+export const store = createStore(persistedReducer);
+
+export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

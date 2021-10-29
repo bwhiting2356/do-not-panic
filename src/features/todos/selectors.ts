@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { RootState } from '../../app/store';
 import { Due } from '../../shared/due.type';
 
-const selectTodos = (state: RootState) => state.todos.currentState.todos;
+const selectTodos = (state: RootState) => state.currentState.todos;
 
 export const selectTodosDueToday = createSelector(
     selectTodos,

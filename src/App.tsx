@@ -71,8 +71,6 @@ function App() {
           <div><h3>Today</h3></div>
           <Button onClick={onArchiveAllCompletedTodos}>Archive all completed todos</Button>
         </div>
-
-
         <TodoTable todos={todayTodos} due={Due.Today} />
         <hr />
         <h3>Later</h3>
