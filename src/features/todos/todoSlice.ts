@@ -6,8 +6,9 @@ import { generateNewTodo, padUrlWithHttp, sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 
 interface TodoState {
-    todos: Todo[],
-    newTodo: Todo
+    todos: Todo[];
+    projectName: string;
+    newTodo: Todo;
 }
 
 export interface TodoStateWithHistory {
@@ -18,6 +19,7 @@ export interface TodoStateWithHistory {
 
 const initialCurrentState = {
     todos: [],
+    projectName: 'work',
     newTodo: generateNewTodo(),
 }
 
@@ -44,6 +46,21 @@ export const todoSlice = createSlice({
     name: 'counter',
     initialState,
     reducers: {
+        setProjectName: (state, action: PayloadAction<string>) => {
+            return addNewStateGoingForward(
+                state, {
+                ...state.currentState,
+                projectName: action.payload,
+            })
+        },
+        resortTodos: (state) => {
+            const sortedTodos = state.currentState.todos.slice().sort(sortTodos);
+            return addNewStateGoingForward(
+                state, {
+                ...state.currentState,
+                todos: sortedTodos,
+            })
+        },
         addTodo: (state) => {
             const { newTodo } = state.currentState;
             const paddedLinks = newTodo.links.map(link => ({
@@ -54,7 +71,6 @@ export const todoSlice = createSlice({
                 ...state.currentState.todos,
                 { ...newTodo, links: paddedLinks }
             ];
-            newTodos.sort(sortTodos);
             return addNewStateGoingForward(
                 state, {
                 ...state.currentState,
@@ -73,12 +89,10 @@ export const todoSlice = createSlice({
                     return todo;
                 }
             })
-            newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
             const newTodos = state.currentState.todos.filter(todo => todo.id !== action.payload.id);
-            newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
         archiveAllCompletedTodos: (state) => {
@@ -125,6 +139,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

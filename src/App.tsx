@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, Container } from 'react-bootstrap';
+import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { undo, redo, archiveAllCompletedTodos } from './features/todos/todoSlice';
+import { undo, redo, archiveAllCompletedTodos, resortTodos } from './features/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
@@ -12,6 +12,7 @@ import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from '.
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
+import { ProjectName } from './components/ProjectName';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -24,6 +25,8 @@ function App() {
   const onArchiveAllCompletedTodos = () => {
     dispatch(archiveAllCompletedTodos());
   }
+
+  const onSortTodos = () => dispatch(resortTodos());
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
@@ -53,7 +56,11 @@ function App() {
     <div>
       <Container>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div><h1>🎵 To Do Ron Ron 🎵</h1></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
+            <h1>🎵 To Do Ron Ron 🎵</h1>
+            <ProjectName />
+
+          </div>
           <TodalToday />
         </div>
 
@@ -63,7 +70,10 @@ function App() {
         <hr />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div><h3>Today</h3></div>
-          <Button onClick={onArchiveAllCompletedTodos}>Archive all completed todos</Button>
+          <ButtonGroup>
+            <Button onClick={onSortTodos} variant="secondary">Sort Todos</Button>
+            <Button onClick={onArchiveAllCompletedTodos}>Archive all completed todos</Button>
+          </ButtonGroup>
         </div>
         <TodoTable todos={todayTodos} due={Due.Today} />
         <hr />
@@ -81,7 +91,7 @@ function App() {
         <hr />
         <hr />
         <KeyboardShortcuts />
-      </Container>
+      </Container >
     </div >
   );
 }
