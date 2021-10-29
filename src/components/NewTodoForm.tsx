@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ButtonGroup, Form, Table } from "react-bootstrap";
 import { addTodo } from "../features/todos/todoSlice";
@@ -14,10 +14,17 @@ const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
 export function NewTodoForm() {
   const dispatch = useAppDispatch();
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState<string>("");
   const [poms, setPoms] = useState<string>("");
   const [links, setLinks] = useState<Link[]>([generateNewLink()]);
   const [autoFocusedLinkId, setAutoFocusedLinkId] = useState<string>("");
+
+  const focusNameInput = () => {
+    if (nameInputRef) {
+      nameInputRef?.current?.focus();
+    }
+  };
 
   const onSubmit = (due: "later" | "today") => {
     const newLinks = links.map((link) => ({
@@ -32,7 +39,19 @@ export function NewTodoForm() {
     setName("");
     setPoms("");
     setLinks([generateNewLink()]);
+    focusNameInput();
   };
+
+  useEffect(() => {
+    const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "Enter") {
+        focusNameInput();
+      }
+    };
+    window.addEventListener("keydown", listenForKeyboardShortcuts);
+    return () =>
+      window.removeEventListener("keydown", listenForKeyboardShortcuts);
+  });
 
   const listenForSubmit = (e: any) => {
     if (e.key === "Enter") {
@@ -91,6 +110,7 @@ export function NewTodoForm() {
           <td></td>
           <td>
             <Form.Control
+              ref={nameInputRef}
               autoFocus
               type="text"
               value={name}

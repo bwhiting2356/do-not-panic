@@ -27,6 +27,12 @@ function App() {
       }
 
       if (event.metaKey && event.key === 'z') {
+        if (showNewTodo) {
+          alert('undo/redo disabled while form is open (future UX TBD...)');
+          return;
+        }
+
+
         if (event.shiftKey) {
           dispatch(redo());
         } else {
@@ -37,7 +43,6 @@ function App() {
     }
     window.addEventListener('keydown', listenForKeyboardShortcuts);
     return () => window.removeEventListener('keydown', listenForKeyboardShortcuts);
-
   })
   return (
     <div className="App">
