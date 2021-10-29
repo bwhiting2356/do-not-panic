@@ -1,7 +1,7 @@
 export enum Project {
-  Motto = "Mmtto",
-  OnCall = "on-call",
-  Misc = "misc",
-  Tfx = "tfx",
-  ReQa = "re-qa",
+    Motto = "Motto",
+    OnCall = "OnCall",
+    Misc = "Misc",
+    Tfx = "Tfx",
+    ReQa = "ReQa",
 }
