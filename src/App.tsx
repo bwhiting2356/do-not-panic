@@ -3,11 +3,12 @@ import './App.css';
 import { Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { undo, redo, selectTodosDueLater, selectTodosDueToday } from './features/todos/todoSlice';
+import { undo, redo } from './features/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcuts } from './components/KeyboardShortcuts';
+import { selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 
 function App() {
   const dispatch = useAppDispatch();

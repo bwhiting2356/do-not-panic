@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ButtonGroup, Form } from "react-bootstrap";
 import { ID } from "../shared/id.type";
 import { Todo } from "../shared/todo.interface";
@@ -17,7 +17,7 @@ interface Props {
     onDeleteTodo: (id: ID) => void;
     onEditLink: (todo: Todo, linkId: ID, newUrl: string) => void;
     onDeleteLink: (todo: Todo, linkId: ID) => void;
-    oppositeDue: string;
+    due: 'later' | 'today';
 }
 
 export function TodoRow({
@@ -29,13 +29,13 @@ export function TodoRow({
     onDeleteTodo,
     onEditLink,
     onDeleteLink,
-    oppositeDue,
+    due,
 }: Props) {
-    const [showModal, setShowModal] = useState(false);
     const { id, done, name, poms, links } = todo;
+    const oppositeDue = due === "today" ? "later" : "today";
 
     return (
-        <tr key={id}>
+        <tr key={id} className={done === false && due === 'today' ? 'highlight' : ''}>
             <td className="done">
                 <Form.Check
                     type="checkbox"

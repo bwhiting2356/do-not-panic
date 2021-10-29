@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
 import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/maxTodoHistory';
 import { Todo } from "../../shared/todo.interface";
+import { sortTodos } from '../../shared/util';
 
 export interface TodoState {
     pastTodos: Todo[][],
@@ -15,6 +15,7 @@ const initialState: TodoState = {
     pastTodos: [],
     futureTodos: []
 }
+
 
 const addNewStateGoingForward = (prevState: TodoState, newTodos: Todo[]): TodoState => {
     const newPastTodos = [
@@ -34,6 +35,7 @@ export const todoSlice = createSlice({
     reducers: {
         addTodo: (state, action: PayloadAction<{ todo: Todo }>) => {
             const newTodos = [...state.todos, action.payload.todo];
+            newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, newTodos);
         },
         editTodo: (state, action: PayloadAction<{ id: ID, newTodo: Todo }>) => {
@@ -46,10 +48,12 @@ export const todoSlice = createSlice({
                     return todo;
                 }
             })
+            newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, newTodos);
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
             const newTodos = state.todos.filter(todo => todo.id !== action.payload.id);
+            newTodos.sort(sortTodos);
             return addNewStateGoingForward(state, newTodos);
         },
         undo: (state: TodoState) => {
@@ -86,13 +90,5 @@ export const todoSlice = createSlice({
 })
 
 export const { editTodo, deleteTodo, addTodo, undo, redo } = todoSlice.actions;
-
-export const selectTodosDueToday = (state: RootState) => state.todos?.todos?.filter(
-    todo => todo.due === 'today'
-) || [];
-
-export const selectTodosDueLater = (state: RootState) => state.todos?.todos?.filter(
-    todo => todo.due === 'later'
-) || [];
 
 export default todoSlice.reducer;
