@@ -12,7 +12,7 @@ import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 import { Due } from "../shared/due.type";
 import { selectNewTodo } from "../features/todos/selectors";
 import { TodayIconButton } from "./icon-buttons/TodayIconButton";
-import { CalendarIconButton } from "./icon-buttons/CalendarIconButton";
+import { LaterIconButton } from "./icon-buttons/LaterIconButton";
 
 const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
@@ -122,6 +122,21 @@ export function NewTodoForm() {
 
   return (
     <div>
+      <div style={{ display: "flex", marginBottom: "10px" }}>
+        <h3 style={{ marginRight: "10px" }}>New Todo</h3>
+        <ButtonGroup>
+          <Button onClick={() => addFromTemplate("start-day")}>
+            Start Day (⌘⇧1)
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => addFromTemplate("start-week")}
+          >
+            Start Week (⌘⇧2)
+          </Button>
+        </ButtonGroup>
+      </div>
+
       <Table striped bordered hover className="table">
         <thead>
           <tr>
@@ -186,23 +201,12 @@ export function NewTodoForm() {
             <td style={{ textAlign: "center" }}>
               <ButtonGroup>
                 <TodayIconButton onClick={() => onSubmit(Due.Today)} />
-                <CalendarIconButton onClick={() => onSubmit(Due.Later)} />
+                <LaterIconButton onClick={() => onSubmit(Due.Later)} />
               </ButtonGroup>
             </td>
           </tr>
         </tbody>
       </Table>
-      <ButtonGroup>
-        <Button onClick={() => addFromTemplate("start-day")}>
-          Start Day (⌘⇧1)
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => addFromTemplate("start-week")}
-        >
-          Start Week (⌘⇧2)
-        </Button>
-      </ButtonGroup>
     </div>
   );
 }

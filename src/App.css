@@ -33,6 +33,6 @@
   flex-grow: 1;
 }
 
-.complete {
+.main-todos .complete {
   text-decoration: line-through;
 }

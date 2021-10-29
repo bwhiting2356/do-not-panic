@@ -7,6 +7,12 @@ export const padUrlWithHttp = (url: string) => {
   return `http://${url}`;
 };
 
+export const padZeros = (str: string | number) => {
+  let strNumber = typeof str === "string" ? str : String(str);
+  if (strNumber.length === 1) return `0${strNumber}`;
+  return strNumber;
+};
+
 const oneHalfOptions = [".5", "0.5", "1/2"];
 
 export const prettifyPoms = (poms: string) => {
@@ -29,7 +35,7 @@ export const sortTodos = (a: Todo, b: Todo) => {
 export const convertMinutesToHours = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-  return `${hours}:${remainingMinutes}`;
+  return `${hours}:${padZeros(remainingMinutes)}`;
 };
 
 export const generateNewLink = () => ({ id: uuidv4(), url: "" });

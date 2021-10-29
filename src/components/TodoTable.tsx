@@ -97,7 +97,10 @@ export function TodoTable({ todos, due }: Props) {
     );
   };
   return (
-    <div style={{ textAlign: "left" }}>
+    <div
+      className={due !== Due.Archived ? "main-todos" : ""}
+      style={{ textAlign: "left" }}
+    >
       <Table striped bordered hover className="table">
         <thead>
           <tr>

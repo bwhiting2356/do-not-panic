@@ -71,13 +71,15 @@ function App() {
           </div>
           <TodalToday />
         </div>
-
-        <hr />
-        <h3>New Todo <AddIconButton onClick={() => setShowNewTodo(true)} /></h3>
         {showNewTodo && <NewTodoForm />}
-        <hr />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div><h3>Today</h3></div>
+          <div style={{ display: 'flex' }}>
+            <h3 style={{ marginRight: '10px' }}>Today</h3>
+            <div>
+              <AddIconButton onClick={() => setShowNewTodo(true)} />
+            </div>
+
+          </div>
           <ButtonGroup>
             <Button onClick={onSortTodos} variant="outline-secondary">
               <span style={{ marginRight: '10px' }}><Filter /></span>
@@ -90,10 +92,8 @@ function App() {
           </ButtonGroup>
         </div>
         <TodoTable todos={todayTodos} due={Due.Today} />
-        <hr />
         <h3>Later</h3>
         <TodoTable todos={laterTodos} due={Due.Later} />
-        <hr />
         <div style={{ display: 'flex' }}>
           <div><h3>Archive</h3></div>
           <Button variant="light" onClick={toggleShowArchive} style={{ marginLeft: '10px', marginBottom: '10px' }}>
@@ -101,9 +101,6 @@ function App() {
           </Button>
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-
-        <hr />
-        <hr />
         <KeyboardShortcuts />
       </Container >
     </div >
