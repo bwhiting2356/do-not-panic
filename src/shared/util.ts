@@ -34,6 +34,24 @@ export const convertMinutesToHours = (minutes: number) => {
 
 export const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
+export const templates: { [key: string]: () => Todo } = {
+  "start-day": () => ({
+    id: uuidv4(),
+    name: "Start Day",
+    poms: "0.5",
+    links: [{ id: uuidv4(), url: "http://go/pwaivers:daily" }],
+    due: Due.Today,
+    done: false,
+  }),
+  "start-week": () => ({
+    id: uuidv4(),
+    name: "Start Week",
+    poms: "1",
+    links: [{ id: uuidv4(), url: "http://go/pwaivers:weekly" }],
+    due: Due.Today,
+    done: false,
+  }),
+};
 export const generateNewTodo = (): Todo => ({
   id: uuidv4(),
   name: "",

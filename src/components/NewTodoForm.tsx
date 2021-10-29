@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ButtonGroup, Form, Table } from "react-bootstrap";
-import { addTodo, editNewTodo } from "../features/todos/todoSlice";
+import { Button, ButtonGroup, Form, Table } from "react-bootstrap";
+import {
+  addTodo,
+  addTodoFromTemplate,
+  editNewTodo,
+} from "../features/todos/todoSlice";
 import { MoveDownIconButton } from "./icon-buttons/MoveDownIconButton";
 import { MoveUpIconButton } from "./icon-buttons/MoveUpIconButton";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -99,6 +103,13 @@ export function NewTodoForm() {
     setAutoFocusedLinkId(newLink.id);
   };
 
+  const addFromTemplate = (template: string) => {
+    dispatch(addTodoFromTemplate(template));
+    setTimeout(() => {
+      focusNameInput();
+    }, 100);
+  };
+
   const onLinkKeyDown = (e: any) => {
     if (e.key === "Tab") {
       e.preventDefault();
@@ -110,75 +121,85 @@ export function NewTodoForm() {
   };
 
   return (
-    <Table striped bordered hover className="table">
-      <thead>
-        <tr>
-          <th className="done" style={{ visibility: "hidden" }}>
-            Done
-          </th>
-          <th className="name">Name</th>
-          <th className="poms">Poms</th>
-          <th className="links">Links</th>
-          <th className="actions" style={{ visibility: "hidden" }}>
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td>
-            <Form.Control
-              ref={nameInputRef}
-              autoFocus
-              type="text"
-              value={newTodo.name}
-              onKeyDown={listenForSubmit}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </td>
-          <td>
-            <Form.Control
-              type="text"
-              value={newTodo.poms}
-              onKeyDown={listenForSubmit}
-              onChange={(e) => setPoms(e.target.value)}
-            />
-          </td>
-          <td
-            className="links"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-            }}
-          >
-            <div>
-              {newTodo.links.map((link, i) => (
-                <div key={link.id} className="editable-item">
-                  <Form.Control
-                    autoFocus={autoFocusedLinkId === link.id}
-                    type="text"
-                    value={link.url}
-                    onKeyDown={onLinkKeyDown}
-                    onChange={(e) => editLink(i, e.target.value)}
-                  />
-                  <DeleteIconButton onClick={() => deleteLink(i)} />
-                </div>
-              ))}
-            </div>
-            <div style={{ alignSelf: "flex-end" }}>
-              <AddIconButton onClick={addLink} />
-            </div>
-          </td>
-          <td style={{ textAlign: "center" }}>
-            <ButtonGroup>
-              <MoveUpIconButton onClick={() => onSubmit(Due.Today)} />
-              <MoveDownIconButton onClick={() => onSubmit(Due.Later)} />
-            </ButtonGroup>
-          </td>
-        </tr>
-      </tbody>
-    </Table>
+    <div>
+      <Table striped bordered hover className="table">
+        <thead>
+          <tr>
+            <th className="done" style={{ visibility: "hidden" }}>
+              Done
+            </th>
+            <th className="name">Name</th>
+            <th className="poms">Poms</th>
+            <th className="links">Links</th>
+            <th className="actions" style={{ visibility: "hidden" }}>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>
+              <Form.Control
+                ref={nameInputRef}
+                autoFocus
+                type="text"
+                value={newTodo.name}
+                onKeyDown={listenForSubmit}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </td>
+            <td>
+              <Form.Control
+                type="text"
+                value={newTodo.poms}
+                onKeyDown={listenForSubmit}
+                onChange={(e) => setPoms(e.target.value)}
+              />
+            </td>
+            <td
+              className="links"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+              }}
+            >
+              <div>
+                {newTodo.links.map((link, i) => (
+                  <div key={link.id} className="editable-item">
+                    <Form.Control
+                      autoFocus={autoFocusedLinkId === link.id}
+                      type="text"
+                      value={link.url}
+                      onKeyDown={onLinkKeyDown}
+                      onChange={(e) => editLink(i, e.target.value)}
+                    />
+                    <DeleteIconButton onClick={() => deleteLink(i)} />
+                  </div>
+                ))}
+              </div>
+              <div style={{ alignSelf: "flex-end" }}>
+                <AddIconButton onClick={addLink} />
+              </div>
+            </td>
+            <td style={{ textAlign: "center" }}>
+              <ButtonGroup>
+                <MoveUpIconButton onClick={() => onSubmit(Due.Today)} />
+                <MoveDownIconButton onClick={() => onSubmit(Due.Later)} />
+              </ButtonGroup>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
+      <ButtonGroup>
+        <Button onClick={() => addFromTemplate("start-day")}>
+          Start Day (⌘⇧1)
+        </Button>
+        <Button onClick={() => addFromTemplate("start-week")}>
+          Start Week (⌘⇧2)
+        </Button>
+      </ButtonGroup>
+    </div>
   );
 }

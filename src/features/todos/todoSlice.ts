@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
-import { generateNewTodo, padUrlWithHttp, sortTodos } from '../../shared/util';
+import { generateNewTodo, padUrlWithHttp, sortTodos, templates } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 
 interface TodoState {
@@ -79,6 +79,19 @@ export const todoSlice = createSlice({
             }
             );
         },
+        addTodoFromTemplate: (state, action: PayloadAction<string>) => {
+            const newTodos = [
+                ...state.currentState.todos,
+                templates[action.payload]()
+            ];
+            return addNewStateGoingForward(
+                state, {
+                ...state.currentState,
+                todos: newTodos,
+                newTodo: generateNewTodo()
+            }
+            );
+        },
         editTodo: (state, action: PayloadAction<{ id: ID, newTodo: Todo }>) => {
             const { todos } = state.currentState;
             const { id, newTodo } = action.payload;
@@ -139,6 +152,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

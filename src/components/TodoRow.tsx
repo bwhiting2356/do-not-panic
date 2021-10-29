@@ -34,10 +34,7 @@ export function TodoRow({
 }: Props) {
   const { id, done, name, poms, links, archivedDate } = todo;
   return (
-    <tr
-      key={id}
-      className={done === false && due === Due.Today ? "highlight" : ""}
-    >
+    <tr key={id}>
       <td className="done">
         {due === Due.Archived ? (
           <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>

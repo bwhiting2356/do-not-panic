@@ -45,8 +45,25 @@ export function KeyboardShortcuts() {
             <td>While 'New Todo' field is focused</td>
             <td>Submit current todo to 'today'</td>
           </tr>
+          <tr>
+            <td>⌘⇧1</td>
+            <td>Anywhere</td>
+            <td>Add new todo with 'start day' template</td>
+          </tr>
+          <tr>
+            <td>⌘⇧2</td>
+            <td>Anywhere</td>
+            <td>Add new todo with 'start week' template</td>
+          </tr>
         </tbody>
       </Table>
     </div>
   );
 }
+
+/*
+
+                <Button onClick={() => addFromTemplate('start-day')}>Start Day (⌘⇧1)</Button>
+                <Button onClick={() => addFromTemplate('start-week')}>Start Week (⌘⇧2)</Button>
+
+*/

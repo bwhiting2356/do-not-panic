@@ -3,7 +3,7 @@ import './App.css';
 import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { undo, redo, archiveAllCompletedTodos, resortTodos } from './features/todos/todoSlice';
+import { undo, redo, archiveAllCompletedTodos, resortTodos, addTodoFromTemplate } from './features/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
@@ -32,6 +32,14 @@ function App() {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === 'Enter') {
         setShowNewTodo(true)
+      }
+
+      if (event.metaKey && event.shiftKey && event.key === '1') {
+        dispatch(addTodoFromTemplate('start-day'))
+      }
+
+      if (event.metaKey && event.shiftKey && event.key === '2') {
+        dispatch(addTodoFromTemplate('start-week'))
       }
 
       if (event.key === 'Escape') {
