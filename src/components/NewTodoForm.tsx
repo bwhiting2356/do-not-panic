@@ -13,6 +13,8 @@ import { Due } from "../shared/due.type";
 import { selectNewTodo } from "../features/todos/selectors";
 import { TodayIconButton } from "./icon-buttons/TodayIconButton";
 import { LaterIconButton } from "./icon-buttons/LaterIconButton";
+import { ProjectDropdown } from "./ProjectDropdown";
+import { Project } from "../shared/project.enum";
 
 const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
@@ -91,6 +93,15 @@ export function NewTodoForm() {
     );
   };
 
+  const setProject = (newProject: Project) => {
+    dispatch(
+      editNewTodo({
+        ...newTodo,
+        project: newProject,
+      })
+    );
+  };
+
   const addLink = () => {
     const newLink = generateNewLink();
     dispatch(
@@ -146,6 +157,7 @@ export function NewTodoForm() {
             <th className="name">Name</th>
             <th className="poms">Poms</th>
             <th className="links">Links</th>
+            <th className="project">Project</th>
             <th className="actions" style={{ visibility: "hidden" }}>
               Actions
             </th>
@@ -197,6 +209,12 @@ export function NewTodoForm() {
               <div style={{ alignSelf: "flex-end" }}>
                 <AddIconButton onClick={addLink} />
               </div>
+            </td>
+            <td className="project">
+              <ProjectDropdown
+                project={newTodo.project}
+                onChangeProject={(newProject) => setProject(newProject)}
+              />
             </td>
             <td style={{ textAlign: "center" }}>
               <ButtonGroup>

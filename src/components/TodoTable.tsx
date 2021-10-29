@@ -5,6 +5,7 @@ import { useAppDispatch } from "../app/hooks";
 import { editTodo, deleteTodo } from "../features/todos/todoSlice";
 import { Due } from "../shared/due.type";
 import { ID } from "../shared/id.type";
+import { Project } from "../shared/project.enum";
 import { Todo } from "../shared/todo.interface";
 import { TodoRow } from "./TodoRow";
 
@@ -83,6 +84,18 @@ export function TodoTable({ todos, due }: Props) {
     );
   };
 
+  const onEditProject = (todo: Todo, newProject: Project) => {
+    dispatch(
+      editTodo({
+        id: todo.id,
+        newTodo: {
+          ...todo,
+          project: newProject,
+        },
+      })
+    );
+  };
+
   const onDeleteTodo = (id: ID) => dispatch(deleteTodo({ id }));
   const onArchiveTodo = (todo: Todo) => {
     dispatch(
@@ -108,6 +121,7 @@ export function TodoTable({ todos, due }: Props) {
             <th className="name">Name</th>
             <th className="poms">Poms</th>
             <th className="links">Links</th>
+            <th className="project">Project</th>
             <th className="actions">Actions</th>
           </tr>
         </thead>
@@ -124,6 +138,7 @@ export function TodoTable({ todos, due }: Props) {
                 onDeleteLink={onDeleteLink}
                 onEditName={onEditName}
                 onEditPoms={onEditPoms}
+                onEditProject={onEditProject}
                 onArchiveTodo={onArchiveTodo}
                 due={due}
               />

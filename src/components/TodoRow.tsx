@@ -9,12 +9,15 @@ import { TodayIconButton } from "./icon-buttons/TodayIconButton";
 import { ArchiveIconButton } from "./icon-buttons/ArchiveIconButton";
 import { LaterIconButton } from "./icon-buttons/LaterIconButton";
 import { Due } from "../shared/due.type";
+import { ProjectDropdown } from "./ProjectDropdown";
+import { Project } from "../shared/project.enum";
 
 interface Props {
   todo: Todo;
   onSetTodoDone: (todo: Todo, done: boolean) => void;
   onEditName: (todo: Todo, newName: string) => void;
   onEditPoms: (todo: Todo, newPoms: string) => void;
+  onEditProject: (todo: Todo, newProject: Project) => void;
   onMoveTodoDue: (todo: Todo) => void;
   onDeleteTodo: (id: ID) => void;
   onEditLink: (todo: Todo, linkId: ID, newUrl: string) => void;
@@ -28,6 +31,7 @@ export function TodoRow({
   onSetTodoDone,
   onEditName,
   onEditPoms,
+  onEditProject,
   onMoveTodoDue,
   onDeleteTodo,
   onEditLink,
@@ -35,7 +39,7 @@ export function TodoRow({
   onArchiveTodo,
   due,
 }: Props) {
-  const { id, done, name, poms, links, archivedDate } = todo;
+  const { id, done, name, poms, links, project, archivedDate } = todo;
   return (
     <tr key={id} className={done ? "complete" : ""}>
       <td className="done">
@@ -71,6 +75,14 @@ export function TodoRow({
               onDeleteLink={() => onDeleteLink(todo, id)}
             />
           ))}
+        </div>
+      </td>
+      <td className="project">
+        <div>
+          <ProjectDropdown
+            project={project}
+            onChangeProject={(newProject) => onEditProject(todo, newProject)}
+          />
         </div>
       </td>
       <td className="actions">

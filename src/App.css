@@ -13,7 +13,10 @@
 
 .links {
   width: calc(100% - 25px);
+}
 
+.project {
+  width: 150px;
 }
 
 .actions {
