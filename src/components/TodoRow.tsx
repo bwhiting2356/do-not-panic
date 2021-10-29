@@ -8,6 +8,9 @@ import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 import { MoveDownIconButton } from "./icon-buttons/MoveDownIconButton";
 import { MoveUpIconButton } from "./icon-buttons/MoveUpIconButton";
 import { Due } from "../shared/due.type";
+import { TodayIconButton } from "./icon-buttons/TodayIconButton";
+import { ArchiveIconButton } from "./icon-buttons/ArchiveIconButton";
+import { CalendarIconButton } from "./icon-buttons/CalendarIconButton";
 
 interface Props {
     todo: Todo;
@@ -18,6 +21,7 @@ interface Props {
     onDeleteTodo: (id: ID) => void;
     onEditLink: (todo: Todo, linkId: ID, newUrl: string) => void;
     onDeleteLink: (todo: Todo, linkId: ID) => void;
+    onArchiveTodo: (todo: Todo) => void;
     due: Due;
 }
 
@@ -30,6 +34,7 @@ export function TodoRow({
     onDeleteTodo,
     onEditLink,
     onDeleteLink,
+    onArchiveTodo,
     due,
 }: Props) {
     const { id, done, name, poms, links, archivedDate } = todo;
@@ -73,12 +78,13 @@ export function TodoRow({
             <td className="actions">
                 <ButtonGroup>
                     {due === Due.Today ? (
-                        <MoveDownIconButton onClick={() => onMoveTodoDue(todo)} />
+                        <CalendarIconButton onClick={() => onMoveTodoDue(todo)} />
                     ) : (
-                        <MoveUpIconButton onClick={() => onMoveTodoDue(todo)} />
+                        <TodayIconButton onClick={() => onMoveTodoDue(todo)} />
                     )}
-
+                    <ArchiveIconButton onClick={() => onArchiveTodo(todo)} />
                     <DeleteIconButton onClick={() => onDeleteTodo(todo.id)} />
+
                 </ButtonGroup>
             </td>
         </tr>

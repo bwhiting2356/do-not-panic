@@ -11,7 +11,7 @@ import { KeyboardShortcuts } from './components/KeyboardShortcuts';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
-import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
+import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
 
 function App() {
@@ -79,8 +79,14 @@ function App() {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div><h3>Today</h3></div>
           <ButtonGroup>
-            <Button onClick={onSortTodos} variant="secondary">Sort Todos</Button>
-            <Button onClick={onArchiveAllCompletedTodos}>Archive all completed todos</Button>
+            <Button onClick={onSortTodos} variant="outline-secondary">
+              <span style={{ marginRight: '10px' }}><Filter /></span>
+              Sort Todos
+            </Button>
+            <Button variant="outline-primary" onClick={onArchiveAllCompletedTodos}>
+              <span style={{ marginRight: '10px' }}><ArchiveFill /></span>
+              Archive all completed todos
+            </Button>
           </ButtonGroup>
         </div>
         <TodoTable todos={todayTodos} due={Due.Today} />
