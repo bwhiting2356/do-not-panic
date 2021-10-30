@@ -47,7 +47,7 @@ export function NewTodoForm() {
   });
 
   const listenForSubmit = (e: any) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.metaKey) {
       onSubmit(Due.Today);
     }
   };
