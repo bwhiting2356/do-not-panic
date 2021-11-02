@@ -4,10 +4,11 @@ import { Archive } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number
 }
-export function ArchiveIconButton({ onClick }: Props) {
+export function ArchiveIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="warning" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="warning" size="sm">
             <Archive />
         </Button>
     )

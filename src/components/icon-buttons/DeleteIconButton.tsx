@@ -4,10 +4,11 @@ import { Trash } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number;
 }
-export function DeleteIconButton({ onClick }: Props) {
+export function DeleteIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="danger" size="sm">
+        <Button tabIndex={tabIndex} onClick={onClick} variant="danger" size="sm">
             <Trash />
         </Button>
     )

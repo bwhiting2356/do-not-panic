@@ -4,10 +4,11 @@ import { Plus } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number
 }
-export function AddIconButton({ onClick }: Props) {
+export function AddIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="primary" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="primary" size="sm">
             <Plus />
         </Button>
     )

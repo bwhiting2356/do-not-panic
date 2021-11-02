@@ -4,10 +4,11 @@ import { BrightnessAltHigh } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number;
 }
-export function TodayIconButton({ onClick }: Props) {
+export function TodayIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="primary" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="primary" size="sm">
             <BrightnessAltHigh />
         </Button>
     )

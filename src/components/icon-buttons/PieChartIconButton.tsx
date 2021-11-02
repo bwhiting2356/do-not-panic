@@ -4,8 +4,9 @@ import { PieChart } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number;
 }
-export function PieChartIconButton({ onClick }: Props) {
+export function PieChartIconButton({ onClick, tabIndex }: Props) {
     return (
         <Button onClick={onClick} variant="primary" size="sm">
             <PieChart />

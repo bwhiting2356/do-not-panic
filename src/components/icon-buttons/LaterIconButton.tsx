@@ -4,10 +4,11 @@ import { Clock } from "react-bootstrap-icons";
 
 interface Props {
     onClick?: () => void;
+    tabIndex?: number;
 }
-export function LaterIconButton({ onClick }: Props) {
+export function LaterIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="primary" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="primary" size="sm">
             <Clock />
         </Button>
     )
