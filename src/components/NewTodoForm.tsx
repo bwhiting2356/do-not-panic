@@ -14,7 +14,6 @@ import { selectNewTodo } from "../features/todos/selectors";
 import { TodayIconButton } from "./icon-buttons/TodayIconButton";
 import { LaterIconButton } from "./icon-buttons/LaterIconButton";
 import { ProjectDropdown } from "./ProjectDropdown";
-import { Project } from "../shared/project.enum";
 
 const generateNewLink = () => ({ id: uuidv4(), url: "" });
 
@@ -93,7 +92,7 @@ export function NewTodoForm() {
     );
   };
 
-  const setProject = (newProject: Project) => {
+  const setProject = (newProject: string) => {
     dispatch(
       editNewTodo({
         ...newTodo,

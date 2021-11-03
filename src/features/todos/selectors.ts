@@ -8,9 +8,14 @@ const selectTodos = createSelector(
     currentState => currentState.todos
 )
 
-export const selectProjectName = createSelector(
+export const selectDomainName = createSelector(
     selectCurrentState,
-    currentState => currentState.projectName
+    currentState => currentState.domainName
+)
+
+export const selectProjects = createSelector(
+    selectCurrentState,
+    currentState => currentState.projects
 )
 
 export const selectTodosDueToday = createSelector(

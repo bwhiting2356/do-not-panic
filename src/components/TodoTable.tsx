@@ -5,7 +5,6 @@ import { useAppDispatch } from "../app/hooks";
 import { editTodo, deleteTodo } from "../features/todos/todoSlice";
 import { Due } from "../shared/due.type";
 import { ID } from "../shared/id.type";
-import { Project } from "../shared/project.enum";
 import { Todo } from "../shared/todo.interface";
 import { PieChartIconButton } from "./icon-buttons/PieChartIconButton";
 import { ProjectAnalytics } from "./ProjectAnalytics";
@@ -89,7 +88,7 @@ export function TodoTable({ todos, due }: Props) {
     );
   };
 
-  const onEditProject = (todo: Todo, newProject: Project) => {
+  const onEditProject = (todo: Todo, newProject: string) => {
     dispatch(
       editTodo({
         id: todo.id,

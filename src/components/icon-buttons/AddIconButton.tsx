@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 
 interface Props {
-    onClick?: () => void;
+    onClick?: (e?: any) => void;
     tabIndex?: number
 }
 export function AddIconButton({ onClick, tabIndex }: Props) {

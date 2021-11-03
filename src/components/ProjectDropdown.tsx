@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { Project } from "../shared/project.enum";
+import { Pen } from "react-bootstrap-icons";
+import { useAppSelector } from "../app/hooks";
+import { selectProjects } from "../features/todos/selectors";
+import { EditProjectsModal } from "./EditProjectsModal";
 
 interface Props {
-  project?: Project | string;
-  onChangeProject: (newProject: Project) => void;
+  project?: string;
+  onChangeProject: (newProject: string) => void;
 }
 
 export function ProjectDropdown({
   project = "No Project",
   onChangeProject,
 }: Props) {
+  const projectOptions = useAppSelector(selectProjects);
+  const [showEditProjects, setShowEditProjects] = useState(false);
   return (
     <Dropdown>
       <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
@@ -18,15 +23,27 @@ export function ProjectDropdown({
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {Object.keys(Project).map((projectKey) => (
+        {projectOptions.map((projectOption) => (
           <Dropdown.Item
-            key={projectKey}
-            onClick={() => onChangeProject(projectKey as Project)}
+            key={projectOption}
+            onClick={() => onChangeProject(projectOption)}
           >
-            {projectKey}
+            {projectOption}
           </Dropdown.Item>
         ))}
+        <Dropdown.Divider />
+        <Dropdown.Item
+          style={{ display: "flex", alignItems: "center" }}
+          onClick={() => setShowEditProjects(true)}
+        >
+          <Pen style={{ marginRight: "10px" }} />
+          Edit Projects
+        </Dropdown.Item>
       </Dropdown.Menu>
+      <EditProjectsModal
+        show={showEditProjects}
+        toggleEditProjects={() => setShowEditProjects(!showEditProjects)}
+      />
     </Dropdown>
   );
 }

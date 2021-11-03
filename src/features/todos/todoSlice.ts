@@ -4,10 +4,12 @@ import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
 import { generateNewTodo, padUrlWithHttp, sortTodos, templates } from '../../shared/util';
 import { Due } from '../../shared/due.type';
+import { defaultProjects } from '../../shared/defaultProjects';
 
 interface TodoState {
     todos: Todo[];
-    projectName: string;
+    projects: string[],
+    domainName: string;
     newTodo: Todo;
 }
 
@@ -17,9 +19,10 @@ export interface TodoStateWithHistory {
     futureState: TodoState[]
 };
 
-const initialCurrentState = {
+const initialCurrentState: TodoState = {
     todos: [],
-    projectName: 'work',
+    projects: defaultProjects,
+    domainName: 'work',
     newTodo: generateNewTodo(),
 }
 
@@ -50,7 +53,7 @@ export const todoSlice = createSlice({
             return addNewStateGoingForward(
                 state, {
                 ...state.currentState,
-                projectName: action.payload,
+                domainName: action.payload,
             })
         },
         resortTodos: (state) => {
@@ -120,6 +123,12 @@ export const todoSlice = createSlice({
         editNewTodo: (state, action: PayloadAction<Todo>) => {
             return addNewStateGoingForward(state, { ...state.currentState, newTodo: action.payload });
         },
+        editProjects: (state, action: PayloadAction<string[]>) => {
+            return addNewStateGoingForward(
+                state,
+                { ...state.currentState, projects: action.payload}
+            )
+        },
         undo: (state) => {
             const { pastState, currentState, futureState } = state;
             const prevState = pastState[pastState.length - 1];
@@ -152,6 +161,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

@@ -1,7 +1,6 @@
 import { Due } from "./due.type";
 import { ID } from "./id.type";
 import { Link } from "./link.interface";
-import { Project } from "./project.enum";
 
 export interface Todo {
   id: ID;
@@ -10,6 +9,6 @@ export interface Todo {
   poms: string;
   links: Link[];
   due: Due;
-  project?: Project;
+  project?: string;
   archivedDate?: Date;
 }

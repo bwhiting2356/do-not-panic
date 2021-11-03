@@ -3,54 +3,40 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { useAppSelector } from "../app/hooks";
 import { selectArchivedTodos } from "../features/todos/selectors";
-import { Project } from "../shared/project.enum";
-import { sumTodoPomodoros } from "../shared/util";
+import { convertStringPoms } from "../shared/util";
 export function ProjectAnalytics() {
   const archivedTodos = useAppSelector(selectArchivedTodos);
 
-  const totalArchivedMisc = archivedTodos
-    .filter((todo) => todo.project === Project.Misc)
-    .reduce(sumTodoPomodoros, 0);
+  const todoPomsByProject = archivedTodos.reduce(
+    (acc, curr) => {
+      const project = curr.project;
+      if (project) {
+        if (acc[project]) {
+          acc[project] += convertStringPoms(curr.poms);
+        } else {
+          acc[project] = convertStringPoms(curr.poms);
+        }
+      } else {
+        acc["No Project"] += convertStringPoms(curr.poms);
+      }
+      return acc;
+    },
+    { "No Project": 0 } as Record<string, number>
+  );
 
-  const totalArchivedMotto = archivedTodos
-    .filter((todo) => todo.project === Project.Motto)
-    .reduce(sumTodoPomodoros, 0);
+  let labels: string[] = [];
+  let data: number[] = [];
 
-  const totalArchivedOnCall = archivedTodos
-    .filter((todo) => todo.project === Project.OnCall)
-    .reduce(sumTodoPomodoros, 0);
-
-  const totalArchivedReQa = archivedTodos
-    .filter((todo) => todo.project === Project.ReQa)
-    .reduce(sumTodoPomodoros, 0);
-
-  const totalArchivedTfx = archivedTodos
-    .filter((todo) => todo.project === Project.Tfx)
-    .reduce(sumTodoPomodoros, 0);
-
-  const totalArchivedNoProject = archivedTodos
-    .filter((todo) => !Boolean(todo.project))
-    .reduce(sumTodoPomodoros, 0);
+  Object.keys(todoPomsByProject).forEach((key) => {
+    labels.push(key);
+    data.push(todoPomsByProject[key]);
+  }); // TODO: maybe this can be refactored differently
 
   const chartData = {
-    labels: [
-      Project.Misc,
-      Project.Motto,
-      Project.OnCall,
-      Project.ReQa,
-      Project.Tfx,
-      "No Project",
-    ],
+    labels,
     datasets: [
       {
-        data: [
-          totalArchivedMisc,
-          totalArchivedMotto,
-          totalArchivedOnCall,
-          totalArchivedReQa,
-          totalArchivedTfx,
-          totalArchivedNoProject,
-        ],
+        data,
         backgroundColor: ["red", "blue", "pink", "orange", "green", "purple"],
       },
     ],
