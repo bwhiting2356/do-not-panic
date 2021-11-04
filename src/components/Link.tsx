@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import { padUrlWithHttp, truncate } from "../shared/util";
+import { padUrlWithHttp, truncateUrl } from "../shared/util";
 
 interface Props {
   url: string;
@@ -32,7 +32,7 @@ export function Link({ url, onEditLink, onDeleteLink }: Props) {
       <div className="editable-item" style={{ height: "100%" }}>
         <div className="content" onClick={toggleSetEditing}>
           <a className="url" target="_blank" rel="noreferrer" href={url}>
-            {truncate(url)}
+            {truncateUrl(url)}
           </a>
         </div>
       </div>

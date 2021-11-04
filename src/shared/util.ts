@@ -13,9 +13,10 @@ export const padZeros = (str: string | number) => {
   return strNumber;
 };
 
-export const truncate = (str: string, length: number = 40) => {
-  if (str.length < length) return str;
-  return `${str.substring(length, 0)}...`;
+export const truncateUrl = (str: string, length: number = 40) => {
+  const removeHttp = str.replace(/http(s)?:\/\//,"");
+  if (removeHttp.length < length) return removeHttp;
+  return `${removeHttp.substring(length, 0)}...`;
 };
 
 const oneHalfOptions = [".5", "0.5", "1/2"];
