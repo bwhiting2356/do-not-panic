@@ -121,10 +121,6 @@ export function NewTodoForm() {
   };
 
   const onLinkKeyDown = (e: any) => {
-    // if (e.key === "Tab") {
-    //   e.preventDefault();
-    //   addLink();
-    // }
     if (e.key === "Enter") {
       onSubmit(Due.Today);
     }
