@@ -18,7 +18,7 @@ export function ProjectDropdown({
   const [showEditProjects, setShowEditProjects] = useState(false);
   return (
     <Dropdown>
-      <Dropdown.Toggle size="sm"  variant="outline-primary" id="dropdown-basic">
+      <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
         {project}
       </Dropdown.Toggle>
 

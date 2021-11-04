@@ -22,7 +22,6 @@ export function TodalToday() {
       bordered
       hover
       size="sm"
-   
     >
       <thead>
         <tr>

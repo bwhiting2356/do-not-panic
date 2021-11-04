@@ -14,7 +14,7 @@ export const padZeros = (str: string | number) => {
 };
 
 export const truncateUrl = (str: string, length: number = 40) => {
-  const removeHttp = str.replace(/http(s)?:\/\//,"");
+  const removeHttp = str.replace(/http(s)?:\/\//, "");
   if (removeHttp.length < length) return removeHttp;
   return `${removeHttp.substring(length, 0)}...`;
 };
