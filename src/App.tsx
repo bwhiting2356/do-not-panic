@@ -31,7 +31,7 @@ function App() {
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
-      if (event.shiftKey && event.keyCode == 191) {
+      if (event.shiftKey && event.keyCode === 191) {
         setShowKeyboardShortcuts(!showKeyboardShortcuts);
       }
 
