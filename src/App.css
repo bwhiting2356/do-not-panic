@@ -39,3 +39,7 @@
 .main-todos .complete {
   text-decoration: line-through;
 }
+
+.vertical-align {
+  vertical-align: middle;
+}

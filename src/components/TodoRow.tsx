@@ -41,7 +41,7 @@ export function TodoRow({
   const { id, done, name, poms, links, project, archivedDate } = todo;
   return (
     <tr key={id} className={done ? "complete" : ""}>
-      <td className="done">
+      <td className="done vertical-align">
         {due === Due.Archived ? (
           <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>
         ) : (
@@ -52,19 +52,19 @@ export function TodoRow({
           />
         )}
       </td>
-      <td className="name">
+      <td className="name vertical-align">
         <TextField
           text={name}
           onEditText={(newName) => onEditName(todo, newName)}
         />
       </td>
-      <td className="poms">
+      <td className="poms vertical-align">
         <TextField
           text={poms}
           onEditText={(newPoms) => onEditPoms(todo, newPoms)}
         />
       </td>
-      <td className="links">
+      <td className="links vertical-align">
         <div>
           {links.map(({ id, url }, i) => (
             <Link
