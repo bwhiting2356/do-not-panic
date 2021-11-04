@@ -55,6 +55,11 @@ export function KeyboardShortcuts() {
             <td>Anywhere</td>
             <td>Add new todo with 'start week' template</td>
           </tr>
+          <tr>
+            <td>⇧?</td>
+            <td>Anywhere</td>
+            <td>Show/Hide keyboard shortcuts</td>
+          </tr>
         </tbody>
       </Table>
     </div>

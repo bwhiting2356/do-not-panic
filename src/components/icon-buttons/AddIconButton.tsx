@@ -8,7 +8,7 @@ interface Props {
 }
 export function AddIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} tabIndex={tabIndex} variant="primary" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="outline-primary" size="sm">
             <Plus />
         </Button>
     )

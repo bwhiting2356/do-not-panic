@@ -8,7 +8,7 @@ interface Props {
 }
 export function PieChartIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} variant="primary" size="sm">
+        <Button onClick={onClick} variant="outline-primary" size="sm">
             <PieChart />
         </Button>
     )

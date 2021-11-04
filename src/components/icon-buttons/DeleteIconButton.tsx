@@ -8,7 +8,7 @@ interface Props {
 }
 export function DeleteIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button tabIndex={tabIndex} onClick={onClick} variant="danger" size="sm">
+        <Button tabIndex={tabIndex} onClick={onClick} variant="outline-danger" size="sm">
             <Trash />
         </Button>
     )

@@ -135,14 +135,14 @@ export function NewTodoForm() {
       <div style={{ display: "flex", marginBottom: "10px" }}>
         <h3 style={{ marginRight: "10px" }}>New Todo</h3>
         <ButtonGroup>
-          <Button onClick={() => addFromTemplate("start-day")}>
-            Start Day (⌘⇧1)
+          <Button variant="outline-primary" onClick={() => addFromTemplate("start-day")}>
+            Start Day
           </Button>
           <Button
-            variant="secondary"
+            variant="outline-secondary"
             onClick={() => addFromTemplate("start-week")}
           >
-            Start Week (⌘⇧2)
+            Start Week
           </Button>
         </ButtonGroup>
       </div>

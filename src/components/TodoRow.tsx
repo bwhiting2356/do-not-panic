@@ -46,7 +46,7 @@ export function TodoRow({
           <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>
         ) : (
           <Form.Check
-            type="checkbox"
+            type="switch"
             checked={done}
             onChange={(e: any) => onSetTodoDone(todo, e.target.checked)}
           />

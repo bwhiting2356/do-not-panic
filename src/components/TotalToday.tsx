@@ -21,12 +21,15 @@ export function TodalToday() {
       striped
       bordered
       hover
-      variant="dark"
+      size="sm"
+   
     >
-      <thead style={{ color: "black" }}>
-        <th>Today</th>
-        <th>Poms</th>
-        <th>Time</th>
+      <thead>
+        <tr>
+          <th>Today</th>
+          <th>Poms</th>
+          <th>Time</th>
+        </tr>
       </thead>
       <tbody>
         <tr>

@@ -133,7 +133,7 @@ export function TodoTable({ todos, due }: Props) {
       className={due !== Due.Archived ? "main-todos" : ""}
       style={{ textAlign: "left" }}
     >
-      <Table striped bordered hover className="table">
+      <Table striped bordered hover className="table" size="sm">
         <thead>
           <tr>
             <th className="done">{due === Due.Archived ? "Date" : "Done"}</th>

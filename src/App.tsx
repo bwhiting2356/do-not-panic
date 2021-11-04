@@ -21,6 +21,7 @@ function App() {
   const archivedTodos = useAppSelector(selectArchivedTodos);
   const [showNewTodo, setShowNewTodo] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
 
   const onArchiveAllCompletedTodos = () => {
     dispatch(archiveAllCompletedTodos());
@@ -30,6 +31,10 @@ function App() {
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
+      if (event.shiftKey && event.keyCode == 191) {
+        setShowKeyboardShortcuts(!showKeyboardShortcuts);
+      }
+
       if (event.metaKey && event.key === 'Enter') {
         setShowNewTodo(true)
       }
@@ -65,8 +70,13 @@ function App() {
       <Container>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
-            <h1>🎵 To Do Ron Ron 🎵</h1>
-            <ProjectName />
+            <h1>
+              <div style={{ display: 'flex'}}>
+                To Do | &nbsp;<ProjectName />
+                </div>
+                
+                </h1>
+             
 
           </div>
           <TodalToday />
@@ -102,7 +112,7 @@ function App() {
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
 
-        <KeyboardShortcuts />
+        { showKeyboardShortcuts && <KeyboardShortcuts /> }
       </Container >
     </div >
   );

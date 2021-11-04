@@ -8,7 +8,7 @@ interface Props {
 }
 export function ArchiveIconButton({ onClick, tabIndex }: Props) {
     return (
-        <Button onClick={onClick} tabIndex={tabIndex} variant="warning" size="sm">
+        <Button onClick={onClick} tabIndex={tabIndex} variant="outline-warning" size="sm">
             <Archive />
         </Button>
     )
