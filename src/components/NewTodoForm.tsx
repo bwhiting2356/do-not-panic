@@ -213,6 +213,7 @@ export function NewTodoForm() {
             </td>
             <td className="project">
               <ProjectDropdown
+                isEditing={true}
                 project={newTodo.project}
                 onChangeProject={(newProject) => setProject(newProject)}
               />

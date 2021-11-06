@@ -43,3 +43,7 @@
 .vertical-align {
   vertical-align: middle;
 }
+
+.editing {
+  color: red !important;
+}

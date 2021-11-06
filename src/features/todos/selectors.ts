@@ -18,6 +18,11 @@ export const selectProjects = createSelector(
     currentState => currentState.projects
 )
 
+export const selectEditingTodoID = createSelector(
+    selectCurrentState,
+    currentState => currentState.editingTodoID
+)
+
 export const selectTodosDueToday = createSelector(
     selectTodos,
     todos => todos.filter(todo => todo.due === Due.Today)

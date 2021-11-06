@@ -1,39 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "react-bootstrap";
 import { prettifyPoms } from "../shared/util";
 
-interface Props {
+type Props = {
   text: string;
+  editing: boolean;
   onEditText: (newText: string) => void;
-}
+  onSubmit: () => void;
+  onBlur?: () => void;
+};
 
-export function TextField({ text, onEditText }: Props) {
-  const [editing, setEditing] = useState(false);
-  const [newText, setNewText] = useState(text);
-
-  const onSubmit = (e: any) => {
+export function TextField({
+  text,
+  editing,
+  onEditText,
+  onSubmit,
+  onBlur,
+}: Props) {
+  const submit = (e: any) => {
     e.preventDefault();
-    setEditing(false);
-    onEditText(newText);
+    onSubmit();
   };
-
-  const onTextChange = (newText: string) => setNewText(newText);
 
   if (!editing) {
     return (
-      <div onClick={() => setEditing(true)} className="editable-item">
+      <div className="editable-item">
         <div className="content">{prettifyPoms(text) || <p>&nbsp;</p>}</div>
       </div>
     );
   }
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={submit}>
       <Form.Control
         autoFocus
         type="text"
-        value={newText}
-        onChange={(e) => onTextChange(e.target.value)}
-        onBlur={onSubmit}
+        value={text}
+        onChange={(e) => onEditText(e.target.value)}
+        onBlur={onBlur}
       />
     </Form>
   );

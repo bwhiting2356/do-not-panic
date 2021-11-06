@@ -5,17 +5,27 @@ import { useAppSelector } from "../app/hooks";
 import { selectProjects } from "../features/todos/selectors";
 import { EditProjectsModal } from "./EditProjectsModal";
 
-interface Props {
+type Props = {
   project?: string;
+  isEditing: boolean;
   onChangeProject: (newProject: string) => void;
-}
+};
 
 export function ProjectDropdown({
   project = "No Project",
+  isEditing,
   onChangeProject,
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
+
+  if (!isEditing) {
+    return (
+      <div className="editable-item">
+        <div className="content">{project}</div>
+      </div>
+    );
+  }
   return (
     <Dropdown>
       <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
