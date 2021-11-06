@@ -18,7 +18,6 @@ interface Props {
 export function TodoTable({ todos, due }: Props) {
   const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
   const dispatch = useAppDispatch();
-  const oppositeDue = due === Due.Today ? Due.Later : Due.Today;
 
   const onSetTodoDone = (todo: Todo, done: boolean) => {
     dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done } }));
@@ -26,11 +25,11 @@ export function TodoTable({ todos, due }: Props) {
 
   const toggleProjectAnalytics = () => setShowProjectAnalytics((show) => !show);
 
-  const onMoveTodoDue = (todo: Todo) => {
+  const onEditTodoDue = (todo: Todo, due: Due) => {
     dispatch(
       editTodo({
         id: todo.id,
-        newTodo: { ...todo, due: oppositeDue },
+        newTodo: { ...todo, due },
       })
     );
   };
@@ -159,7 +158,7 @@ export function TodoTable({ todos, due }: Props) {
                 key={todo.id}
                 todo={todo}
                 onSetTodoDone={onSetTodoDone}
-                onMoveTodoDue={onMoveTodoDue}
+                onEditTodoDue={onEditTodoDue}
                 onDeleteTodo={onDeleteTodo}
                 onEditLink={onEditLink}
                 onDeleteLink={onDeleteLink}
