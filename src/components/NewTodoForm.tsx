@@ -150,7 +150,7 @@ export function NewTodoForm() {
         <thead>
           <tr>
             <th className="done" style={{ visibility: "hidden" }}>
-              Done
+              Do
             </th>
             <th className="name">Name</th>
             <th className="poms">Poms</th>

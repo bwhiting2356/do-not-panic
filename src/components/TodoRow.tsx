@@ -113,7 +113,7 @@ export function TodoRow({ todo }: Props) {
 
   const onRowClick = (e: any) => {
     const { tagName } = e.target;
-    if (["BUTTON", "A"].includes(tagName)) return;
+    if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     onEditDone(!todo.done);
   };
 
@@ -134,9 +134,10 @@ export function TodoRow({ todo }: Props) {
           <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>
         ) : (
           <Form.Check
+          className="toggle"
             type="switch"
-            checked={done}
-            onChange={(e: any) => onEditDone(e.target.checked)}
+            checked={!done}
+            onChange={(e: any) => onEditDone(!e.target.checked)}
           />
         )}
       </td>
@@ -187,6 +188,7 @@ export function TodoRow({ todo }: Props) {
           onDeleteTodo={onDeleteTodo}
           onArchiveTodo={onArchiveTodo}
           onToggleEditing={onToggleEditingTodoId}
+          onEscape={onProjectDropdownEscape}
         />
       </td>
     </tr>

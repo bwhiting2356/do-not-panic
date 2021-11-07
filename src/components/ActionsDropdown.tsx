@@ -11,6 +11,7 @@ type Props = {
   onArchiveTodo: () => void;
   onDeleteTodo: () => void;
   onToggleEditing: () => void;
+  onEscape: () => void;
 };
 
 export function ActionsDropdown({
@@ -20,6 +21,7 @@ export function ActionsDropdown({
   onArchiveTodo,
   onDeleteTodo,
   onToggleEditing,
+  onEscape
 }: Props) {
   const [show, setShow] = useState(false);
   return (
