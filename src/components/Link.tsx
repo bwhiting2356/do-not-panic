@@ -2,35 +2,30 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { padUrlWithHttp, truncateUrl } from "../shared/util";
 
-interface Props {
+type Props = {
   url: string;
   onEditLink: (url: string) => void;
-  onDeleteLink: () => void;
-}
-export function Link({ url, onEditLink, onDeleteLink }: Props) {
-  const [editing, setEditing] = useState(false);
+  editing: boolean;
+  onSubmit: () => void;
+};
+
+export function Link({ url, onEditLink, editing, onSubmit }: Props) {
   const [newUrl, setNewUrl] = useState(url);
 
   const onUrlChange = (e: any) => {
     setNewUrl(e.target.value);
   };
 
-  const onSubmit = (e: any) => {
+  const submit = (e: any) => {
     e.preventDefault();
-    setEditing(false);
     onEditLink(padUrlWithHttp(newUrl));
-  };
-
-  const toggleSetEditing = (e: any) => {
-    if (!e.target.classList.contains("url")) {
-      setEditing((editing) => !editing);
-    }
+    onSubmit();
   };
 
   if (!editing) {
     return (
       <div className="editable-item" style={{ height: "100%" }}>
-        <div className="content" onClick={toggleSetEditing}>
+        <div className="content">
           <a className="url" target="_blank" rel="noreferrer" href={url}>
             {truncateUrl(url)}
           </a>
@@ -40,13 +35,8 @@ export function Link({ url, onEditLink, onDeleteLink }: Props) {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Form.Control
-        type="text"
-        value={newUrl}
-        onChange={onUrlChange}
-        onBlur={onSubmit}
-      />
+    <Form onSubmit={submit}>
+      <Form.Control type="text" value={newUrl} onChange={onUrlChange} />
     </Form>
   );
 }

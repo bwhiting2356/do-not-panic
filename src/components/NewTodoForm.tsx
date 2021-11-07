@@ -121,10 +121,6 @@ export function NewTodoForm() {
   };
 
   const onLinkKeyDown = (e: any) => {
-    // if (e.key === "Tab") {
-    //   e.preventDefault();
-    //   addLink();
-    // }
     if (e.key === "Enter") {
       onSubmit(Due.Today);
     }
@@ -217,6 +213,7 @@ export function NewTodoForm() {
             </td>
             <td className="project">
               <ProjectDropdown
+                isEditing={true}
                 project={newTodo.project}
                 onChangeProject={(newProject) => setProject(newProject)}
               />

@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { Trash } from "react-bootstrap-icons";
 
-interface Props {
+type Props = {
     onClick?: () => void;
     tabIndex?: number;
 }

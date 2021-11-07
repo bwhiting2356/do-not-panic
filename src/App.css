@@ -20,7 +20,7 @@
 }
 
 .actions {
-  width: 100px;
+  width: 50px;
   text-align: center;
 }
 
@@ -42,4 +42,8 @@
 
 .vertical-align {
   vertical-align: middle;
+}
+
+.editing {
+  color: red !important;
 }

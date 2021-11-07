@@ -1,3 +1,4 @@
+import { ChartData } from "chart.js";
 import { v4 as uuidv4 } from "uuid";
 import { Due } from "./due.type";
 import { Todo } from "./todo.interface";
@@ -77,3 +78,31 @@ export const generateNewTodo = (): Todo => ({
   due: Due.Today,
   done: false,
 });
+
+export const computeChartData = (
+  todos: Todo[]
+): ChartData<"pie", number[], string> => {
+  const todoPomsByProject = todos.reduce(
+    (acc, { project = "No Project", poms }) => {
+      if (acc[project]) {
+        acc[project] += convertStringPoms(poms);
+      } else {
+        acc[project] = convertStringPoms(poms);
+      }
+      return acc;
+    },
+    {
+      "No Project": 0,
+    } as Record<string, number>
+  );
+
+  return {
+    labels: Object.keys(todoPomsByProject),
+    datasets: [
+      {
+        data: Object.values(todoPomsByProject),
+        backgroundColor: ["red", "blue", "pink", "orange", "green", "purple"],
+      },
+    ],
+  };
+};

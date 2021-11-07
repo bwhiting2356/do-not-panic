@@ -19,7 +19,7 @@ import { NewTodoForm } from "./NewTodoForm";
 import { TodoTable } from "./TodoTable";
 import { TodalToday } from "./TotalToday";
 
-interface Props {}
+type Props = {};
 
 export function TodoList(props: Props) {
   const dispatch = useAppDispatch();

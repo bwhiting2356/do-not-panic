@@ -65,10 +65,3 @@ export function KeyboardShortcuts() {
     </div>
   );
 }
-
-/*
-
-                <Button onClick={() => addFromTemplate('start-day')}>Start Day (⌘⇧1)</Button>
-                <Button onClick={() => addFromTemplate('start-week')}>Start Week (⌘⇧2)</Button>
-
-*/

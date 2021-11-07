@@ -6,10 +6,10 @@ import { editProjects } from "../features/todos/todoSlice";
 import { AddIconButton } from "./icon-buttons/AddIconButton";
 import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
 
-interface Props {
+type Props = {
   show: boolean;
   toggleEditProjects: () => void;
-}
+};
 export function EditProjectsModal({ show, toggleEditProjects }: Props) {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>();
