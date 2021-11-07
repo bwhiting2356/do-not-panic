@@ -36,7 +36,7 @@ export function TodoTable({ todos, due }: Props) {
       <Table striped bordered hover className="table" size="sm">
         <thead>
           <tr>
-            <th className="done">{due === Due.Archived ? "Date" : "Done"}</th>
+            <th className="done">{due === Due.Archived ? "Date" : "Do"}</th>
             <th className="name">Name</th>
             <th className="poms">Poms</th>
             <th className="links">Links</th>
