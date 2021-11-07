@@ -9,12 +9,14 @@ type Props = {
   project?: string;
   isEditing: boolean;
   onChangeProject: (newProject: string) => void;
+  onEscape?: () => void;
 };
 
 export function ProjectDropdown({
   project = "No Project",
   isEditing,
   onChangeProject,
+  onEscape,
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
@@ -26,8 +28,14 @@ export function ProjectDropdown({
       </div>
     );
   }
+
+  const handleEscape = (e: any) => {
+    if (e.key === "Escape") {
+      onEscape && onEscape();
+    }
+  };
   return (
-    <Dropdown>
+    <Dropdown onKeyDown={handleEscape}>
       <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
         {project}
       </Dropdown.Toggle>

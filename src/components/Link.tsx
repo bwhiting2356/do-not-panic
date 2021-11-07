@@ -9,12 +9,7 @@ type Props = {
   onSubmit: () => void;
 };
 
-export function Link({
-  url,
-  onEditLink,
-  editing,
-  onSubmit,
-}: Props) {
+export function Link({ url, onEditLink, editing, onSubmit }: Props) {
   const [newUrl, setNewUrl] = useState(url);
 
   const onUrlChange = (e: any) => {
@@ -30,7 +25,7 @@ export function Link({
   if (!editing) {
     return (
       <div className="editable-item" style={{ height: "100%" }}>
-        <div className="content" >
+        <div className="content">
           <a className="url" target="_blank" rel="noreferrer" href={url}>
             {truncateUrl(url)}
           </a>
@@ -41,12 +36,7 @@ export function Link({
 
   return (
     <Form onSubmit={submit}>
-      <Form.Control
-        type="text"
-        value={newUrl}
-        onChange={onUrlChange}
-        onBlur={submit}
-      />
+      <Form.Control type="text" value={newUrl} onChange={onUrlChange} />
     </Form>
   );
 }

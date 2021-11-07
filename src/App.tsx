@@ -13,6 +13,7 @@ import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
 import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
+import AppCtx, { AppContextInterface } from './context/context';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -22,6 +23,12 @@ function App() {
   const [showNewTodo, setShowNewTodo] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+  const [editingTodoId, setEditingTodoId] = useState('');
+
+  const context: AppContextInterface = {
+    editingTodoId,
+    setEditingTodoId
+  }
 
   const onArchiveAllCompletedTodos = () => {
     dispatch(archiveAllCompletedTodos());
@@ -49,6 +56,7 @@ function App() {
 
       if (event.key === 'Escape') {
         setShowNewTodo(false);
+        setEditingTodoId('');
       }
 
       if (event.metaKey && event.key === 'z') {
@@ -66,7 +74,7 @@ function App() {
 
   const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
-    <div>
+    <AppCtx.Provider value={context}>
       <Container>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
@@ -74,10 +82,7 @@ function App() {
               <div style={{ display: 'flex'}}>
                 To Do | &nbsp;<ProjectName />
                 </div>
-                
-                </h1>
-             
-
+              </h1>
           </div>
           <TodalToday />
         </div>
@@ -111,10 +116,9 @@ function App() {
           </Button>
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-
         { showKeyboardShortcuts && <KeyboardShortcuts /> }
       </Container >
-    </div >
+    </AppCtx.Provider >
   );
 }
 

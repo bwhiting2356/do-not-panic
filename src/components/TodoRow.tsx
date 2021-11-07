@@ -8,13 +8,9 @@ import { TextField } from "./TextField";
 import { Due } from "../shared/due.type";
 import { ProjectDropdown } from "./ProjectDropdown";
 import { ActionsDropdown } from "./ActionsDropdown";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectEditingTodoID } from "../features/todos/selectors";
-import {
-  deleteTodo,
-  editTodo,
-  setEditingTodoId,
-} from "../features/todos/todoSlice";
+import { useAppDispatch } from "../app/hooks";
+import { deleteTodo, editTodo } from "../features/todos/todoSlice";
+import { useAppContext } from "../context/context";
 
 type Props = {
   todo: Todo;
@@ -22,7 +18,7 @@ type Props = {
 
 export function TodoRow({ todo }: Props) {
   const dispatch = useAppDispatch();
-  const editingTodoId = useAppSelector(selectEditingTodoID);
+  const { editingTodoId, setEditingTodoId } = useAppContext();
   const { id, done, name, poms, links, project, archivedDate, due } = todo;
 
   const onEditDone = (done: boolean) => {
@@ -109,9 +105,9 @@ export function TodoRow({ todo }: Props) {
 
   const onToggleEditingTodoId = () => {
     if (isEditing) {
-      dispatch(setEditingTodoId(""));
+      setEditingTodoId("");
     } else {
-      dispatch(setEditingTodoId(todo.id));
+      setEditingTodoId(todo.id);
     }
   };
 
@@ -119,6 +115,12 @@ export function TodoRow({ todo }: Props) {
     const { tagName } = e.target;
     if (["BUTTON", "A"].includes(tagName)) return;
     onEditDone(!todo.done);
+  };
+
+  const onProjectDropdownEscape = () => {
+    if (isEditing) {
+      setEditingTodoId("");
+    }
   };
 
   return (
@@ -173,6 +175,7 @@ export function TodoRow({ todo }: Props) {
             isEditing={isEditing}
             project={project}
             onChangeProject={onEditProject}
+            onEscape={onProjectDropdownEscape}
           />
         </div>
       </td>

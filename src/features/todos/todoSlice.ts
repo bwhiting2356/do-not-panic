@@ -11,7 +11,6 @@ interface TodoState {
     projects: string[],
     domainName: string;
     newTodo: Todo;
-    editingTodoID: ID;
 }
 
 export interface TodoStateWithHistory {
@@ -25,7 +24,6 @@ const initialCurrentState: TodoState = {
     projects: defaultProjects,
     domainName: 'work',
     newTodo: generateNewTodo(),
-    editingTodoID: ''
 }
 
 const initialState: TodoStateWithHistory = {
@@ -131,12 +129,6 @@ export const todoSlice = createSlice({
                 { ...state.currentState, projects: action.payload}
             )
         },
-        setEditingTodoId: (state, action: PayloadAction<ID>) => {
-            return addNewStateGoingForward(
-                state,
-                { ...state.currentState, editingTodoID: action.payload}
-            )
-        },
         undo: (state) => {
             const { pastState, currentState, futureState } = state;
             const prevState = pastState[pastState.length - 1];
@@ -169,6 +161,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, setEditingTodoId, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;
