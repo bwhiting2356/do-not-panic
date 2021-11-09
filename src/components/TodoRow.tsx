@@ -134,7 +134,7 @@ export function TodoRow({ todo }: Props) {
           <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>
         ) : (
           <Form.Check
-          className="toggle"
+            className="toggle"
             type="switch"
             checked={!done}
             onChange={(e: any) => onEditDone(!e.target.checked)}

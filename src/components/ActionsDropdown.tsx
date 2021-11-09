@@ -21,7 +21,7 @@ export function ActionsDropdown({
   onArchiveTodo,
   onDeleteTodo,
   onToggleEditing,
-  onEscape
+  onEscape,
 }: Props) {
   const [show, setShow] = useState(false);
   return (
