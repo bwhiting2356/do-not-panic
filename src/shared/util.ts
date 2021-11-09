@@ -1,6 +1,7 @@
 import { ChartData } from "chart.js";
 import { v4 as uuidv4 } from "uuid";
 import { Due } from "./due.type";
+import { ID } from "./id.type";
 import { Todo } from "./todo.interface";
 
 export const padUrlWithHttp = (url: string) => {
@@ -106,3 +107,20 @@ export const computeChartData = (
     ],
   };
 };
+
+interface ArrowSelectionInfo {
+  currentTodoListId?: number;
+  nextTodoUUID?: ID;
+  previousTodoUUID?: ID;
+}
+
+export const getTodoIdInfoForArrowSelection = (todos: Todo[], selectedTodoId: ID): ArrowSelectionInfo => {
+  return todos.reduce((acc, curr, currentIndex) => {
+    if (selectedTodoId === curr.id) {
+      acc.currentTodoListId = currentIndex;
+      acc.previousTodoUUID = todos[currentIndex - 1]?.id;
+      acc.nextTodoUUID = todos[currentIndex + 1]?.id;
+    }
+    return acc
+  }, {} as ArrowSelectionInfo )
+}
