@@ -32,8 +32,8 @@ export function KeyboardShortcuts() {
           </tr>
           <tr>
             <td>Esc</td>
-            <td>While 'New Todo' form is open</td>
-            <td>Close 'New Todo' form</td>
+            <td>Anywhere</td>
+            <td>Close 'New Todo' form if open, clear selected todo row if any</td>
           </tr>
           <tr>
             <td>Tab</td>
@@ -41,7 +41,7 @@ export function KeyboardShortcuts() {
             <td>Move to next field OR add new link</td>
           </tr>
           <tr>
-            <td>Enter</td>
+            <td>↵</td>
             <td>While 'New Todo' field is focused</td>
             <td>Submit current todo to 'today'</td>
           </tr>
@@ -89,6 +89,11 @@ export function KeyboardShortcuts() {
             <td>↑</td>
             <td>While todo row is selected</td>
             <td>Select row above</td>
+          </tr>
+          <tr>
+            <td>↵</td>
+            <td>While todo row is selected</td>
+            <td>Toggle todo done</td>
           </tr>
         </tbody>
       </Table>

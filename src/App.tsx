@@ -90,10 +90,12 @@ function App() {
             todoIdInfo.nextTodoUUID && setSelectedTodoId(todoIdInfo.nextTodoUUID);
           } else if (event.code === 'ArrowUp') {
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
+          } else if (event.code === 'Enter') {
+            dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
+          } else if (event.key === 'Escape') {
+            setSelectedTodoId('');
           }
         }
-        
-
       }
 
     }
