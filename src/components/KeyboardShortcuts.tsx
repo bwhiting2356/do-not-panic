@@ -60,6 +60,36 @@ export function KeyboardShortcuts() {
             <td>Anywhere</td>
             <td>Show/Hide keyboard shortcuts</td>
           </tr>
+          <tr>
+            <td>m</td>
+            <td>While todo row is selected</td>
+            <td>Move to today/later</td>
+          </tr>
+          <tr>
+            <td>a</td>
+            <td>While todo row is selected</td>
+            <td>Archive todo</td>
+          </tr>
+          <tr>
+            <td>d</td>
+            <td>While todo row is selected</td>
+            <td>Delete todo</td>
+          </tr>
+          <tr>
+            <td>e</td>
+            <td>While todo row is selected</td>
+            <td>Edit todo</td>
+          </tr>
+          <tr>
+            <td>↓</td>
+            <td>While todo row is selected</td>
+            <td>Select row below</td>
+          </tr>
+          <tr>
+            <td>↑</td>
+            <td>While todo row is selected</td>
+            <td>Select row above</td>
+          </tr>
         </tbody>
       </Table>
     </div>
