@@ -6,7 +6,7 @@ export interface AppContextInterface {
   selectedTodoId: ID;
   setEditingTodoId: (id: ID) => void;
   setSelectedTodoId: (id: ID) => void;
-  showNewTodo: boolean,
+  showNewTodo: boolean;
   setShowNewTodo: (show: boolean) => void;
 }
 
@@ -16,12 +16,12 @@ const AppCtx = createContext<AppContextInterface>({
   setEditingTodoId: () => {},
   setSelectedTodoId: () => {},
   showNewTodo: false,
-  setShowNewTodo: () => {}
+  setShowNewTodo: () => {},
 });
 
 export const useAppContextState = (): AppContextInterface => {
-  const [editingTodoId, setEditingTodoId] = useState('');
-  const [selectedTodoId, setSelectedTodoId] = useState('');
+  const [editingTodoId, setEditingTodoId] = useState("");
+  const [selectedTodoId, setSelectedTodoId] = useState("");
   const [showNewTodo, setShowNewTodo] = useState(false);
 
   return {
@@ -30,9 +30,9 @@ export const useAppContextState = (): AppContextInterface => {
     selectedTodoId,
     setSelectedTodoId,
     showNewTodo,
-    setShowNewTodo
-  }
-}
+    setShowNewTodo,
+  };
+};
 
 export const useAppContext = () => useContext(AppCtx);
 export default AppCtx;

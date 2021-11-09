@@ -33,7 +33,9 @@ export function KeyboardShortcuts() {
           <tr>
             <td>Esc</td>
             <td>Anywhere</td>
-            <td>Close 'New Todo' form if open, clear selected todo row if any</td>
+            <td>
+              Close 'New Todo' form if open, clear selected todo row if any
+            </td>
           </tr>
           <tr>
             <td>Tab</td>

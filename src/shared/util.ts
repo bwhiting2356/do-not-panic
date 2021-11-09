@@ -114,13 +114,16 @@ interface ArrowSelectionInfo {
   previousTodoUUID?: ID;
 }
 
-export const getTodoIdInfoForArrowSelection = (todos: Todo[], selectedTodoId: ID): ArrowSelectionInfo => {
+export const getTodoIdInfoForArrowSelection = (
+  todos: Todo[],
+  selectedTodoId: ID
+): ArrowSelectionInfo => {
   return todos.reduce((acc, curr, currentIndex) => {
     if (selectedTodoId === curr.id) {
       acc.currentTodoListId = currentIndex;
       acc.previousTodoUUID = todos[currentIndex - 1]?.id;
       acc.nextTodoUUID = todos[currentIndex + 1]?.id;
     }
-    return acc
-  }, {} as ArrowSelectionInfo )
-}
+    return acc;
+  }, {} as ArrowSelectionInfo);
+};

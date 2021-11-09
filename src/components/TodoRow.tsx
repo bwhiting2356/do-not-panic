@@ -18,9 +18,15 @@ type Props = {
 
 export function TodoRow({ todo }: Props) {
   const dispatch = useAppDispatch();
-  const { editingTodoId, setEditingTodoId, selectedTodoId, setSelectedTodoId, setShowNewTodo } = useAppContext();
+  const {
+    editingTodoId,
+    setEditingTodoId,
+    selectedTodoId,
+    setSelectedTodoId,
+    setShowNewTodo,
+  } = useAppContext();
   const { id, done, name, poms, links, project, archivedDate, due } = todo;
-  const isSelected = id === selectedTodoId; 
+  const isSelected = id === selectedTodoId;
 
   const onEditDone = (done: boolean) => {
     dispatch(editTodo({ id, newTodo: { ...todo, done } }));
@@ -103,7 +109,6 @@ export function TodoRow({ todo }: Props) {
   };
 
   const isEditing = editingTodoId === id;
-  
 
   const onToggleEditingTodoId = () => {
     if (isEditing) {
@@ -130,7 +135,7 @@ export function TodoRow({ todo }: Props) {
   return (
     <tr
       key={id}
-      className={cn({ complete: done, 'table-secondary': isSelected })}
+      className={cn({ complete: done, "table-secondary": isSelected })}
       onClick={onRowClick}
     >
       <td className="done vertical-align">
