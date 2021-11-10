@@ -93,6 +93,7 @@ function App() {
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
           } else if (event.code === 'Space') {
             dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
+            event.preventDefault();
           } else if (event.key === 'Escape') {
             setSelectedTodoId('');
           } else if (event.key === 'Enter') {
