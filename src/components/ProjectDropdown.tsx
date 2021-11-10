@@ -34,8 +34,14 @@ export function ProjectDropdown({
       onEscape && onEscape();
     }
   };
+
+  const onItemKeyDown = (e: any, projectOption: string) => {
+    if (e.code === 'Tab') {
+      onChangeProject(projectOption);
+    }
+  }
   return (
-    <Dropdown onKeyDown={handleEscape}>
+    <Dropdown onKeyDown={handleEscape} onSelect={() => {}}>
       <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
         {project}
       </Dropdown.Toggle>
@@ -43,7 +49,9 @@ export function ProjectDropdown({
       <Dropdown.Menu>
         {projectOptions.map((projectOption) => (
           <Dropdown.Item
+            tabIndex={-1}
             key={projectOption}
+            onKeyDown={e => onItemKeyDown(e, projectOption)}
             onClick={() => onChangeProject(projectOption)}
           >
             {projectOption}
@@ -51,6 +59,7 @@ export function ProjectDropdown({
         ))}
         <Dropdown.Divider />
         <Dropdown.Item
+          tabIndex={-1}
           style={{ display: "flex", alignItems: "center" }}
           onClick={() => setShowEditProjects(true)}
         >
