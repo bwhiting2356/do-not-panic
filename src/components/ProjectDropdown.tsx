@@ -9,14 +9,14 @@ type Props = {
   project?: string;
   isEditing: boolean;
   onChangeProject: (newProject: string) => void;
-  onEscape?: () => void;
+  onSubmit: () => void;
 };
 
 export function ProjectDropdown({
   project = "No Project",
   isEditing,
   onChangeProject,
-  onEscape,
+  onSubmit,
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
@@ -31,7 +31,17 @@ export function ProjectDropdown({
 
   const handleEscape = (e: any) => {
     if (e.key === "Escape") {
-      onEscape && onEscape();
+      onSubmit();
+    }
+  };
+
+  const onItemKeyDown = (e: any, projectOption: string) => {
+    if (e.code === "Tab") {
+      onChangeProject(projectOption);
+    } else if (e.code === "Enter") {
+      onChangeProject(projectOption);
+      onSubmit();
+      e.stopPropagation();
     }
   };
   return (
@@ -43,7 +53,9 @@ export function ProjectDropdown({
       <Dropdown.Menu>
         {projectOptions.map((projectOption) => (
           <Dropdown.Item
+            tabIndex={-1}
             key={projectOption}
+            onKeyDown={(e) => onItemKeyDown(e, projectOption)}
             onClick={() => onChangeProject(projectOption)}
           >
             {projectOption}
@@ -51,6 +63,7 @@ export function ProjectDropdown({
         ))}
         <Dropdown.Divider />
         <Dropdown.Item
+          tabIndex={-1}
           style={{ display: "flex", alignItems: "center" }}
           onClick={() => setShowEditProjects(true)}
         >

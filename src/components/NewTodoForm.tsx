@@ -154,8 +154,9 @@ export function NewTodoForm() {
             </th>
             <th className="name">Name</th>
             <th className="poms">Poms</th>
-            <th className="links">Links</th>
+
             <th className="project">Project</th>
+            <th className="links">Links</th>
             <th className="actions" style={{ visibility: "hidden" }}>
               Actions
             </th>
@@ -180,6 +181,15 @@ export function NewTodoForm() {
                 value={newTodo.poms}
                 onKeyDown={listenForSubmit}
                 onChange={(e) => setPoms(e.target.value)}
+              />
+            </td>
+            <td className="project">
+              <ProjectDropdown
+                key={newTodo.id}
+                isEditing={true}
+                project={newTodo.project}
+                onChangeProject={(newProject) => setProject(newProject)}
+                onSubmit={() => onSubmit(Due.Today)}
               />
             </td>
             <td
@@ -210,13 +220,6 @@ export function NewTodoForm() {
               <div style={{ alignSelf: "flex-end" }}>
                 <AddIconButton tabIndex={-1} onClick={addLink} />
               </div>
-            </td>
-            <td className="project">
-              <ProjectDropdown
-                isEditing={true}
-                project={newTodo.project}
-                onChangeProject={(newProject) => setProject(newProject)}
-              />
             </td>
             <td style={{ textAlign: "center" }}>
               <ButtonGroup>

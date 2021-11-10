@@ -73,9 +73,9 @@ function App() {
         }
       }
 
-      if (!showNewTodo && Boolean(selectedTodoId)) {
-        if (!Boolean(editingTodoId)) {
-          const allTodosOrdered = [...todayTodos, ...laterTodos];
+      if (!showNewTodo && !Boolean(editingTodoId)) {
+        const allTodosOrdered = [...todayTodos, ...laterTodos];
+        if (Boolean(selectedTodoId)) {
           const todoIdInfo = getTodoIdInfoForArrowSelection(allTodosOrdered, selectedTodoId);
           const todo = allTodosOrdered.find(({ id }) => id === selectedTodoId) as Todo;
           if (event.key === 'm') {
@@ -91,14 +91,20 @@ function App() {
             todoIdInfo.nextTodoUUID && setSelectedTodoId(todoIdInfo.nextTodoUUID);
           } else if (event.code === 'ArrowUp') {
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
-          } else if (event.code === 'Enter') {
+          } else if (event.code === 'Space') {
             dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
           } else if (event.key === 'Escape') {
             setSelectedTodoId('');
+          } else if (event.key === 'Enter') {
+            if (todo.links[0]?.url) {
+              window.open(todo.links[0].url, '_blank', 'noopener,noreferrer')
+            }
           }
+        } else if (event.code === 'ArrowDown') {
+          const firstItem = allTodosOrdered[0];
+          setSelectedTodoId(firstItem?.id);
         }
       }
-
     }
     window.addEventListener('keydown', listenForKeyboardShortcuts);
     return () => window.removeEventListener('keydown', listenForKeyboardShortcuts);

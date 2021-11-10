@@ -126,7 +126,7 @@ export function TodoRow({ todo }: Props) {
     setShowNewTodo(false);
   };
 
-  const onProjectDropdownEscape = () => {
+  const onProjectDropdownSubmit = () => {
     if (isEditing) {
       setEditingTodoId("");
     }
@@ -166,6 +166,16 @@ export function TodoRow({ todo }: Props) {
           onSubmit={onToggleEditingTodoId}
         />
       </td>
+      <td className="project vertical-align">
+        <div>
+          <ProjectDropdown
+            isEditing={isEditing}
+            project={project}
+            onChangeProject={onEditProject}
+            onSubmit={onProjectDropdownSubmit}
+          />
+        </div>
+      </td>
       <td className="links vertical-align">
         <div>
           {links.map(({ id, url }) => (
@@ -179,16 +189,6 @@ export function TodoRow({ todo }: Props) {
           ))}
         </div>
       </td>
-      <td className="project vertical-align">
-        <div>
-          <ProjectDropdown
-            isEditing={isEditing}
-            project={project}
-            onChangeProject={onEditProject}
-            onEscape={onProjectDropdownEscape}
-          />
-        </div>
-      </td>
       <td className="actions vertical-align">
         <ActionsDropdown
           isEditing={isEditing}
@@ -197,7 +197,7 @@ export function TodoRow({ todo }: Props) {
           onDeleteTodo={onDeleteTodo}
           onArchiveTodo={onArchiveTodo}
           onToggleEditing={onToggleEditingTodoId}
-          onEscape={onProjectDropdownEscape}
+          onEscape={onProjectDropdownSubmit}
         />
       </td>
     </tr>
