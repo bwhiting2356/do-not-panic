@@ -20,7 +20,6 @@ export function TodalToday() {
       style={{ textAlign: "right", width: "300px", marginTop: "10px" }}
       striped
       bordered
-      hover
       size="sm"
     >
       <thead>
