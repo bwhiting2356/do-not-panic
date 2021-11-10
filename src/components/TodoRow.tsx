@@ -127,7 +127,6 @@ export function TodoRow({ todo }: Props) {
   };
 
   const onProjectDropdownSubmit = () => {
-    console.log("on project dropdown submit");
     if (isEditing) {
       setEditingTodoId("");
     }

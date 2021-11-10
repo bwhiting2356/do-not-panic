@@ -40,7 +40,6 @@ export function ProjectDropdown({
       onChangeProject(projectOption);
     } else if (e.code === "Enter") {
       onChangeProject(projectOption);
-      console.log("trying to submit");
       onSubmit();
       e.stopPropagation();
     }
