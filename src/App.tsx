@@ -14,6 +14,7 @@ import { Due } from './shared/due.type';
 import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
 import AppCtx, { AppContextInterface } from './context/context';
+import { PomodoroTimer } from './components/PomodoroTimer';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -84,6 +85,7 @@ function App() {
                 </div>
               </h1>
           </div>
+          <PomodoroTimer />
           <TodalToday />
         </div>
         {showNewTodo && <NewTodoForm />}
