@@ -43,3 +43,14 @@
 .vertical-align {
   vertical-align: middle;
 }
+
+.wide-modal {
+  width: 1000px;
+  max-width: 80% !important;
+}
+
+.wide-modal .modal-dialog {
+  width: 100%;
+  max-width: none !important;
+  margin: 0;
+}

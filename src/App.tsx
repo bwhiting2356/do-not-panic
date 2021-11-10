@@ -7,7 +7,7 @@ import { undo, redo, archiveAllCompletedTodos, resortTodos, addTodoFromTemplate,
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
-import { KeyboardShortcuts } from './components/KeyboardShortcuts';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
@@ -164,7 +164,7 @@ function App() {
           </Button>
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-        { showKeyboardShortcuts && <KeyboardShortcuts /> }
+        <KeyboardShortcutsModal show={showKeyboardShortcuts} handleClose={() => setShowKeyboardShortcuts(false)}/>
       </Container >
     </AppCtx.Provider >
   );
