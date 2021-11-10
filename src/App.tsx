@@ -16,6 +16,7 @@ import { ProjectName } from './components/ProjectName';
 import AppCtx, { useAppContextState } from './context/context';
 import { Todo } from './shared/todo.interface';
 import { getTodoIdInfoForArrowSelection } from './shared/util';
+import { PomodoroTimer } from './components/PomodoroTimer';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -115,6 +116,7 @@ function App() {
                 </div>
               </h1>
           </div>
+          <PomodoroTimer />
           <TodalToday />
         </div>
         {showNewTodo && <NewTodoForm />}
