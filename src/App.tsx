@@ -88,8 +88,10 @@ function App() {
             setEditingTodoId(todo.id);
             event.preventDefault();
           } else if (event.code === 'ArrowDown') {
+            event.preventDefault();
             todoIdInfo.nextTodoUUID && setSelectedTodoId(todoIdInfo.nextTodoUUID);
           } else if (event.code === 'ArrowUp') {
+            event.preventDefault();
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
           } else if (event.code === 'Space') {
             dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
