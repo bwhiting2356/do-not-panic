@@ -95,6 +95,11 @@ export function KeyboardShortcuts() {
           <tr>
             <td>↵</td>
             <td>While todo row is selected</td>
+            <td>Open first link in new tab</td>
+          </tr>
+          <tr>
+            <td>Space</td>
+            <td>While todo row is selected</td>
             <td>Toggle todo done</td>
           </tr>
         </tbody>
