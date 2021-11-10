@@ -36,12 +36,14 @@ export function ProjectDropdown({
   };
 
   const onItemKeyDown = (e: any, projectOption: string) => {
-    if (e.code === 'Tab') {
+    if (e.code === 'Tab' || e.code === 'Enter') {
       onChangeProject(projectOption);
-    }
+      onEscape && onEscape();
+      e.stopPropagation();
+    } 
   }
   return (
-    <Dropdown onKeyDown={handleEscape} onSelect={() => {}}>
+    <Dropdown onKeyDown={handleEscape}>
       <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
         {project}
       </Dropdown.Toggle>
