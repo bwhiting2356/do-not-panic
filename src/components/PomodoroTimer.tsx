@@ -4,13 +4,13 @@ import { Pause, Play, Stop } from "react-bootstrap-icons";
 import { POMODORO_WORK_TIME, SECONDS_PER_MINUTE } from "../shared/constants";
 import { padZeros } from "../shared/util";
 
-const defaultPomodoroSeconds = 10 // POMODORO_WORK_TIME * SECONDS_PER_MINUTE;
+const defaultPomodoroSeconds = POMODORO_WORK_TIME * SECONDS_PER_MINUTE;
 
 enum TimerState {
   Playing,
   Paused,
   Stopped,
-  Alarm
+  Alarm,
 }
 
 export function PomodoroTimer() {
@@ -21,29 +21,24 @@ export function PomodoroTimer() {
   const minutesDisplay = padZeros(Math.floor(seconds / 60));
   const secondsDisplay = padZeros(seconds % 60);
 
-  const stopSound = () => {
-    if (audioRef?.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-    }
-  }
-
   const playSound = () => audioRef?.current?.play();
 
-  useEffect(() => {
-    return () => window.clearInterval(timerInterval);
-  }, [timerInterval]);
+  const stopSound = () => {
+    if (audioRef?.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
 
   useEffect(() => {
-      if (seconds === 0) {
-          setTimerState(TimerState.Alarm);
-          playSound();
-          window.clearInterval(timerInterval);
-      }
-  }, [seconds, timerInterval])
+    if (seconds === 0) {
+      setTimerState(TimerState.Alarm);
+      playSound();
+      window.clearInterval(timerInterval);
+    }
+  }, [seconds, timerInterval]);
 
   const onPlay = () => {
-    
     setTimerState(TimerState.Playing);
     setTimerInterval(
       window.setInterval(() => {
@@ -54,22 +49,38 @@ export function PomodoroTimer() {
   const onPause = useCallback(() => {
     setTimerState(TimerState.Paused);
     window.clearInterval(timerInterval);
-    setTimerInterval(0);
   }, [timerInterval]);
 
   const onStop = useCallback(() => {
     stopSound();
     setTimerState(TimerState.Stopped);
     window.clearInterval(timerInterval);
-    setTimerInterval(0);
     setSeconds(defaultPomodoroSeconds);
   }, [timerInterval]);
 
+  useEffect(() => {
+    const listenForStopAlarm = (event: KeyboardEvent) => {
+      if (timerState === TimerState.Alarm) {
+        onStop();
+      }
+    };
+    window.addEventListener("keydown", listenForStopAlarm);
+    return () => window.removeEventListener("keydown", listenForStopAlarm);
+  });
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
+    <div
+      style={{
+        display: "flex",
+        margin: '0 200px',
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div>
         <h2>
-          <Badge bg="secondary">
+          <Badge bg={timerState === TimerState.Playing || timerState === TimerState.Alarm ? "primary" : "secondary"}>
             {minutesDisplay}:{secondsDisplay}
           </Badge>
         </h2>
@@ -79,14 +90,18 @@ export function PomodoroTimer() {
         <Button
           variant="outline-secondary"
           onClick={onPlay}
-          disabled={timerState === TimerState.Playing || timerState === TimerState.Alarm}
+          disabled={
+            timerState === TimerState.Playing || timerState === TimerState.Alarm
+          }
         >
           <Play />
         </Button>
         <Button
           variant="outline-secondary"
           onClick={onPause}
-          disabled={timerState === TimerState.Paused || timerState === TimerState.Alarm}
+          disabled={
+            timerState === TimerState.Paused || timerState === TimerState.Alarm
+          }
         >
           <Pause />
         </Button>
@@ -99,8 +114,8 @@ export function PomodoroTimer() {
         </Button>
       </ButtonGroup>
       <audio className="audio-element" ref={audioRef} loop>
-          <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
-        </audio>
+        <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
+      </audio>
     </div>
   );
 }
