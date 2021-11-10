@@ -7,7 +7,7 @@ import { undo, redo, archiveAllCompletedTodos, resortTodos, addTodoFromTemplate,
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
-import { KeyboardShortcuts } from './components/KeyboardShortcuts';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
@@ -74,6 +74,12 @@ function App() {
       }
 
       if (!showNewTodo && !Boolean(editingTodoId)) {
+        if (event.key === 's') {
+          onSortTodos();
+        }
+        if (event.key === 'v') {
+          onArchiveAllCompletedTodos();
+        }
         const allTodosOrdered = [...todayTodos, ...laterTodos];
         if (Boolean(selectedTodoId)) {
           const todoIdInfo = getTodoIdInfoForArrowSelection(allTodosOrdered, selectedTodoId);
@@ -88,8 +94,10 @@ function App() {
             setEditingTodoId(todo.id);
             event.preventDefault();
           } else if (event.code === 'ArrowDown') {
+            event.preventDefault();
             todoIdInfo.nextTodoUUID && setSelectedTodoId(todoIdInfo.nextTodoUUID);
           } else if (event.code === 'ArrowUp') {
+            event.preventDefault();
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
           } else if (event.code === 'Space') {
             dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
@@ -156,7 +164,7 @@ function App() {
           </Button>
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-        { showKeyboardShortcuts && <KeyboardShortcuts /> }
+        <KeyboardShortcutsModal show={showKeyboardShortcuts} handleClose={() => setShowKeyboardShortcuts(false)}/>
       </Container >
     </AppCtx.Provider >
   );
