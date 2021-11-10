@@ -74,6 +74,12 @@ function App() {
       }
 
       if (!showNewTodo && !Boolean(editingTodoId)) {
+        if (event.key === 's') {
+          onSortTodos();
+        }
+        if (event.key === 'v') {
+          onArchiveAllCompletedTodos();
+        }
         const allTodosOrdered = [...todayTodos, ...laterTodos];
         if (Boolean(selectedTodoId)) {
           const todoIdInfo = getTodoIdInfoForArrowSelection(allTodosOrdered, selectedTodoId);

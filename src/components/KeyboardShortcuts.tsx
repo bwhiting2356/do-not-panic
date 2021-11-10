@@ -102,6 +102,16 @@ export function KeyboardShortcuts() {
             <td>While todo row is selected</td>
             <td>Toggle todo done</td>
           </tr>
+          <tr>
+            <td>s</td>
+            <td>While no row is editing and new todo form is closed</td>
+            <td>Sort todos</td>
+          </tr>
+          <tr>
+            <td>v</td>
+            <td>While no row is editing and new todo form is closed</td>
+            <td>Archive all completed todos</td>
+          </tr>
         </tbody>
       </Table>
     </div>
