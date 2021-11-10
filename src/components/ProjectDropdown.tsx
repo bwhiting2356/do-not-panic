@@ -9,14 +9,14 @@ type Props = {
   project?: string;
   isEditing: boolean;
   onChangeProject: (newProject: string) => void;
-  onEscape?: () => void;
+  onSubmit: () => void;
 };
 
 export function ProjectDropdown({
   project = "No Project",
   isEditing,
   onChangeProject,
-  onEscape,
+  onSubmit,
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
@@ -31,14 +31,17 @@ export function ProjectDropdown({
 
   const handleEscape = (e: any) => {
     if (e.key === "Escape") {
-      onEscape && onEscape();
+      onSubmit();
     }
   };
 
   const onItemKeyDown = (e: any, projectOption: string) => {
-    if (e.code === "Tab" || e.code === "Enter") {
+    if (e.code === "Tab") {
       onChangeProject(projectOption);
-      onEscape && onEscape();
+    } else if (e.code === "Enter") {
+      onChangeProject(projectOption);
+      console.log("trying to submit");
+      onSubmit();
       e.stopPropagation();
     }
   };

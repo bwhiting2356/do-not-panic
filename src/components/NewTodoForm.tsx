@@ -185,9 +185,11 @@ export function NewTodoForm() {
             </td>
             <td className="project">
               <ProjectDropdown
+                key={newTodo.id}
                 isEditing={true}
                 project={newTodo.project}
                 onChangeProject={(newProject) => setProject(newProject)}
+                onSubmit={() => onSubmit(Due.Today)}
               />
             </td>
             <td

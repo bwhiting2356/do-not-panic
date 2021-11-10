@@ -126,7 +126,8 @@ export function TodoRow({ todo }: Props) {
     setShowNewTodo(false);
   };
 
-  const onProjectDropdownEscape = () => {
+  const onProjectDropdownSubmit = () => {
+    console.log("on project dropdown submit");
     if (isEditing) {
       setEditingTodoId("");
     }
@@ -172,7 +173,7 @@ export function TodoRow({ todo }: Props) {
             isEditing={isEditing}
             project={project}
             onChangeProject={onEditProject}
-            onEscape={onProjectDropdownEscape}
+            onSubmit={onProjectDropdownSubmit}
           />
         </div>
       </td>
@@ -197,7 +198,7 @@ export function TodoRow({ todo }: Props) {
           onDeleteTodo={onDeleteTodo}
           onArchiveTodo={onArchiveTodo}
           onToggleEditing={onToggleEditingTodoId}
-          onEscape={onProjectDropdownEscape}
+          onEscape={onProjectDropdownSubmit}
         />
       </td>
     </tr>
