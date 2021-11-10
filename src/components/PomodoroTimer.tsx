@@ -72,7 +72,7 @@ export function PomodoroTimer() {
     <div
       style={{
         display: "flex",
-        margin: '0 200px',
+        margin: "0 200px",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
@@ -80,7 +80,14 @@ export function PomodoroTimer() {
     >
       <div>
         <h2>
-          <Badge bg={timerState === TimerState.Playing || timerState === TimerState.Alarm ? "primary" : "secondary"}>
+          <Badge
+            bg={
+              timerState === TimerState.Playing ||
+              timerState === TimerState.Alarm
+                ? "primary"
+                : "secondary"
+            }
+          >
             {minutesDisplay}:{secondsDisplay}
           </Badge>
         </h2>

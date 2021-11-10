@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Pen } from "react-bootstrap-icons";
 import { useAppSelector } from "../app/hooks";
@@ -18,8 +18,11 @@ export function ProjectDropdown({
   onChangeProject,
   onEscape,
 }: Props) {
+  const [showDropdown, setShowDropdown] = useState(false);
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
+
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   if (!isEditing) {
     return (

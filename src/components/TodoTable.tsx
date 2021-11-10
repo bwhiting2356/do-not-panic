@@ -39,7 +39,6 @@ export function TodoTable({ todos, due }: Props) {
             <th className="done">{due === Due.Archived ? "Date" : "Do"}</th>
             <th className="name">Name</th>
             <th className="poms">Poms</th>
-            <th className="links">Links</th>
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
@@ -49,6 +48,7 @@ export function TodoTable({ todos, due }: Props) {
               ) : null}
               {projectAnalyticsModal}
             </th>
+            <th className="links">Links</th>
             <th className="actions">Actions</th>
           </tr>
         </thead>

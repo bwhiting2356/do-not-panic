@@ -73,9 +73,9 @@ function App() {
         }
       }
 
-      if (!showNewTodo && Boolean(selectedTodoId)) {
-        if (!Boolean(editingTodoId)) {
-          const allTodosOrdered = [...todayTodos, ...laterTodos];
+      if (!showNewTodo && !Boolean(editingTodoId)) {
+        const allTodosOrdered = [...todayTodos, ...laterTodos];
+        if (Boolean(selectedTodoId)) {
           const todoIdInfo = getTodoIdInfoForArrowSelection(allTodosOrdered, selectedTodoId);
           const todo = allTodosOrdered.find(({ id }) => id === selectedTodoId) as Todo;
           if (event.key === 'm') {
@@ -96,9 +96,11 @@ function App() {
           } else if (event.key === 'Escape') {
             setSelectedTodoId('');
           }
+        } else if (event.code === 'ArrowDown') {
+          const firstItem = allTodosOrdered[0];
+          setSelectedTodoId(firstItem?.id);
         }
       }
-
     }
     window.addEventListener('keydown', listenForKeyboardShortcuts);
     return () => window.removeEventListener('keydown', listenForKeyboardShortcuts);

@@ -166,6 +166,16 @@ export function TodoRow({ todo }: Props) {
           onSubmit={onToggleEditingTodoId}
         />
       </td>
+      <td className="project vertical-align">
+        <div>
+          <ProjectDropdown
+            isEditing={isEditing}
+            project={project}
+            onChangeProject={onEditProject}
+            onEscape={onProjectDropdownEscape}
+          />
+        </div>
+      </td>
       <td className="links vertical-align">
         <div>
           {links.map(({ id, url }) => (
@@ -177,16 +187,6 @@ export function TodoRow({ todo }: Props) {
               onSubmit={onToggleEditingTodoId}
             />
           ))}
-        </div>
-      </td>
-      <td className="project vertical-align">
-        <div>
-          <ProjectDropdown
-            isEditing={isEditing}
-            project={project}
-            onChangeProject={onEditProject}
-            onEscape={onProjectDropdownEscape}
-          />
         </div>
       </td>
       <td className="actions vertical-align">
