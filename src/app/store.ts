@@ -1,4 +1,5 @@
 import { ThunkAction, Action, createStore } from "@reduxjs/toolkit";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
 import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
@@ -30,7 +31,7 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, todosReducer);
 
-export const store = createStore(persistedReducer);
+export const store = createStore(persistedReducer, composeWithDevTools());
 
 export const persistor = persistStore(store);
 
