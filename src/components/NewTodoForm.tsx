@@ -154,7 +154,7 @@ export function NewTodoForm() {
             </th>
             <th className="name">Name</th>
             <th className="poms">Poms</th>
-            
+
             <th className="project">Project</th>
             <th className="links">Links</th>
             <th className="actions" style={{ visibility: "hidden" }}>
