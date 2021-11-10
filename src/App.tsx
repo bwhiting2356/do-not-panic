@@ -91,10 +91,14 @@ function App() {
             todoIdInfo.nextTodoUUID && setSelectedTodoId(todoIdInfo.nextTodoUUID);
           } else if (event.code === 'ArrowUp') {
             todoIdInfo.previousTodoUUID && setSelectedTodoId(todoIdInfo.previousTodoUUID);
-          } else if (event.code === 'Enter') {
+          } else if (event.code === 'Space') {
             dispatch(editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done }}))
           } else if (event.key === 'Escape') {
             setSelectedTodoId('');
+          } else if (event.key === 'Enter') {
+            if (todo.links[0]?.url) {
+              window.open(todo.links[0].url, '_blank', 'noopener,noreferrer')
+            }
           }
         } else if (event.code === 'ArrowDown') {
           const firstItem = allTodosOrdered[0];
