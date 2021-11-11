@@ -45,11 +45,14 @@ export function PomodoroTimer() {
 
       setTimeout(() => {
         setState((prev) => ({
-          targetMinutes: prev.targetMinutes === POMODORO_WORK_TIME ? POMODORO_BREAK_TIME : POMODORO_WORK_TIME,
+          targetMinutes:
+            prev.targetMinutes === POMODORO_WORK_TIME
+              ? POMODORO_BREAK_TIME
+              : POMODORO_WORK_TIME,
           timerStatus: TimerStatus.Stopped,
           segments: [],
         }));
-      }, 2000)
+      }, 2000);
     }
     setSecondsRemaining(newSecondsRemaining);
   }, [segments, setState, setSecondsRemaining, targetMinutes]);
@@ -143,7 +146,7 @@ export function PomodoroTimer() {
         </h2>
       </div>
       <div style={{ display: "flex" }}>
-        <ButtonGroup style={{ marginRight: '5px'}}>
+        <ButtonGroup style={{ marginRight: "5px" }}>
           <Button variant="outline-secondary" onClick={onSetTargetToWork}>
             {POMODORO_WORK_TIME}
           </Button>

@@ -54,3 +54,7 @@
   max-width: none !important;
   margin: 0;
 }
+
+.toast-body {
+  background-color: white;
+}

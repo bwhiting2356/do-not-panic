@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, ButtonGroup, Container } from 'react-bootstrap';
+import { Button, ButtonGroup, Container, Toast, ToastContainer } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { undo, redo, archiveAllCompletedTodos, resortTodos, addTodoFromTemplate, editTodo, deleteTodo } from './features/todos/todoSlice';
@@ -13,10 +13,11 @@ import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
 import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
-import AppCtx, { useAppContextState } from './context/context';
+import AppCtx, { useAppContextState, composeReduxActionsWithContextToast } from './context/context';
 import { Todo } from './shared/todo.interface';
 import { getTodoIdInfoForArrowSelection } from './shared/util';
 import { PomodoroTimer } from './components/PomodoroTimer';
+import { EventToastContainer } from './components/EventToastContainer';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -32,14 +33,10 @@ function App() {
     selectedTodoId,
     setSelectedTodoId,
     showNewTodo,
-    setShowNewTodo
+    setShowNewTodo,
+    addToast
   } = context;
-
-  const onArchiveAllCompletedTodos = () => {
-    dispatch(archiveAllCompletedTodos());
-  }
-
-  const onSortTodos = () => dispatch(resortTodos());
+  const { undoWithToast, redoWithToast, addTodoFromTemplateWithToast, sortTodosWithToast, onArchiveAllCompletedTodosWithToast, deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } = composeReduxActionsWithContextToast(dispatch, addToast)
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
@@ -53,11 +50,11 @@ function App() {
       }
 
       if (event.metaKey && event.shiftKey && event.key === '1') {
-        dispatch(addTodoFromTemplate('start-day'))
+        addTodoFromTemplateWithToast('start-day')
       }
 
       if (event.metaKey && event.shiftKey && event.key === '2') {
-        dispatch(addTodoFromTemplate('start-week'))
+        addTodoFromTemplateWithToast('start-week')
       }
 
       if (event.key === 'Escape') {
@@ -67,29 +64,29 @@ function App() {
 
       if (event.metaKey && event.key === 'z') {
         if (event.shiftKey) {
-          dispatch(redo());
+          redoWithToast()
         } else {
-          dispatch(undo());
+          undoWithToast()
         }
       }
 
       if (!showNewTodo && !Boolean(editingTodoId)) {
         if (event.key === 's') {
-          onSortTodos();
+          sortTodosWithToast();
         }
         if (event.key === 'v') {
-          onArchiveAllCompletedTodos();
+          onArchiveAllCompletedTodosWithToast();
         }
         const allTodosOrdered = [...todayTodos, ...laterTodos];
         if (Boolean(selectedTodoId)) {
           const todoIdInfo = getTodoIdInfoForArrowSelection(allTodosOrdered, selectedTodoId);
           const todo = allTodosOrdered.find(({ id }) => id === selectedTodoId) as Todo;
           if (event.key === 'm') {
-            dispatch(editTodo({ id: todo.id, newTodo: { ...todo, due: todo?.due === Due.Later ? Due.Today : Due.Later }}))
+            moveTodoWithToast(todo, todo?.due === Due.Later ? Due.Today : Due.Later);
           } else if (event.key === 'a') {
-            dispatch(editTodo({ id: todo.id, newTodo: { ...todo, due: Due.Archived, archivedDate: new Date() }}))
+            archiveTodoWithToast(todo);
           } else if (event.key === 'd') {
-            dispatch(deleteTodo({ id: todo.id }))
+            deleteTodoWithToast(todo);
           } else if (event.key === 'e') {
             setEditingTodoId(todo.id);
             event.preventDefault();
@@ -123,6 +120,7 @@ function App() {
   return (
     <AppCtx.Provider value={context}>
       <Container>
+      <EventToastContainer />
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
             <h1>
@@ -144,11 +142,11 @@ function App() {
 
           </div>
           <ButtonGroup>
-            <Button onClick={onSortTodos} variant="outline-secondary">
+            <Button onClick={sortTodosWithToast} variant="outline-secondary">
               <span style={{ marginRight: '10px' }}><Filter /></span>
               Sort Todos
             </Button>
-            <Button variant="outline-primary" onClick={onArchiveAllCompletedTodos}>
+            <Button variant="outline-primary" onClick={onArchiveAllCompletedTodosWithToast}>
               <span style={{ marginRight: '10px' }}><ArchiveFill /></span>
               Archive all completed todos
             </Button>
@@ -171,3 +169,4 @@ function App() {
 }
 
 export default App;
+
