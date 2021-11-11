@@ -35,14 +35,6 @@ export function TodoRow({ todo }: Props) {
   };
 
   const onEditDue = (due: Due) => moveTodoWithToast(todo, due)
-  // const onEditDue = (due: Due) => {
-  //   dispatch(
-  //     editTodo({
-  //       id,
-  //       newTodo: { ...todo, due },
-  //     })
-  //   );
-  // };
 
   const onEditLink = (linkId: ID, newUrl: string) => {
     dispatch(
