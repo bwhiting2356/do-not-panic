@@ -1,127 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
 import { POMODORO_BREAK_TIME, POMODORO_WORK_TIME } from "../shared/constants";
-import {
-  computeSecondsRemaining,
-  TimerSegment,
-  TimerStatus,
-  usePomodoroState,
-} from "../shared/pomodoro-logic";
-import { padZeros } from "../shared/util";
-
+import { TimerStatus, usePomodoroLogic } from "../shared/pomodoroLogic";
 export function PomodoroTimer() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [{ timerStatus, segments, targetMinutes }, setState] =
-    usePomodoroState();
-  const [interval, setInterval] = useState<number>(0);
-  const [secondsRemaining, setSecondsRemaining] = useState(
-    computeSecondsRemaining(segments, targetMinutes)
-  );
-  const minutesDisplay = padZeros(Math.floor(secondsRemaining / 60));
-  const secondsDisplay = padZeros(secondsRemaining % 60);
-
-  const playSound = () => audioRef?.current?.play();
-
-  const stopSound = () => {
-    if (audioRef?.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-  };
-
-  const recomputeTimeRemaining = useCallback(() => {
-    const newSecondsRemaining = computeSecondsRemaining(
-      segments,
-      targetMinutes
-    );
-    if (newSecondsRemaining === 0 && timerStatus !== TimerStatus.Alarm) {
-      setState((prev) => ({
-        ...prev,
-        timerStatus: TimerStatus.Alarm,
-      }));
-      playSound();
-
-      setTimeout(() => {
-        setState((prev) => {
-          const newTarget =
-            prev.targetMinutes === POMODORO_WORK_TIME
-              ? POMODORO_BREAK_TIME
-              : POMODORO_WORK_TIME;
-          return {
-            targetMinutes: newTarget,
-            timerStatus: TimerStatus.Stopped,
-            segments: [],
-          };
-        });
-      }, 2000);
-    }
-    setSecondsRemaining(newSecondsRemaining);
-  }, [segments, setState, setSecondsRemaining, targetMinutes, timerStatus]);
-
-  useEffect(() => {
-    recomputeTimeRemaining();
-
-    if (timerStatus === TimerStatus.Playing) {
-      const newInterval = window.setInterval(() => {
-        recomputeTimeRemaining();
-      }, 1000);
-      setInterval(newInterval);
-    }
-
-    return window.clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timerStatus, targetMinutes]);
-
-  const onPlay = () => {
-    setState((prev) => {
-      const newSegments: TimerSegment[] = [
-        ...prev.segments,
-        { startTime: new Date() },
-      ];
-      return {
-        ...prev,
-        timerStatus: TimerStatus.Playing,
-        segments: newSegments,
-      };
-    });
-  };
-  const onPause = () => {
-    setState((prev) => {
-      const segmentsCopy = [...prev.segments];
-      segmentsCopy[segmentsCopy.length - 1].endTime = new Date();
-      return {
-        ...prev,
-        timerStatus: TimerStatus.Paused,
-        segments: segmentsCopy,
-      };
-    });
-  };
-
-  const onStop = () => {
-    stopSound();
-    setState((prev) => ({
-      ...prev,
-      timerStatus: TimerStatus.Stopped,
-      segments: [],
-    }));
-  };
-
-  const onSetTargetToWork = () => {
-    setState({
-      timerStatus: TimerStatus.Stopped,
-      segments: [],
-      targetMinutes: POMODORO_WORK_TIME,
-    });
-  };
-
-  const onSetTargetToBreak = () => {
-    setState({
-      timerStatus: TimerStatus.Stopped,
-      segments: [],
-      targetMinutes: POMODORO_BREAK_TIME,
-    });
-  };
+  const {
+    minutesDisplay,
+    secondsDisplay,
+    timerStatus,
+    onPlay,
+    onPause,
+    onStop,
+    onSetTargetToWork,
+    onSetTargetToBreak,
+  } = usePomodoroLogic(audioRef);
 
   return (
     <div
