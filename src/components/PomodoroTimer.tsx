@@ -68,16 +68,6 @@ export function PomodoroTimer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timerStatus, targetMinutes]);
 
-  // useEffect(() => {
-  //   const listenForStopAlarm = (event: KeyboardEvent) => {
-  //     if (timerStatus === TimerStatus.Alarm) {
-  //       onStop();
-  //     }
-  //   };
-  //   window.addEventListener("keydown", listenForStopAlarm);
-  //   return () => window.removeEventListener("keydown", listenForStopAlarm);
-  // });
-
   const onPlay = () => {
     setState((prev) => {
       const newSegments: TimerSegment[] = [
