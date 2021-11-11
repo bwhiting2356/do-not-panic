@@ -194,6 +194,6 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     onPause,
     onStop,
     onSetTargetToWork,
-    onSetTargetToBreak,
+    onSetTargetToBreak
   };
 }
