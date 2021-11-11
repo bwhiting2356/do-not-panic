@@ -6,7 +6,7 @@ import { EventToast } from "./EventToast";
 export function EventToastContainer() {
   const { toasts } = useAppContext();
   return (
-    <div className="container" style={{ position: "absolute", top: "20px" }}>
+    <div className="container toast-container-wrapper">
       <ToastContainer position="top-end">
         {toasts.map(({ text, id }) => (
           <EventToast key={id} text={text} />

@@ -9,7 +9,7 @@ export function EventToast({ text }: Props) {
   const [show, setShow] = useState(true);
   return (
     <Toast
-      bg="info"
+      bg="light"
       onClose={() => setShow(false)}
       show={show}
       delay={3000}

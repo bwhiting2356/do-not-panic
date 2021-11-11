@@ -55,6 +55,9 @@
   margin: 0;
 }
 
-.toast-body {
-  background-color: white;
+.toast-container-wrapper {
+  opacity: 1 !important;
+  z-index: 10000;
+  position: fixed;
+  top: 20px;
 }
