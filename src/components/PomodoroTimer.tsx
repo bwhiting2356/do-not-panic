@@ -1,25 +1,23 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
-import { POMODORO_WORK_TIME, SECONDS_PER_MINUTE } from "../shared/constants";
+import {
+  computeSecondsRemaining,
+  TimerSegment,
+  TimerStatus,
+  usePomodoroState,
+} from "../shared/pomodoro-logic";
 import { padZeros } from "../shared/util";
-
-const defaultPomodoroSeconds = POMODORO_WORK_TIME * SECONDS_PER_MINUTE;
-
-enum TimerState {
-  Playing,
-  Paused,
-  Stopped,
-  Alarm,
-}
 
 export function PomodoroTimer() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [seconds, setSeconds] = useState(defaultPomodoroSeconds);
-  const [timerInterval, setTimerInterval] = useState(0);
-  const [timerState, setTimerState] = useState<TimerState>(TimerState.Stopped);
-  const minutesDisplay = padZeros(Math.floor(seconds / 60));
-  const secondsDisplay = padZeros(seconds % 60);
+  const [{ timerStatus, segments }, setState] = usePomodoroState();
+  const [interval, setInterval] = useState<number>(0);
+  const [secondsRemaining, setSecondsRemaining] = useState(
+    computeSecondsRemaining(segments)
+  );
+  const minutesDisplay = padZeros(Math.floor(secondsRemaining / 60));
+  const secondsDisplay = padZeros(secondsRemaining % 60);
 
   const playSound = () => audioRef?.current?.play();
 
@@ -30,43 +28,72 @@ export function PomodoroTimer() {
     }
   };
 
-  useEffect(() => {
-    if (seconds === 0) {
-      setTimerState(TimerState.Alarm);
+  const recomputeTimeRemaining = useCallback(() => {
+    const newSecondsRemaining = computeSecondsRemaining(segments);
+    if (newSecondsRemaining === 0) {
+      setState((prev) => ({
+        timerStatus: TimerStatus.Alarm,
+        segments: prev.segments,
+      }));
       playSound();
-      window.clearInterval(timerInterval);
     }
-  }, [seconds, timerInterval]);
+    setSecondsRemaining(newSecondsRemaining);
+  }, [segments, setState, setSecondsRemaining]);
 
-  const onPlay = () => {
-    setTimerState(TimerState.Playing);
-    setTimerInterval(
-      window.setInterval(() => {
-        setSeconds((prev) => prev - 1);
-      }, 1000)
-    );
-  };
-  const onPause = useCallback(() => {
-    setTimerState(TimerState.Paused);
-    window.clearInterval(timerInterval);
-  }, [timerInterval]);
+  useEffect(() => {
+    recomputeTimeRemaining();
 
-  const onStop = useCallback(() => {
-    stopSound();
-    setTimerState(TimerState.Stopped);
-    window.clearInterval(timerInterval);
-    setSeconds(defaultPomodoroSeconds);
-  }, [timerInterval]);
+    if (timerStatus === TimerStatus.Playing) {
+      const newInterval = window.setInterval(() => {
+        recomputeTimeRemaining();
+      }, 1000);
+      setInterval(newInterval);
+    }
+
+    return window.clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerStatus]);
 
   useEffect(() => {
     const listenForStopAlarm = (event: KeyboardEvent) => {
-      if (timerState === TimerState.Alarm) {
+      if (timerStatus === TimerStatus.Alarm) {
         onStop();
       }
     };
     window.addEventListener("keydown", listenForStopAlarm);
     return () => window.removeEventListener("keydown", listenForStopAlarm);
   });
+
+  const onPlay = () => {
+    setState((prev) => {
+      const newSegments: TimerSegment[] = [
+        ...prev.segments,
+        { startTime: new Date() },
+      ];
+      return {
+        timerStatus: TimerStatus.Playing,
+        segments: newSegments,
+      };
+    });
+  };
+  const onPause = () => {
+    setState((prev) => {
+      const segmentsCopy = [...prev.segments];
+      segmentsCopy[segmentsCopy.length - 1].endTime = new Date();
+      return {
+        timerStatus: TimerStatus.Paused,
+        segments: segmentsCopy,
+      };
+    });
+  };
+
+  const onStop = () => {
+    stopSound();
+    setState({
+      timerStatus: TimerStatus.Stopped,
+      segments: [],
+    });
+  };
 
   return (
     <div
@@ -82,8 +109,8 @@ export function PomodoroTimer() {
         <h2>
           <Badge
             bg={
-              timerState === TimerState.Playing ||
-              timerState === TimerState.Alarm
+              timerStatus === TimerStatus.Playing ||
+              timerStatus === TimerStatus.Alarm
                 ? "primary"
                 : "secondary"
             }
@@ -98,7 +125,8 @@ export function PomodoroTimer() {
           variant="outline-secondary"
           onClick={onPlay}
           disabled={
-            timerState === TimerState.Playing || timerState === TimerState.Alarm
+            timerStatus === TimerStatus.Playing ||
+            timerStatus === TimerStatus.Alarm
           }
         >
           <Play />
@@ -107,7 +135,8 @@ export function PomodoroTimer() {
           variant="outline-secondary"
           onClick={onPause}
           disabled={
-            timerState === TimerState.Paused || timerState === TimerState.Alarm
+            timerStatus === TimerStatus.Paused ||
+            timerStatus === TimerStatus.Alarm
           }
         >
           <Pause />
@@ -115,7 +144,7 @@ export function PomodoroTimer() {
         <Button
           variant="outline-secondary"
           onClick={onStop}
-          disabled={timerState === TimerState.Stopped}
+          disabled={timerStatus === TimerStatus.Stopped}
         >
           <Stop />
         </Button>
