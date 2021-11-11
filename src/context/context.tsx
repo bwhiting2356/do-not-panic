@@ -115,7 +115,7 @@ export const composeReduxActionsWithContextToast = (
       })
     );
     addToast({ text: `${todo.name} archived`, id: uuidv4() });
-  }
+  };
 
   const moveTodoWithToast = (todo: Todo, newDue: Due) => {
     dispatch(
@@ -124,9 +124,11 @@ export const composeReduxActionsWithContextToast = (
         newTodo: { ...todo, due: newDue },
       })
     );
-    addToast({ text: `${todo.name} moved to ${newDue.toLowerCase()}`, id: uuidv4() });
-
-  }
+    addToast({
+      text: `${todo.name} moved to ${newDue.toLowerCase()}`,
+      id: uuidv4(),
+    });
+  };
 
   return {
     undoWithToast,
@@ -136,7 +138,7 @@ export const composeReduxActionsWithContextToast = (
     onArchiveAllCompletedTodosWithToast,
     deleteTodoWithToast,
     archiveTodoWithToast,
-    moveTodoWithToast
+    moveTodoWithToast,
   };
 };
 

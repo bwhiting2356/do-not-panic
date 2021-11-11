@@ -35,27 +35,29 @@ export function PomodoroTimer() {
       segments,
       targetMinutes
     );
-    if (newSecondsRemaining === 0) {
+    if (newSecondsRemaining === 0 && timerStatus !== TimerStatus.Alarm) {
       setState((prev) => ({
         ...prev,
         timerStatus: TimerStatus.Alarm,
-        segments: prev.segments,
       }));
       playSound();
 
       setTimeout(() => {
-        setState((prev) => ({
-          targetMinutes:
+        setState((prev) => {
+          const newTarget =
             prev.targetMinutes === POMODORO_WORK_TIME
               ? POMODORO_BREAK_TIME
-              : POMODORO_WORK_TIME,
-          timerStatus: TimerStatus.Stopped,
-          segments: [],
-        }));
+              : POMODORO_WORK_TIME;
+          return {
+            targetMinutes: newTarget,
+            timerStatus: TimerStatus.Stopped,
+            segments: [],
+          };
+        });
       }, 2000);
     }
     setSecondsRemaining(newSecondsRemaining);
-  }, [segments, setState, setSecondsRemaining, targetMinutes]);
+  }, [segments, setState, setSecondsRemaining, targetMinutes, timerStatus]);
 
   useEffect(() => {
     recomputeTimeRemaining();

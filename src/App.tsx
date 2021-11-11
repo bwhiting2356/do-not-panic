@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, ButtonGroup, Container, Toast, ToastContainer } from 'react-bootstrap';
+import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { undo, redo, archiveAllCompletedTodos, resortTodos, addTodoFromTemplate, editTodo, deleteTodo } from './features/todos/todoSlice';
+import { editTodo } from './features/todos/todoSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
