@@ -1,12 +1,13 @@
 import { ChartData } from "chart.js";
 import { v4 as uuidv4 } from "uuid";
+import { URL_PREFIX } from "./constants";
 import { Due } from "./due.type";
 import { ID } from "./id.type";
 import { Todo } from "./todo.interface";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
-  return `http://${url}`;
+  return `${URL_PREFIX}${url}`;
 };
 
 export const padZeros = (str: string | number) => {

@@ -12,7 +12,7 @@ export function EventToast({ text }: Props) {
       bg="light"
       onClose={() => setShow(false)}
       show={show}
-      delay={3000}
+      delay={2000}
       autohide
     >
       <Toast.Header>
@@ -22,9 +22,9 @@ export function EventToast({ text }: Props) {
           alt=""
           style={{ width: "20px" }}
         />
-        <strong className="me-auto">To Do</strong>
+        
+        <strong className="me-auto">{ text }</strong>
       </Toast.Header>
-      <Toast.Body>{text}</Toast.Body>
     </Toast>
   );
 }

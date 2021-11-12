@@ -11,7 +11,7 @@ import { ActionsDropdown } from "./ActionsDropdown";
 import { useAppDispatch } from "../app/hooks";
 import { editTodo } from "../features/todos/todoSlice";
 import {
-  composeReduxActionsWithContextToast,
+  useReduxActionsWithContextToast,
   useAppContext,
 } from "../context/context";
 
@@ -27,10 +27,9 @@ export function TodoRow({ todo }: Props) {
     selectedTodoId,
     setSelectedTodoId,
     setShowNewTodo,
-    addToast,
   } = useAppContext();
   const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
-    composeReduxActionsWithContextToast(dispatch, addToast);
+    useReduxActionsWithContextToast();
   const { id, done, name, poms, links, project, archivedDate, due } = todo;
   const isSelected = id === selectedTodoId;
 

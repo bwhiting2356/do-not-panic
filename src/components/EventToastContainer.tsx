@@ -7,7 +7,7 @@ export function EventToastContainer() {
   const { toasts } = useAppContext();
   return (
     <div className="container toast-container-wrapper">
-      <ToastContainer position="top-end">
+      <ToastContainer position="bottom-end">
         {toasts.map(({ text, id }) => (
           <EventToast key={id} text={text} />
         ))}
