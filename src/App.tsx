@@ -3,7 +3,7 @@ import './App.css';
 import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useAppSelector } from './app/hooks';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
@@ -15,12 +15,8 @@ import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
-import {
-  addTodoFromTemplate,
-} from "./features/todos/todoSlice";
 
 function App() {
-  const dispatch = useAppDispatch();
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
   const archivedTodos = useAppSelector(selectArchivedTodos);

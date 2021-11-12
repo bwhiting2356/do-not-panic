@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { Todo } from "../../shared/todo.interface";
-import { generateNewTodo, padUrlWithHttp, sortTodos, templates } from '../../shared/util';
+import { sortTodos, templates } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 import { defaultProjects } from '../../shared/defaultProjects';
 
