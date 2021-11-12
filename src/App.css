@@ -54,3 +54,10 @@
   max-width: none !important;
   margin: 0;
 }
+
+.toast-container-wrapper {
+  opacity: 1 !important;
+  z-index: 10000;
+  position: fixed;
+  bottom: 50px;
+}

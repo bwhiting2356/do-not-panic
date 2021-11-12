@@ -9,8 +9,11 @@ import { Due } from "../shared/due.type";
 import { ProjectDropdown } from "./ProjectDropdown";
 import { ActionsDropdown } from "./ActionsDropdown";
 import { useAppDispatch } from "../app/hooks";
-import { deleteTodo, editTodo } from "../features/todos/todoSlice";
-import { useAppContext } from "../context/context";
+import { editTodo } from "../features/todos/todoSlice";
+import {
+  useReduxActionsWithContextToast,
+  useAppContext,
+} from "../context/context";
 
 type Props = {
   todo: Todo;
@@ -25,6 +28,8 @@ export function TodoRow({ todo }: Props) {
     setSelectedTodoId,
     setShowNewTodo,
   } = useAppContext();
+  const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
+    useReduxActionsWithContextToast();
   const { id, done, name, poms, links, project, archivedDate, due } = todo;
   const isSelected = id === selectedTodoId;
 
@@ -32,14 +37,7 @@ export function TodoRow({ todo }: Props) {
     dispatch(editTodo({ id, newTodo: { ...todo, done } }));
   };
 
-  const onEditDue = (due: Due) => {
-    dispatch(
-      editTodo({
-        id,
-        newTodo: { ...todo, due },
-      })
-    );
-  };
+  const onEditDue = (due: Due) => moveTodoWithToast(todo, due);
 
   const onEditLink = (linkId: ID, newUrl: string) => {
     dispatch(
@@ -94,19 +92,8 @@ export function TodoRow({ todo }: Props) {
     );
   };
 
-  const onDeleteTodo = () => dispatch(deleteTodo({ id }));
-  const onArchiveTodo = () => {
-    dispatch(
-      editTodo({
-        id,
-        newTodo: {
-          ...todo,
-          due: Due.Archived,
-          archivedDate: new Date(),
-        },
-      })
-    );
-  };
+  const onDeleteTodo = () => deleteTodoWithToast(todo);
+  const onArchiveTodo = () => archiveTodoWithToast(todo);
 
   const isEditing = editingTodoId === id;
 
