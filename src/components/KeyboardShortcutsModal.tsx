@@ -16,32 +16,22 @@ const KeyboardShortcutsTable = () => (
         <tr>
           <td>⌘↵</td>
           <td>Anywhere</td>
-          <td>Open 'New Todo' form, or focus 'name' input on form</td>
+          <td>Add new todo and start editing</td>
         </tr>
         <tr>
           <td>⌘Z</td>
-          <td>While 'New Todo' form is closed</td>
+          <td>Anywhere</td>
           <td>Undo (maximum history {MAX_TODO_HISTORY})</td>
         </tr>
         <tr>
           <td>⌘⇧Z</td>
-          <td>While 'New Todo' form is closed</td>
+          <td>Anywhere</td>
           <td>Redo</td>
         </tr>
         <tr>
           <td>Esc</td>
           <td>Anywhere</td>
-          <td>Close 'New Todo' form if open, clear selected todo row if any</td>
-        </tr>
-        <tr>
-          <td>Tab</td>
-          <td>While 'New Todo' field is focused</td>
-          <td>Move to next field OR add new link</td>
-        </tr>
-        <tr>
-          <td>↵</td>
-          <td>While 'New Todo' field is focused</td>
-          <td>Submit current todo to 'today'</td>
+          <td>Unselect todo row if any</td>
         </tr>
         <tr>
           <td>⌘⇧1</td>
@@ -100,12 +90,12 @@ const KeyboardShortcutsTable = () => (
         </tr>
         <tr>
           <td>s</td>
-          <td>While no row is editing and new todo form is closed</td>
+          <td>While no row is editing</td>
           <td>Sort todos</td>
         </tr>
         <tr>
           <td>v</td>
-          <td>While no row is editing and new todo form is closed</td>
+          <td>While no row is editing</td>
           <td>Archive all completed todos</td>
         </tr>
       </tbody>

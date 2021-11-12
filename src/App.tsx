@@ -4,7 +4,6 @@ import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAppSelector } from './app/hooks';
-import { NewTodoForm } from './components/NewTodoForm';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
@@ -12,7 +11,7 @@ import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
 import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
-import { useReduxActionsWithContextToast, useAppContext } from './context/context';
+import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
@@ -22,14 +21,12 @@ function App() {
   const laterTodos = useAppSelector(selectTodosDueLater);
   const archivedTodos = useAppSelector(selectArchivedTodos);
   const {
-    showNewTodo,
-    setShowNewTodo,
     showArchive,
     setShowArchive,
     showKeyboardShortcuts,
-    setShowKeyboardShortcuts
+    setShowKeyboardShortcuts,
   } = useAppContext();
-  const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast } = useReduxActionsWithContextToast();
+  const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
   useGlobalKeyboardShortcuts()
 
@@ -49,12 +46,25 @@ function App() {
           <PomodoroTimer />
           <TodalToday />
         </div>
-        {showNewTodo && <NewTodoForm />}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ marginRight: '10px' }}>Today</h3>
             <div>
-              <AddIconButton onClick={() => setShowNewTodo(true)} />
+              <ButtonGroup>
+              <AddIconButton onClick={addNewTodoAndStartEditing} />
+            <Button
+              variant="outline-primary"
+              onClick={() => addTodoFromTemplateWithToast("start-day")}
+            >
+              Start Day
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => addTodoFromTemplateWithToast("start-week")}
+            >
+              Start Week
+            </Button>
+          </ButtonGroup>
             </div>
 
           </div>
