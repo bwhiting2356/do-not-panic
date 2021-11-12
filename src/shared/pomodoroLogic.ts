@@ -77,7 +77,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   const minutesDisplay = padZeros(Math.floor(secondsRemaining / 60));
   const secondsDisplay = padZeros(secondsRemaining % 60);
 
-  const playSound = () => audioRef?.current?.play();
+  const playSound = useCallback(() => audioRef?.current?.play(), [audioRef]);
 
   const stopSound = () => {
     if (audioRef?.current) {
@@ -194,6 +194,6 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     onPause,
     onStop,
     onSetTargetToWork,
-    onSetTargetToBreak
+    onSetTargetToBreak,
   };
 }
