@@ -116,7 +116,7 @@ export const useReduxActionsWithContextToast = () => {
   const deleteTodoWithToast = (todo: Todo) => {
     dispatch(deleteTodo({ id: todo.id }));
     addToast(`${todo.name} deleted`);
-    setSelectedTodoId('');
+    setSelectedTodoId("");
   };
 
   const archiveTodoWithToast = (todo: Todo) => {
@@ -131,7 +131,7 @@ export const useReduxActionsWithContextToast = () => {
       })
     );
     addToast(`${todo.name} archived`);
-    setSelectedTodoId('');
+    setSelectedTodoId("");
   };
 
   const moveTodoWithToast = (todo: Todo, newDue: Due) => {

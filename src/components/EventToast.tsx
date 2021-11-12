@@ -22,8 +22,8 @@ export function EventToast({ text }: Props) {
           alt=""
           style={{ width: "20px" }}
         />
-        
-        <strong className="me-auto">{ text }</strong>
+
+        <strong className="me-auto">{text}</strong>
       </Toast.Header>
     </Toast>
   );
