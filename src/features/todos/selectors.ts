@@ -32,8 +32,3 @@ export const selectArchivedTodos = createSelector(
     selectTodos,
     todos => todos.filter(todo => todo.due === Due.Archived)
 )
-
-export const selectNewTodo = createSelector(
-    selectCurrentState,
-    (currentState) => currentState.newTodo,
-)

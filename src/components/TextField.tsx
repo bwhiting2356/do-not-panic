@@ -8,6 +8,7 @@ type Props = {
   onEditText: (newText: string) => void;
   onSubmit: () => void;
   onBlur?: () => void;
+  autoFocus?: boolean;
 };
 
 export function TextField({
@@ -16,6 +17,7 @@ export function TextField({
   onEditText,
   onSubmit,
   onBlur,
+  autoFocus = false,
 }: Props) {
   const submit = (e: any) => {
     e.preventDefault();
@@ -32,7 +34,7 @@ export function TextField({
   return (
     <Form onSubmit={submit}>
       <Form.Control
-        autoFocus
+        autoFocus={autoFocus}
         type="text"
         value={text}
         onChange={(e) => onEditText(e.target.value)}

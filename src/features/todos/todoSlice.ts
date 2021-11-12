@@ -10,7 +10,6 @@ interface TodoState {
     todos: Todo[];
     projects: string[],
     domainName: string;
-    newTodo: Todo;
 }
 
 export interface TodoStateWithHistory {
@@ -23,7 +22,6 @@ const initialCurrentState: TodoState = {
     todos: [],
     projects: defaultProjects,
     domainName: 'work',
-    newTodo: generateNewTodo(),
 }
 
 const initialState: TodoStateWithHistory = {
@@ -64,34 +62,27 @@ export const todoSlice = createSlice({
                 todos: sortedTodos,
             })
         },
-        addTodo: (state) => {
-            const { newTodo } = state.currentState;
-            const paddedLinks = newTodo.links.map(link => ({
-                ...link,
-                url: padUrlWithHttp(link.url),
-            }));
+        addNewTodo: (state, action: PayloadAction<Todo>) => {
             const newTodos = [
+                { ...action.payload },
                 ...state.currentState.todos,
-                { ...newTodo, links: paddedLinks }
             ];
             return addNewStateGoingForward(
                 state, {
                 ...state.currentState,
                 todos: newTodos,
-                newTodo: generateNewTodo()
             }
             );
         },
         addTodoFromTemplate: (state, action: PayloadAction<string>) => {
             const newTodos = [
+                templates[action.payload](),
                 ...state.currentState.todos,
-                templates[action.payload]()
             ];
             return addNewStateGoingForward(
                 state, {
                 ...state.currentState,
                 todos: newTodos,
-                newTodo: generateNewTodo()
             }
             );
         },
@@ -121,7 +112,7 @@ export const todoSlice = createSlice({
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
         editNewTodo: (state, action: PayloadAction<Todo>) => {
-            return addNewStateGoingForward(state, { ...state.currentState, newTodo: action.payload });
+            return addNewStateGoingForward(state, { ...state.currentState });
         },
         editProjects: (state, action: PayloadAction<string[]>) => {
             return addNewStateGoingForward(
@@ -161,6 +152,6 @@ export const todoSlice = createSlice({
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

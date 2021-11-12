@@ -9,11 +9,13 @@ import {
   addTodoFromTemplate,
   editTodo,
   deleteTodo,
+  addNewTodo,
 } from "../features/todos/todoSlice";
 import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
 import { Todo } from "../shared/todo.interface";
+import { generateNewTodo } from "../shared/util";
 
 interface ToastData {
   id: ID;
@@ -25,8 +27,6 @@ export interface AppContextInterface {
   selectedTodoId: ID;
   setEditingTodoId: (id: ID) => void;
   setSelectedTodoId: (id: ID) => void;
-  showNewTodo: boolean;
-  setShowNewTodo: (show: boolean) => void;
   showArchive: boolean;
   setShowArchive: (show: boolean) => void;
   showKeyboardShortcuts: boolean;
@@ -40,8 +40,6 @@ const AppCtx = createContext<AppContextInterface>({
   selectedTodoId: "",
   setEditingTodoId: () => {},
   setSelectedTodoId: () => {},
-  showNewTodo: false,
-  setShowNewTodo: () => {},
   showArchive: false,
   setShowArchive: () => {},
   showKeyboardShortcuts: false,
@@ -53,7 +51,6 @@ const AppCtx = createContext<AppContextInterface>({
 export const useAppContextState = (): AppContextInterface => {
   const [editingTodoId, setEditingTodoId] = useState("");
   const [selectedTodoId, setSelectedTodoId] = useState("");
-  const [showNewTodo, setShowNewTodo] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
@@ -67,8 +64,6 @@ export const useAppContextState = (): AppContextInterface => {
     setEditingTodoId,
     selectedTodoId,
     setSelectedTodoId,
-    showNewTodo,
-    setShowNewTodo,
     showArchive,
     setShowArchive,
     showKeyboardShortcuts,
@@ -85,8 +80,8 @@ export const AppCtxProvider: React.FC = ({ children }) => {
   return <AppCtx.Provider value={context}>{children}</AppCtx.Provider>;
 };
 
-export const useReduxActionsWithContextToast = () => {
-  const { addToast, setSelectedTodoId } = useAppContext();
+export const useReduxActionsWithContext = () => {
+  const { addToast, setSelectedTodoId, setEditingTodoId } = useAppContext();
   const dispatch = useAppDispatch();
   const undoWithToast = () => {
     dispatch(undo());
@@ -100,7 +95,7 @@ export const useReduxActionsWithContextToast = () => {
 
   const addTodoFromTemplateWithToast = (template: string) => {
     dispatch(addTodoFromTemplate(template));
-    addToast(`New todo added with ${template} template`);
+    addToast(`New todo with ${template} template`);
   };
 
   const sortTodosWithToast = () => {
@@ -117,6 +112,13 @@ export const useReduxActionsWithContextToast = () => {
     dispatch(deleteTodo({ id: todo.id }));
     addToast(`${todo.name} deleted`);
     setSelectedTodoId("");
+  };
+
+  const addNewTodoAndStartEditing = () => {
+    const newTodo = generateNewTodo();
+    dispatch(addNewTodo(newTodo));
+    addToast("New todo added");
+    setEditingTodoId(newTodo.id);
   };
 
   const archiveTodoWithToast = (todo: Todo) => {
@@ -147,12 +149,13 @@ export const useReduxActionsWithContextToast = () => {
   return {
     undoWithToast,
     redoWithToast,
-    addTodoFromTemplateWithToast,
     sortTodosWithToast,
     onArchiveAllCompletedTodosWithToast,
     deleteTodoWithToast,
     archiveTodoWithToast,
     moveTodoWithToast,
+    addNewTodoAndStartEditing,
+    addTodoFromTemplateWithToast,
   };
 };
 

@@ -10,10 +10,7 @@ import { ProjectDropdown } from "./ProjectDropdown";
 import { ActionsDropdown } from "./ActionsDropdown";
 import { useAppDispatch } from "../app/hooks";
 import { editTodo } from "../features/todos/todoSlice";
-import {
-  useReduxActionsWithContextToast,
-  useAppContext,
-} from "../context/context";
+import { useReduxActionsWithContext, useAppContext } from "../context/context";
 
 type Props = {
   todo: Todo;
@@ -21,15 +18,10 @@ type Props = {
 
 export function TodoRow({ todo }: Props) {
   const dispatch = useAppDispatch();
-  const {
-    editingTodoId,
-    setEditingTodoId,
-    selectedTodoId,
-    setSelectedTodoId,
-    setShowNewTodo,
-  } = useAppContext();
+  const { editingTodoId, setEditingTodoId, selectedTodoId, setSelectedTodoId } =
+    useAppContext();
   const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
-    useReduxActionsWithContextToast();
+    useReduxActionsWithContext();
   const { id, done, name, poms, links, project, archivedDate, due } = todo;
   const isSelected = id === selectedTodoId;
 
@@ -110,7 +102,9 @@ export function TodoRow({ todo }: Props) {
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     if (due === Due.Archived) return;
     setSelectedTodoId(todo.id);
-    setShowNewTodo(false);
+    if (editingTodoId !== todo.id) {
+      setEditingTodoId("");
+    }
   };
 
   const onProjectDropdownSubmit = () => {
@@ -139,6 +133,7 @@ export function TodoRow({ todo }: Props) {
       </td>
       <td className="name vertical-align">
         <TextField
+          autoFocus={true}
           editing={isEditing}
           text={name}
           onEditText={onEditName}

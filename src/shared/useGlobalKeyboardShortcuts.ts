@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import {
-  useAppContext,
-  useReduxActionsWithContextToast,
-} from "../context/context";
+import { useAppContext, useReduxActionsWithContext } from "../context/context";
 import {
   selectTodosDueLater,
   selectTodosDueToday,
@@ -19,8 +16,6 @@ export const useGlobalKeyboardShortcuts = () => {
   const laterTodos = useAppSelector(selectTodosDueLater);
   const dispatch = useAppDispatch();
   const {
-    showNewTodo,
-    setShowNewTodo,
     showKeyboardShortcuts,
     setShowKeyboardShortcuts,
     selectedTodoId,
@@ -37,7 +32,8 @@ export const useGlobalKeyboardShortcuts = () => {
     moveTodoWithToast,
     archiveTodoWithToast,
     deleteTodoWithToast,
-  } = useReduxActionsWithContextToast();
+    addNewTodoAndStartEditing,
+  } = useReduxActionsWithContext();
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
@@ -46,7 +42,7 @@ export const useGlobalKeyboardShortcuts = () => {
       }
 
       if (event.metaKey && event.key === "Enter") {
-        setShowNewTodo(true);
+        addNewTodoAndStartEditing();
         setSelectedTodoId("");
       }
 
@@ -59,7 +55,6 @@ export const useGlobalKeyboardShortcuts = () => {
       }
 
       if (event.key === "Escape") {
-        setShowNewTodo(false);
         setEditingTodoId("");
       }
 
@@ -71,7 +66,7 @@ export const useGlobalKeyboardShortcuts = () => {
         }
       }
 
-      if (!showNewTodo && !Boolean(editingTodoId)) {
+      if (!Boolean(editingTodoId)) {
         if (event.key === "s") {
           sortTodosWithToast();
         }
