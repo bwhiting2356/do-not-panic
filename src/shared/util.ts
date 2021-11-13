@@ -33,7 +33,7 @@ export const sumTodoPomodoros = (acc: number, curr: Todo) => {
 
 export const convertStringPoms = (poms: string) => {
   if (oneHalfOptions.includes(poms)) return 0.5;
-  return parseFloat(poms);
+  return parseFloat(poms) || 0;
 };
 
 export const sortTodos = (a: Todo, b: Todo) => {
@@ -66,6 +66,8 @@ export const computeChartData = (
       "No Project": 0,
     } as Record<string, number>
   );
+
+  console.log('todoPomsByProject', todoPomsByProject);
 
   return {
     labels: Object.keys(todoPomsByProject),
