@@ -46,7 +46,7 @@ export function ProjectDropdown({
   };
   return (
     <Dropdown onKeyDown={handleEscape}>
-      <Dropdown.Toggle size="sm" variant="outline-primary" id="dropdown-basic">
+      <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
         {project}
       </Dropdown.Toggle>
 

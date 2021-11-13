@@ -1,15 +1,14 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React from "react";  
 import { PieChart } from "react-bootstrap-icons";
+import { IconButton } from "./IconButton";
 
 type Props = {
     onClick?: () => void;
     tabIndex?: number;
 }
-export function PieChartIconButton({ onClick, tabIndex }: Props) {
+
+export function PieChartIconButton(props: Props) {
     return (
-        <Button onClick={onClick} variant="outline-primary" size="sm">
-            <PieChart />
-        </Button>
+        <IconButton variant="outline-primary" Icon={PieChart} {...props} />
     )
 }

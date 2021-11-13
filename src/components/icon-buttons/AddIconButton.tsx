@@ -1,15 +1,13 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
+import { IconButton } from "./IconButton";
 
 type Props = {
     onClick?: (e?: any) => void;
     tabIndex?: number
 }
-export function AddIconButton({ onClick, tabIndex }: Props) {
+export function AddIconButton(props: Props) {
     return (
-        <Button onClick={onClick} tabIndex={tabIndex} variant="outline-primary" size="sm">
-            <Plus />
-        </Button>
+        <IconButton variant="outline-primary" Icon={Plus} {...props} />
     )
 }

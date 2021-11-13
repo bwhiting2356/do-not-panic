@@ -16,6 +16,7 @@ import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
 import { TodoTemplates } from './shared/todo';
+import { IconButton } from './components/icon-buttons/IconButton';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -50,36 +51,15 @@ function App() {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ marginRight: '10px' }}>Today</h3>
-            <div>
-              <ButtonGroup>
-              <AddIconButton onClick={addNewTodoAndStartEditing} />
-            <Button
-              variant="outline-primary"
-              onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartDay)}
-            >
-              <BrightnessAltHigh style={{ marginRight: '10px' }}/>
-              Start Day
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartWeek)}
-            >
-              <BrightnessHigh style={{ marginRight: '10px' }}/>
-              Start Week
-            </Button>
-          </ButtonGroup>
-            </div>
-
+            <ButtonGroup>
+                <AddIconButton onClick={addNewTodoAndStartEditing} />
+                <IconButton text="Start Day" Icon={BrightnessAltHigh} variant="outline-primary" onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartDay)} />
+                <IconButton text="Start Week" Icon={BrightnessHigh} variant="outline-secondary" onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartWeek)} />
+              </ButtonGroup>
           </div>
           <ButtonGroup>
-            <Button onClick={sortTodosWithToast} variant="outline-secondary">
-              <span style={{ marginRight: '10px' }}><Filter /></span>
-              Sort Todos
-            </Button>
-            <Button variant="outline-primary" onClick={onArchiveAllCompletedTodosWithToast}>
-              <span style={{ marginRight: '10px' }}><ArchiveFill /></span>
-              Archive all completed todos
-            </Button>
+            <IconButton text="Sort Todos" Icon={Filter} variant="outline-secondary" onClick={sortTodosWithToast} />
+            <IconButton text="Archive all completed todos" Icon={ArchiveFill} variant="outline-primary" onClick={onArchiveAllCompletedTodosWithToast} />
           </ButtonGroup>
         </div>
         <TodoTable todos={todayTodos} due={Due.Today} />
