@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
 import { ID } from "../shared/id.type";
-import { Todo } from "../shared/todo.interface";
+import { Todo } from "../shared/todo";
 import { Link } from "./Link";
 import { TextField } from "./TextField";
 import { Due } from "../shared/due.type";

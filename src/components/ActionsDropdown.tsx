@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Archive, Calendar, Pencil, Sun, Trash } from "react-bootstrap-icons";
 import { Due } from "../shared/due.type";
-import { Todo } from "../shared/todo.interface";
+import { Todo } from "../shared/todo";
 
 type Props = {
   todo: Todo;

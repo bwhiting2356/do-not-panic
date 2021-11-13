@@ -14,8 +14,7 @@ import {
 import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
-import { Todo } from "../shared/todo.interface";
-import { generateNewTodo } from "../shared/util";
+import { Todo, TodoTemplates } from "../shared/todo";
 
 interface ToastData {
   id: ID;
@@ -93,7 +92,7 @@ export const useReduxActionsWithContext = () => {
     addToast("redo");
   };
 
-  const addTodoFromTemplateWithToast = (template: string) => {
+  const addTodoFromTemplateWithToast = (template: TodoTemplates) => {
     dispatch(addTodoFromTemplate(template));
     addToast(`New todo with ${template} template`);
   };
@@ -115,7 +114,7 @@ export const useReduxActionsWithContext = () => {
   };
 
   const addNewTodoAndStartEditing = () => {
-    const newTodo = generateNewTodo();
+    const newTodo = new Todo();
     dispatch(addNewTodo(newTodo));
     addToast("New todo added");
     setEditingTodoId(newTodo.id);

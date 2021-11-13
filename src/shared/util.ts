@@ -1,9 +1,7 @@
 import { ChartData } from "chart.js";
-import { v4 as uuidv4 } from "uuid";
 import { URL_PREFIX } from "./constants";
-import { Due } from "./due.type";
 import { ID } from "./id.type";
-import { Todo } from "./todo.interface";
+import { Todo } from "./todo";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -51,35 +49,6 @@ export const convertMinutesToHours = (minutes: number) => {
   const remainingMinutes = minutes % 60;
   return `${hours}:${padZeros(remainingMinutes)}`;
 };
-
-export const generateNewLink = () => ({ id: uuidv4(), url: "" });
-
-export const templates: { [key: string]: () => Todo } = {
-  "start-day": () => ({
-    id: uuidv4(),
-    name: "Start Day",
-    poms: "0.5",
-    links: [{ id: uuidv4(), url: "http://go/pwaivers:daily" }],
-    due: Due.Today,
-    done: false,
-  }),
-  "start-week": () => ({
-    id: uuidv4(),
-    name: "Start Week",
-    poms: "1",
-    links: [{ id: uuidv4(), url: "http://go/pwaivers:weekly" }],
-    due: Due.Today,
-    done: false,
-  }),
-};
-export const generateNewTodo = (): Todo => ({
-  id: uuidv4(),
-  name: "",
-  poms: "",
-  links: [generateNewLink()],
-  due: Due.Today,
-  done: false,
-});
 
 export const computeChartData = (
   todos: Todo[]

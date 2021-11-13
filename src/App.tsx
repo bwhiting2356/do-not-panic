@@ -15,6 +15,7 @@ import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
+import { TodoTemplates } from './shared/todo';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -54,13 +55,13 @@ function App() {
               <AddIconButton onClick={addNewTodoAndStartEditing} />
             <Button
               variant="outline-primary"
-              onClick={() => addTodoFromTemplateWithToast("start-day")}
+              onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartDay)}
             >
               Start Day
             </Button>
             <Button
               variant="outline-secondary"
-              onClick={() => addTodoFromTemplateWithToast("start-week")}
+              onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartWeek)}
             >
               Start Week
             </Button>

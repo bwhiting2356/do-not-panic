@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Table } from "react-bootstrap";
 import { Due } from "../shared/due.type";
-import { Todo } from "../shared/todo.interface";
+import { Todo } from "../shared/todo";
 import { PieChartIconButton } from "./icon-buttons/PieChartIconButton";
 import { ProjectAnalytics } from "./ProjectAnalytics";
 import { TodoRow } from "./TodoRow";
