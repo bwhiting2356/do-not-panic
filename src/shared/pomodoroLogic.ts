@@ -190,6 +190,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     minutesDisplay,
     secondsDisplay,
     timerStatus,
+    targetMinutes,
     onPlay,
     onPause,
     onStop,

@@ -14,7 +14,19 @@ export function PomodoroTimer() {
     onStop,
     onSetTargetToWork,
     onSetTargetToBreak,
+    targetMinutes,
   } = usePomodoroLogic(audioRef);
+
+  let badgeBackground = "";
+  if (timerStatus === TimerStatus.Playing) {
+    if (targetMinutes === POMODORO_WORK_TIME) {
+      badgeBackground = "primary";
+    } else {
+      badgeBackground = "success";
+    }
+  } else {
+    badgeBackground = "secondary";
+  }
 
   return (
     <div
@@ -28,14 +40,7 @@ export function PomodoroTimer() {
     >
       <div>
         <h2>
-          <Badge
-            bg={
-              timerStatus === TimerStatus.Playing ||
-              timerStatus === TimerStatus.Alarm
-                ? "primary"
-                : "secondary"
-            }
-          >
+          <Badge bg={badgeBackground}>
             {minutesDisplay}:{secondsDisplay}
           </Badge>
         </h2>
