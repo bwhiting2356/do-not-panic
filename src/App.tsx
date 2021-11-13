@@ -9,7 +9,7 @@ import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
-import { ArchiveFill, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
+import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
 import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -57,12 +57,14 @@ function App() {
               variant="outline-primary"
               onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartDay)}
             >
+              <BrightnessAltHigh style={{ marginRight: '10px' }}/>
               Start Day
             </Button>
             <Button
               variant="outline-secondary"
               onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartWeek)}
             >
+              <BrightnessHigh style={{ marginRight: '10px' }}/>
               Start Week
             </Button>
           </ButtonGroup>
