@@ -26,6 +26,7 @@ module.exports = {
       project: './tsconfig.json',
     },
     rules: {
+      
       'linebreak-style': 'off',
       'prettier/prettier': [
         'error',
@@ -33,5 +34,6 @@ module.exports = {
           endOfLine: 'auto',
         },
       ],
+      'no-console': 'error',
     },
   };

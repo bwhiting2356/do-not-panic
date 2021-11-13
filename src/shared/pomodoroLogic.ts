@@ -58,7 +58,7 @@ export const computeSecondsRemaining = (
   const milliseconds = segments.reduce((acc, curr) => {
     const startTime = new Date(curr.startTime);
     const endTime = curr.endTime ? new Date(curr.endTime) : new Date();
-    const difference = endTime?.getTime() - startTime.getTime();
+    const difference = endTime.getTime() - startTime.getTime();
     return (acc += difference);
   }, 0);
   const totalSeconds = targetMinutes * 60;

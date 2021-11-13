@@ -179,7 +179,6 @@ export function TodoRow({ todo }: Props) {
           onDeleteTodo={onDeleteTodo}
           onArchiveTodo={onArchiveTodo}
           onToggleEditing={onToggleEditingTodoId}
-          onEscape={onProjectDropdownSubmit}
         />
       </td>
     </tr>
