@@ -30,7 +30,6 @@ function App() {
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
   useGlobalKeyboardShortcuts()
-  console.log('yo');
 
   const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
