@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
 import { MAX_TODO_HISTORY } from '../../shared/constants';
-import { Todo } from "../../shared/todo.interface";
-import { sortTodos, templates } from '../../shared/util';
+import { templateGenerators, Todo, TodoTemplates } from "../../shared/todo";
+import { sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 import { defaultProjects } from '../../shared/defaultProjects';
 
@@ -74,9 +74,9 @@ export const todoSlice = createSlice({
             }
             );
         },
-        addTodoFromTemplate: (state, action: PayloadAction<string>) => {
+        addTodoFromTemplate: (state, action: PayloadAction<TodoTemplates>) => {
             const newTodos = [
-                templates[action.payload](),
+                templateGenerators[action.payload](),
                 ...state.currentState.todos,
             ];
             return addNewStateGoingForward(

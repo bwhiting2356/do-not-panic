@@ -8,7 +8,7 @@ import {
 import { editTodo } from "../features/todos/todoSlice";
 import { URL_PREFIX } from "./constants";
 import { Due } from "./due.type";
-import { Todo } from "./todo.interface";
+import { Todo, TodoTemplates } from "./todo";
 import { getTodoIdInfoForArrowSelection } from "./util";
 
 export const useGlobalKeyboardShortcuts = () => {
@@ -47,11 +47,11 @@ export const useGlobalKeyboardShortcuts = () => {
       }
 
       if (event.metaKey && event.shiftKey && event.key === "1") {
-        addTodoFromTemplateWithToast("start-day");
+        addTodoFromTemplateWithToast(TodoTemplates.StartDay);
       }
 
       if (event.metaKey && event.shiftKey && event.key === "2") {
-        addTodoFromTemplateWithToast("start-week");
+        addTodoFromTemplateWithToast(TodoTemplates.StartWeek);
       }
 
       if (event.key === "Escape") {
