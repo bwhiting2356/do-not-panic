@@ -40,12 +40,13 @@ export function ProjectDropdown({
   }));
 
   const onOptionChange = (option: SingleValue<SelectOption>) => {
-    if (option) setNewProjectOption(option);
+    if (option) {
+      setNewProjectOption(option);
+      onChangeProject(option.value);
+    }
   };
 
-  const onBlur = () => {
-    onChangeProject(newProjectOption.value);
-  };
+  const onBlur = () => onChangeProject(newProjectOption.value);
 
   return (
     <div>

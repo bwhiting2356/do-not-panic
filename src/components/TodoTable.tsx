@@ -32,7 +32,9 @@ export function TodoTable({ todos, due }: Props) {
                   onClick={() => setShowProjectAnalytics(true)}
                 />
               ) : (
-                <SmallEditIconButton onClick={() => setShowEditProjects(true)} />
+                <SmallEditIconButton
+                  onClick={() => setShowEditProjects(true)}
+                />
               )}
             </th>
             <th className="links">Links</th>
