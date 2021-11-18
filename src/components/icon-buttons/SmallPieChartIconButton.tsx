@@ -1,6 +1,5 @@
 import React from "react";  
 import { PieChart } from "react-bootstrap-icons";
-import { IconButton } from "./IconButton";
 
 type Props = {
     onClick?: () => void;
@@ -9,6 +8,6 @@ type Props = {
 
 export function PieChartIconButton(props: Props) {
     return (
-        <IconButton variant="outline-primary" Icon={PieChart} {...props} />
+        <button className="small-invisible-button" {...props}><PieChart /></button>
     )
 }

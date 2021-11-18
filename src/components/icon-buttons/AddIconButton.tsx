@@ -8,6 +8,6 @@ type Props = {
 }
 export function AddIconButton(props: Props) {
     return (
-        <IconButton variant="outline-primary" Icon={Plus} {...props} />
+        <IconButton {...props} variant="outline-primary" Icon={Plus} />
     )
 }

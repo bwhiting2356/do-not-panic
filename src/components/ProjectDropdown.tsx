@@ -4,6 +4,7 @@ import { Pen } from "react-bootstrap-icons";
 import { useAppSelector } from "../app/hooks";
 import { selectProjects } from "../features/todos/selectors";
 import { EditProjectsModal } from "./EditProjectsModal";
+import Select, { SingleValue } from "react-select";
 
 type Props = {
   project?: string;
@@ -11,6 +12,11 @@ type Props = {
   onChangeProject: (newProject: string) => void;
   onSubmit: () => void;
 };
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
 export function ProjectDropdown({
   project = "No Project",
@@ -20,6 +26,10 @@ export function ProjectDropdown({
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [showEditProjects, setShowEditProjects] = useState(false);
+  const [newProjectOption, setNewProjectOption] = useState<SelectOption>({
+    value: project,
+    label: project,
+  });
 
   if (!isEditing) {
     return (
@@ -28,6 +38,39 @@ export function ProjectDropdown({
       </div>
     );
   }
+
+  const selectOptions: SelectOption[] = projectOptions.map((opt) => ({
+    value: opt,
+    label: opt,
+  }));
+
+  const onOptionChange = (option: SingleValue<SelectOption>) => {
+    if (option) setNewProjectOption(option);
+  };
+
+  const onInputChange = (newValue: string) => {
+    if (newValue) {
+      onChangeProject(newProjectOption.value);
+      setNewProjectOption({ value: newValue, label: newValue });
+    }
+  };
+
+  const onBlur = () => {
+    onChangeProject(newProjectOption.value);
+  };
+
+  return (
+    <div>
+      <Select
+        value={newProjectOption}
+        placeholder="Project"
+        options={selectOptions}
+        onChange={onOptionChange}
+        onInputChange={onInputChange}
+        onBlur={onBlur}
+      />
+    </div>
+  );
 
   const handleEscape = (e: any) => {
     if (e.key === "Escape") {

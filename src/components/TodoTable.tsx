@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Table } from "react-bootstrap";
+import { Pencil } from "react-bootstrap-icons";
+import { useAppContext } from "../context/context";
 import { Due } from "../shared/due.type";
 import { Todo } from "../shared/todo";
-import { PieChartIconButton } from "./icon-buttons/PieChartIconButton";
+import { EditProjectsModal } from "./EditProjectsModal";
+import { EditIconButton } from "./icon-buttons/SmallEditIconButton";
+import { PieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
 import { ProjectAnalytics } from "./ProjectAnalytics";
 import { TodoRow } from "./TodoRow";
 
@@ -12,8 +16,13 @@ type Props = {
 };
 
 export function TodoTable({ todos, due }: Props) {
-  const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
-  const toggleProjectAnalytics = () => setShowProjectAnalytics((show) => !show);
+  const {
+    showProjectAnalytics,
+    setShowProjectAnalytics,
+    showEditProjects,
+    setShowEditProjects
+  } = useAppContext();
+  const toggleProjectAnalytics = () => setShowProjectAnalytics(!showProjectAnalytics);
   const projectAnalyticsModal = (
     <Modal
       show={showProjectAnalytics}
@@ -28,6 +37,13 @@ export function TodoTable({ todos, due }: Props) {
       </Modal.Body>
     </Modal>
   );
+
+  const editProjectsModal = (
+    <EditProjectsModal
+        show={showEditProjects}
+        toggleEditProjects={() => setShowEditProjects(!showEditProjects)}
+      />
+  )
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -42,11 +58,15 @@ export function TodoTable({ todos, due }: Props) {
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                <PieChartIconButton
-                  onClick={() => setShowProjectAnalytics(true)}
-                />
-              ) : null}
+                  <PieChartIconButton
+                    onClick={() => setShowProjectAnalytics(true)}
+                  />
+                ) : (
+                  <EditIconButton onClick={ () => setShowEditProjects(true)}/>
+                )}
+
               {projectAnalyticsModal}
+              {editProjectsModal}
             </th>
             <th className="links">Links</th>
             <th className="actions">Actions</th>

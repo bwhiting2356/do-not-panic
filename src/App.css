@@ -16,7 +16,7 @@
 }
 
 .project {
-  width: 150px;
+  width: 200px;
 }
 
 .actions {
@@ -60,4 +60,12 @@
   z-index: 10000;
   position: fixed;
   bottom: 50px;
+}
+
+.small-invisible-button {
+  background-color: transparent;
+  border: none !important;
+  border-color: white;
+  margin: 0;
+  padding: 0;
 }
