@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import { useAppContext } from "../context/context";
 import { Due } from "../shared/due.type";
 import { Todo } from "../shared/todo";
-import { EditIconButton } from "./icon-buttons/SmallEditIconButton";
+import { SmallEditIconButton } from "./icon-buttons/SmallEditIconButton";
 import { PieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
 import { TodoRow } from "./TodoRow";
 
@@ -13,10 +13,7 @@ type Props = {
 };
 
 export function TodoTable({ todos, due }: Props) {
-  const {
-    setShowProjectAnalytics,
-    setShowEditProjects
-  } = useAppContext();
+  const { setShowProjectAnalytics, setShowEditProjects } = useAppContext();
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -31,12 +28,12 @@ export function TodoTable({ todos, due }: Props) {
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                  <PieChartIconButton
-                    onClick={() => setShowProjectAnalytics(true)}
-                  />
-                ) : (
-                  <EditIconButton onClick={ () => setShowEditProjects(true)}/>
-                )}
+                <PieChartIconButton
+                  onClick={() => setShowProjectAnalytics(true)}
+                />
+              ) : (
+                <SmallEditIconButton onClick={() => setShowEditProjects(true)} />
+              )}
             </th>
             <th className="links">Links</th>
             <th className="actions">Actions</th>
