@@ -4,7 +4,7 @@ import { useAppContext } from "../context/context";
 import { Due } from "../shared/due.type";
 import { Todo } from "../shared/todo";
 import { SmallEditIconButton } from "./icon-buttons/SmallEditIconButton";
-import { PieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
+import { SmallPieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
 import { TodoRow } from "./TodoRow";
 
 type Props = {
@@ -28,7 +28,7 @@ export function TodoTable({ todos, due }: Props) {
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                <PieChartIconButton
+                <SmallPieChartIconButton
                   onClick={() => setShowProjectAnalytics(true)}
                 />
               ) : (

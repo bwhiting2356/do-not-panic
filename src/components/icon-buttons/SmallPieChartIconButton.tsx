@@ -6,7 +6,7 @@ type Props = {
     tabIndex?: number;
 }
 
-export function PieChartIconButton(props: Props) {
+export function SmallPieChartIconButton(props: Props) {
     return (
         <button className="small-invisible-button" {...props}><PieChart /></button>
     )
