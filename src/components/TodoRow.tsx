@@ -82,7 +82,6 @@ export function TodoRow({ todo }: Props) {
         },
       })
     );
-    // dispatch()
   };
 
   const onDeleteTodo = () => deleteTodoWithToast(todo);

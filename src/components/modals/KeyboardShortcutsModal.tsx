@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Modal, Table } from "react-bootstrap";
-import { MAX_TODO_HISTORY } from "../shared/constants";
+import { useAppContext } from "../../context/context";
+import { MAX_TODO_HISTORY } from "../../shared/constants";
 
 const KeyboardShortcutsTable = () => (
   <div>
@@ -103,14 +104,11 @@ const KeyboardShortcutsTable = () => (
   </div>
 );
 
-interface Props {
-  show: boolean;
-  handleClose: () => void;
-}
-
-export function KeyboardShortcutsModal({ show, handleClose }: Props) {
+export function KeyboardShortcutsModal() {
+  const { showKeyboardShortcuts, setShowKeyboardShortcuts } = useAppContext();
+  const handleClose = () => setShowKeyboardShortcuts(!showKeyboardShortcuts);
   return (
-    <Modal show={show} onHide={handleClose} dialogClassName="wide-modal">
+    <Modal show={showKeyboardShortcuts} onHide={handleClose} dialogClassName="wide-modal">
       <Modal.Dialog>
         <Modal.Header closeButton>
           <Modal.Title>Keyboard Shortcuts</Modal.Title>

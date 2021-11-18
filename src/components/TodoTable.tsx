@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { Modal, Table } from "react-bootstrap";
-import { Pencil } from "react-bootstrap-icons";
+import React from "react";
+import { Table } from "react-bootstrap";
 import { useAppContext } from "../context/context";
 import { Due } from "../shared/due.type";
 import { Todo } from "../shared/todo";
-import { EditProjectsModal } from "./EditProjectsModal";
 import { EditIconButton } from "./icon-buttons/SmallEditIconButton";
 import { PieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
-import { ProjectAnalytics } from "./ProjectAnalytics";
 import { TodoRow } from "./TodoRow";
 
 type Props = {
@@ -17,33 +14,9 @@ type Props = {
 
 export function TodoTable({ todos, due }: Props) {
   const {
-    showProjectAnalytics,
     setShowProjectAnalytics,
-    showEditProjects,
     setShowEditProjects
   } = useAppContext();
-  const toggleProjectAnalytics = () => setShowProjectAnalytics(!showProjectAnalytics);
-  const projectAnalyticsModal = (
-    <Modal
-      show={showProjectAnalytics}
-      onHide={toggleProjectAnalytics}
-      style={{ textAlign: "center" }}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Archived Todo Total Poms by Project</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ProjectAnalytics />
-      </Modal.Body>
-    </Modal>
-  );
-
-  const editProjectsModal = (
-    <EditProjectsModal
-        show={showEditProjects}
-        toggleEditProjects={() => setShowEditProjects(!showEditProjects)}
-      />
-  )
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -64,9 +37,6 @@ export function TodoTable({ todos, due }: Props) {
                 ) : (
                   <EditIconButton onClick={ () => setShowEditProjects(true)}/>
                 )}
-
-              {projectAnalyticsModal}
-              {editProjectsModal}
             </th>
             <th className="links">Links</th>
             <th className="actions">Actions</th>

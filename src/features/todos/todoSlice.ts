@@ -96,7 +96,14 @@ export const todoSlice = createSlice({
                     return todo;
                 }
             })
-            return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
+
+            // if a new project is being added, also add it to the list of projects
+            const currentProjects = [ ...state.currentState.projects ];
+            if (newTodo.project && !currentProjects.includes(newTodo.project)) {
+                currentProjects.push(newTodo.project)
+            }
+            
+            return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos, projects: currentProjects });
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
             const newTodos = state.currentState.todos.filter(todo => todo.id !== action.payload.id);

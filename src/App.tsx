@@ -5,7 +5,7 @@ import { TodoTable } from './components/TodoTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAppSelector } from './app/hooks';
 import { AddIconButton } from './components/icon-buttons/AddIconButton';
-import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
+import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
@@ -17,6 +17,8 @@ import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
 import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
+import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
+import { EditProjectsModal } from './components/modals/EditProjectsModal';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -25,8 +27,6 @@ function App() {
   const {
     showArchive,
     setShowArchive,
-    showKeyboardShortcuts,
-    setShowKeyboardShortcuts,
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
@@ -72,7 +72,9 @@ function App() {
           </Button>
         </div>
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-        <KeyboardShortcutsModal show={showKeyboardShortcuts} handleClose={() => setShowKeyboardShortcuts(false)}/>
+        <KeyboardShortcutsModal />
+        <ProjectAnalyticsModal />
+        <EditProjectsModal />
       </Container >
     </div>
   );

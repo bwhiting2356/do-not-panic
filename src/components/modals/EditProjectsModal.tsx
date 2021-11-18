@@ -1,28 +1,26 @@
 import React, { useRef, useState, useEffect, RefObject } from "react";
 import { Form, ListGroup, Modal } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectProjects } from "../features/todos/selectors";
-import { editProjects } from "../features/todos/todoSlice";
-import { AddIconButton } from "./icon-buttons/AddIconButton";
-import { DeleteIconButton } from "./icon-buttons/DeleteIconButton";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppContext } from "../../context/context";
+import { selectProjects } from "../../features/todos/selectors";
+import { editProjects } from "../../features/todos/todoSlice";
+import { AddIconButton } from "../icon-buttons/AddIconButton";
+import { DeleteIconButton } from "../icon-buttons/DeleteIconButton";
 
-type Props = {
-  show: boolean;
-  toggleEditProjects: () => void;
-};
-export function EditProjectsModal({ show, toggleEditProjects }: Props) {
+export function EditProjectsModal() {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>();
   const projectOptions = useAppSelector(selectProjects);
+  const { showEditProjects, setShowEditProjects } = useAppContext();
   const [newProject, setNewProject] = useState("");
 
   useEffect(() => {
-    if (show) {
+    if (showEditProjects) {
       setTimeout(() => {
         inputRef && inputRef?.current?.focus();
       }, 10);
     }
-  }, [show]);
+  }, [showEditProjects]);
 
   const onAddNewProject = (e: any) => {
     e.preventDefault();
@@ -40,15 +38,14 @@ export function EditProjectsModal({ show, toggleEditProjects }: Props) {
 
   return (
     <Modal
-      show={show}
-      onHide={toggleEditProjects}
+      show={showEditProjects}
+      onHide={() => setShowEditProjects(!showEditProjects)}
       style={{ textAlign: "center" }}
     >
       <Modal.Header closeButton>
         <Modal.Title>Edit Projects</Modal.Title>
       </Modal.Header>
-      {show && (
-        <Modal.Body>
+      <Modal.Body>
           <ListGroup>
             {projectOptions.map((projectOption) => (
               <ListGroup.Item
@@ -76,9 +73,7 @@ export function EditProjectsModal({ show, toggleEditProjects }: Props) {
               </Form>
             </ListGroup.Item>
           </ListGroup>
-          <div></div>
         </Modal.Body>
-      )}
     </Modal>
   );
 }
