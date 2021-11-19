@@ -22,13 +22,6 @@ export function TodalToday() {
       bordered
       size="sm"
     >
-      <thead>
-        <tr>
-          <th>Today</th>
-          <th>Poms</th>
-          <th>Time</th>
-        </tr>
-      </thead>
       <tbody>
         <tr>
           <td>Total complete:</td>
