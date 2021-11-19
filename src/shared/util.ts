@@ -88,8 +88,8 @@ export function download(filename: string, text: string) {
 }
 
 export function createCSVContents(todos: Todo[]) {
-
-  const mapLinkListToString = (links: Link[]): string => links.map(link => link.url).join(', ');
+  const mapLinkListToString = (links: Link[]): string =>
+    links.map((link) => link.url).join(", ");
 
   return json2csv.parse(
     todos.map((todo) => ({ ...todo, links: mapLinkListToString(todo.links) }))
