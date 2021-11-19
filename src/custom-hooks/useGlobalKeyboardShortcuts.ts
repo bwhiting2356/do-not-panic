@@ -6,10 +6,10 @@ import {
   selectTodosDueToday,
 } from "../features/todos/selectors";
 import { editTodo } from "../features/todos/todoSlice";
-import { URL_PREFIX } from "./constants";
-import { Due } from "./due.type";
-import { Todo, TodoTemplates } from "./todo";
-import { getTodoIdInfoForArrowSelection } from "./util";
+import { URL_PREFIX } from "../shared/constants";
+import { Due } from "../shared/due.type";
+import { Todo, TodoTemplates } from "../shared/todo";
+import { getTodoIdInfoForArrowSelection } from "../shared/util";
 
 export const useGlobalKeyboardShortcuts = () => {
   const todayTodos = useAppSelector(selectTodosDueToday);

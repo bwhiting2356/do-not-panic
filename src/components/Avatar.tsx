@@ -1,8 +1,8 @@
 import React from "react";
 import { Image } from "react-bootstrap";
+import { Person } from "react-bootstrap-icons";
 import { useAppContext } from "../context/context";
 import { useFirebaseContext } from "../firebase/FirebaseAuthProvider";
-import { SmallUserButton } from "./icon-buttons/SmallUserButton";
 
 export function Avatar() {
   const { user } = useFirebaseContext();
@@ -12,7 +12,7 @@ export function Avatar() {
   const image = photoURL ? (
     <Image roundedCircle src={photoURL} style={{ width: "30px" }} />
   ) : (
-    <SmallUserButton  />
+    <Person size={30} />
   );
 
   return (
