@@ -4,46 +4,12 @@ import { Pie } from "react-chartjs-2";
 import { useAppSelector } from "../../../app/hooks";
 import { useAppContext } from "../../../context/context";
 import { selectArchivedTodos } from "../../../features/todos/selectors";
-import { computeChartData, groupTodosByTimeDisplayBuckets } from "../../../shared/util";
 import { ArrowButtons } from "./ArrowButtons";
-
-type TimeBucketType = 'weekly' | 'monthly';
-
-interface ProjectModalState {
-  key: TimeBucketType,
-  currentWeekIndex: number;
-  currentMonthIndex: number;
-}
-
-export const calculateDisabledArrows = ({ 
-  key, 
-  currentMonthIndex, 
-  currentWeekIndex }: ProjectModalState, 
-  totalWeeks: number, 
-  totalMonths: number) => {
-  let disabledLeft = true;
-  let disabledRight = true;
-  if (key === 'weekly') {
-    if (currentWeekIndex !== 0) {
-      disabledLeft = false;
-    } else if (currentWeekIndex !== totalWeeks - 1) {
-      disabledRight = false;
-    }
-  } else {
-    if (currentMonthIndex !== 0) {
-      disabledLeft = false;
-    } else if (currentMonthIndex !== totalMonths - 1) {
-      disabledRight = false;
-    }
-
-  }
-  return { disabledLeft, disabledRight }
-}
+import { calculateDisabledArrows, aggregateChartData, ProjectModalState, TimeBucketType, groupTodosByTimeDisplayBuckets } from "./helpers";
 
 export function ProjectAnalyticsModal() {
     const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
     const archivedTodos = useAppSelector(selectArchivedTodos);
-
     const todosByTimeBucket = groupTodosByTimeDisplayBuckets(archivedTodos);
     const totalWeeks = todosByTimeBucket.weekly.length;
     const totalMonths = todosByTimeBucket.monthly.length;
@@ -54,6 +20,12 @@ export function ProjectAnalyticsModal() {
       currentMonthIndex: totalMonths - 1
     })
     const { key, currentWeekIndex, currentMonthIndex  } = state;
+
+    const { timeDisplay: weekDisplay, todos: weeklyTodos } = todosByTimeBucket.weekly[currentWeekIndex];
+    const weeklyChartData = aggregateChartData(weeklyTodos);
+
+    const { timeDisplay: monthDisplay, todos: monthlyTodos } = todosByTimeBucket.monthly[currentMonthIndex];
+    const monthlyChartData = aggregateChartData(monthlyTodos);
 
     const { disabledLeft, disabledRight } = calculateDisabledArrows(state, totalWeeks, totalMonths);
 
@@ -76,11 +48,6 @@ export function ProjectAnalyticsModal() {
     const onSetKey = (key: string | null) => {
       setState(state => ({ ...state, key: key as TimeBucketType || 'weekly' }))
     }
-    const { timeDisplay: weekDisplay, todos: weeklyTodos } = todosByTimeBucket.weekly[currentWeekIndex];
-    const weeklyChartData = computeChartData(weeklyTodos);
-
-    const { timeDisplay: monthDisplay, todos: monthlyTodos } = todosByTimeBucket.monthly[currentMonthIndex];
-    const monthlyChartData = computeChartData(monthlyTodos);
 
     return (
       <Modal
