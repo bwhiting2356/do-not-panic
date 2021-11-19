@@ -19,7 +19,6 @@ import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
-import { SmallUserButton } from './components/icon-buttons/SmallUserButton';
 import { AuthModal } from './components/modals/AuthModal';
 import { Avatar } from './components/Avatar';
 
@@ -30,7 +29,6 @@ function App() {
   const {
     showArchive,
     setShowArchive,
-    setShowAuth
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
@@ -44,8 +42,6 @@ function App() {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
             <h1>
-              
-      
               <div style={{ display: 'flex'}}>
                 <Avatar />
                 To Do | &nbsp;<ProjectName />
