@@ -14,13 +14,14 @@ import { ProjectName } from './components/ProjectName';
 import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
-import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
+import { useGlobalKeyboardShortcuts } from './custom-hooks/useGlobalKeyboardShortcuts';
 import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
 import { AuthModal } from './components/modals/AuthModal';
 import { Avatar } from './components/Avatar';
+import { useSyncFirestore } from './custom-hooks/useSyncFirestore';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -32,9 +33,11 @@ function App() {
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
-  useGlobalKeyboardShortcuts()
+  useGlobalKeyboardShortcuts();
+  useSyncFirestore();
 
   const toggleShowArchive = () => setShowArchive(!showArchive);
+  
   return (
     <div>
       <Container>
