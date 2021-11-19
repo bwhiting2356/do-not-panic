@@ -19,6 +19,8 @@ import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
+import { AuthModal } from './components/modals/AuthModal';
+import { Avatar } from './components/Avatar';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -41,6 +43,8 @@ function App() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
             <h1>
               <div style={{ display: 'flex'}}>
+              <Avatar />
+                
                 To Do | &nbsp;<ProjectName />
                 </div>
               </h1>
@@ -75,6 +79,7 @@ function App() {
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
         <EditProjectsModal />
+        <AuthModal />
       </Container >
     </div>
   );
