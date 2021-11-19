@@ -6,7 +6,8 @@ import { SmallUserButton } from "./icon-buttons/SmallUserButton";
 
 export function Avatar() {
   const { user } = useFirebaseContext();
-  const photoURL = user?.user?.photoURL;
+  const photoURL = user?.photoURL;
+  //   const photoURL = user?.user?.photoURL;
   const { setShowAuth } = useAppContext();
 
   const image = photoURL ? (
