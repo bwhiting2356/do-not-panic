@@ -9,7 +9,7 @@ import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsMod
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
-import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
+import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter, Person } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
 import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
@@ -19,6 +19,9 @@ import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
+import { SmallUserButton } from './components/icon-buttons/SmallUserButton';
+import { AuthModal } from './components/modals/AuthModal';
+import { Avatar } from './components/Avatar';
 
 function App() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -27,6 +30,7 @@ function App() {
   const {
     showArchive,
     setShowArchive,
+    setShowAuth
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
@@ -40,7 +44,10 @@ function App() {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
             <h1>
+              
+      
               <div style={{ display: 'flex'}}>
+                <Avatar />
                 To Do | &nbsp;<ProjectName />
                 </div>
               </h1>
@@ -75,6 +82,7 @@ function App() {
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
         <EditProjectsModal />
+        <AuthModal />
       </Container >
     </div>
   );

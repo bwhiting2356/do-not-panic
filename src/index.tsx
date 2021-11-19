@@ -6,15 +6,18 @@ import { store, persistor } from "./app/store";
 import { Provider as ReduxProvider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { AppCtxProvider } from "./context/context";
+import { FirebaseAuthProvider } from "./firebase/FirebaseAuthProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <AppCtxProvider>
-      <ReduxProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </ReduxProvider>
+      <FirebaseAuthProvider>
+        <ReduxProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </ReduxProvider>
+      </FirebaseAuthProvider>
     </AppCtxProvider>
   </React.StrictMode>,
   document.getElementById("root")
