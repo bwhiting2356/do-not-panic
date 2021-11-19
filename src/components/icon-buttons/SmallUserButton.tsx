@@ -10,7 +10,7 @@ type Props = {
 export function SmallUserButton(props: Props) {
     return (
         <button className="small-invisible-button" style={{ width: '25px'}} {...props}>
-             <div style={{ width: '25px', marginRight: '20px'}}><Person /></div>
+             <div style={{ width: '20px', marginRight: '20px'}}><Person size={30} /></div>
         </button>
     )
 }

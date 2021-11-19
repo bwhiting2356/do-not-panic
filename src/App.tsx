@@ -43,7 +43,8 @@ function App() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
             <h1>
               <div style={{ display: 'flex'}}>
-                <Avatar />
+              <Avatar />
+                
                 To Do | &nbsp;<ProjectName />
                 </div>
               </h1>
