@@ -96,6 +96,7 @@ export const todoSlice = createSlice({
                     return todo;
                 }
             })
+            
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
         deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {

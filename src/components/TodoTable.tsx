@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Modal, Table } from "react-bootstrap";
+import React from "react";
+import { Table } from "react-bootstrap";
+import { useAppContext } from "../context/context";
 import { Due } from "../shared/due.type";
 import { Todo } from "../shared/todo";
-import { PieChartIconButton } from "./icon-buttons/PieChartIconButton";
-import { ProjectAnalytics } from "./ProjectAnalytics";
+import { SmallEditIconButton } from "./icon-buttons/SmallEditIconButton";
+import { SmallPieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
 import { TodoRow } from "./TodoRow";
 
 type Props = {
@@ -12,22 +13,7 @@ type Props = {
 };
 
 export function TodoTable({ todos, due }: Props) {
-  const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
-  const toggleProjectAnalytics = () => setShowProjectAnalytics((show) => !show);
-  const projectAnalyticsModal = (
-    <Modal
-      show={showProjectAnalytics}
-      onHide={toggleProjectAnalytics}
-      style={{ textAlign: "center" }}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Archived Todo Total Poms by Project</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ProjectAnalytics />
-      </Modal.Body>
-    </Modal>
-  );
+  const { setShowProjectAnalytics, setShowEditProjects } = useAppContext();
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -42,11 +28,14 @@ export function TodoTable({ todos, due }: Props) {
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                <PieChartIconButton
+                <SmallPieChartIconButton
                   onClick={() => setShowProjectAnalytics(true)}
                 />
-              ) : null}
-              {projectAnalyticsModal}
+              ) : (
+                <SmallEditIconButton
+                  onClick={() => setShowEditProjects(true)}
+                />
+              )}
             </th>
             <th className="links">Links</th>
             <th className="actions">Actions</th>

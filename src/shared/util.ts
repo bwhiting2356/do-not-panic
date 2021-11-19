@@ -67,8 +67,6 @@ export const computeChartData = (
     } as Record<string, number>
   );
 
-  console.log('todoPomsByProject', todoPomsByProject);
-
   return {
     labels: Object.keys(todoPomsByProject),
     datasets: [

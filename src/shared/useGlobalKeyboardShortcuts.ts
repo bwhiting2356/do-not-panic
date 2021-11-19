@@ -22,6 +22,9 @@ export const useGlobalKeyboardShortcuts = () => {
     setSelectedTodoId,
     editingTodoId,
     setEditingTodoId,
+    showEditProjects,
+    setShowEditProjects,
+    setShowProjectAnalytics,
   } = useAppContext();
   const {
     addTodoFromTemplateWithToast,
@@ -39,7 +42,11 @@ export const useGlobalKeyboardShortcuts = () => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       if (event.shiftKey && event.code === "Slash") {
         setShowKeyboardShortcuts(!showKeyboardShortcuts);
+        setShowEditProjects(false);
+        setShowProjectAnalytics(false);
       }
+
+      if (showEditProjects) return;
 
       if (event.metaKey && event.key === "Enter") {
         addNewTodoAndStartEditing();
