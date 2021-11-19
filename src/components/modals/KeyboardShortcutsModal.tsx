@@ -99,6 +99,11 @@ const KeyboardShortcutsTable = () => (
           <td>While no row is editing</td>
           <td>Archive all completed todos</td>
         </tr>
+        <tr>
+          <td>⌘X</td>
+          <td>Anywhere</td>
+          <td>Generate backup files</td>
+        </tr>
       </tbody>
     </Table>
   </div>
