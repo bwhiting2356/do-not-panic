@@ -1,21 +1,21 @@
 import moment from "moment";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { store } from "../app/store";
-import { useAppContext, useReduxActionsWithContext } from "../context/context";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { store } from "../../app/store";
+import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import {
   selectTodosDueLater,
   selectTodosDueToday,
-} from "../features/todos/selectors";
-import { editTodo } from "../features/todos/todoSlice";
-import { URL_PREFIX } from "./constants";
-import { Due } from "./due.type";
-import { Todo, TodoTemplates } from "./todo";
+} from "../../features/todos/selectors";
+import { editTodo } from "../../features/todos/todoSlice";
+import { URL_PREFIX } from "../../shared/constants";
+import { Due } from "../../shared/due.type";
+import { Todo, TodoTemplates } from "../../shared/todo";
 import {
   createCSVContents,
   download,
   getTodoIdInfoForArrowSelection,
-} from "./util";
+} from "../../shared/util";
 
 export const useGlobalKeyboardShortcuts = () => {
   const todayTodos = useAppSelector(selectTodosDueToday);

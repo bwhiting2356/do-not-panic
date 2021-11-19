@@ -14,7 +14,7 @@ import { ProjectName } from './components/ProjectName';
 import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
-import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
+import { useGlobalKeyboardShortcuts } from './components/custom-hooks/useGlobalKeyboardShortcuts';
 import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/project-analytics/ProjectAnalyticsModal';
