@@ -1,6 +1,8 @@
 import { URL_PREFIX } from "./constants";
 import { ID } from "./id.type";
 import { Todo } from "./todo";
+import json2csv from "json2csv";
+import { Link } from "./link";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -68,3 +70,28 @@ export const getTodoIdInfoForArrowSelection = (
     return acc;
   }, {} as ArrowSelectionInfo);
 };
+
+export function download(filename: string, text: string) {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+export function createCSVContents(todos: Todo[]) {
+
+  const mapLinkListToString = (links: Link[]): string => links.map(link => link.url).join(', ');
+
+  return json2csv.parse(
+    todos.map((todo) => ({ ...todo, links: mapLinkListToString(todo.links) }))
+  );
+}

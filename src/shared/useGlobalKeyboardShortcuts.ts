@@ -1,5 +1,7 @@
+import moment from "moment";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { store } from "../app/store";
 import { useAppContext, useReduxActionsWithContext } from "../context/context";
 import {
   selectTodosDueLater,
@@ -9,7 +11,11 @@ import { editTodo } from "../features/todos/todoSlice";
 import { URL_PREFIX } from "./constants";
 import { Due } from "./due.type";
 import { Todo, TodoTemplates } from "./todo";
-import { getTodoIdInfoForArrowSelection } from "./util";
+import {
+  createCSVContents,
+  download,
+  getTodoIdInfoForArrowSelection,
+} from "./util";
 
 export const useGlobalKeyboardShortcuts = () => {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -71,6 +77,16 @@ export const useGlobalKeyboardShortcuts = () => {
         } else {
           undoWithToast();
         }
+      }
+
+      if (event.metaKey && event.key === "x") {
+        const state = store.getState();
+        const time = moment().format("MMMM Do YYYY, h:mm:ss a");
+        download(`backup-${time}.json`, JSON.stringify(state));
+        download(
+          `todos-${time}.csv`,
+          createCSVContents(state.currentState.todos)
+        );
       }
 
       if (!Boolean(editingTodoId)) {
