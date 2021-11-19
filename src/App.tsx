@@ -17,7 +17,7 @@ import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './shared/useGlobalKeyboardShortcuts';
 import { TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
-import { ProjectAnalyticsModal } from './components/modals/ProjectAnalyticsModal';
+import { ProjectAnalyticsModal } from './components/modals/project-analytics/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
 
 function App() {
