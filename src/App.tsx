@@ -9,7 +9,7 @@ import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsMod
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from './features/todos/selectors';
 import { TodalToday } from './components/TotalToday';
 import { Due } from './shared/due.type';
-import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter, Person } from 'react-bootstrap-icons';
+import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { ProjectName } from './components/ProjectName';
 import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
