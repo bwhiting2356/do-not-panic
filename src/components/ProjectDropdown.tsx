@@ -19,6 +19,7 @@ export function ProjectDropdown({
   project = "No Project",
   isEditing,
   onChangeProject,
+  onSubmit  
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
   const [newProjectOption, setNewProjectOption] = useState<SelectOption>({
@@ -39,7 +40,8 @@ export function ProjectDropdown({
     label: opt,
   }));
 
-  const onOptionChange = (option: SingleValue<SelectOption>) => {
+  const onOptionChange = (option: SingleValue<SelectOption>, arg: any) => {
+    console.log('arg', arg);  
     if (option) {
       setNewProjectOption(option);
       onChangeProject(option.value);
@@ -47,10 +49,14 @@ export function ProjectDropdown({
   };
 
   const onBlur = () => onChangeProject(newProjectOption.value);
+  const onEnter = (e: any) => {
+    if (e.code === 'Enter') onSubmit();
+  }
 
   return (
     <div>
       <Select
+        onKeyDown={onEnter}
         value={newProjectOption}
         placeholder="Project"
         options={selectOptions}
