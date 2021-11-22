@@ -28,7 +28,6 @@ function Todos() {
   const {
     showArchive,
     setShowArchive,
-    showAnimation,
     setShowAnimation
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
