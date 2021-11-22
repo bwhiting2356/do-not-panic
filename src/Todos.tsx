@@ -53,7 +53,7 @@ function Todos() {
       setShowAnimation(true);
       setTimeout(() => {
         setShowAnimation(false)
-      }, 3000);
+      }, 1500);
     }
     prevTodosRef.current = todayTodos;
   }, [todayTodos, setShowAnimation])
