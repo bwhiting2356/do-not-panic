@@ -28,7 +28,6 @@ function Todos() {
   const {
     showArchive,
     setShowArchive,
-    showAnimation,
     setShowAnimation
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
@@ -51,9 +50,6 @@ function Todos() {
 
     if (doneTodos > prevDoneTodos) {
       setShowAnimation(true);
-      setTimeout(() => {
-        setShowAnimation(false)
-      }, 3000);
     }
     prevTodosRef.current = todayTodos;
   }, [todayTodos, setShowAnimation])
@@ -101,7 +97,7 @@ function Todos() {
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
         <EditProjectsModal />
-        <ConfettiAnimation play={showAnimation} />
+        <ConfettiAnimation />
       </Container >
     </div>
   );
