@@ -51,9 +51,6 @@ function Todos() {
 
     if (doneTodos > prevDoneTodos) {
       setShowAnimation(true);
-      // setTimeout(() => {
-      //   setShowAnimation(false)
-      // }, 1500);
     }
     prevTodosRef.current = todayTodos;
   }, [todayTodos, setShowAnimation])
@@ -101,7 +98,7 @@ function Todos() {
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
         <EditProjectsModal />
-        <ConfettiAnimation play={showAnimation} />
+        <ConfettiAnimation />
       </Container >
     </div>
   );

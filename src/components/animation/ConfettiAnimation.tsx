@@ -4,18 +4,15 @@ import Lottie from "react-lottie";
 import { useAppContext } from "../../context/context";
 import { generateRandomConfetti } from "./helpers";
 
-interface Props {
-  play: boolean;
-}
 
-export function ConfettiAnimation({ play }: Props) {
-  const { setShowAnimation } = useAppContext()
+export function ConfettiAnimation() {
+  const { showAnimation, setShowAnimation } = useAppContext()
   
   const [confetti, setConfetti] = useState(() => generateRandomConfetti());
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
-    if (play) {
+    if (showAnimation) {
       timeout = setTimeout(() => {
         setShowAnimation(false)
       }, 1500);
@@ -23,7 +20,7 @@ export function ConfettiAnimation({ play }: Props) {
     setConfetti(generateRandomConfetti())
     return () => clearTimeout(timeout);
     
-  }, [play, setConfetti, setShowAnimation]);
+  }, [showAnimation, setConfetti, setShowAnimation]);
   
   const defaultOptions = {
     loop: false,
@@ -34,7 +31,7 @@ export function ConfettiAnimation({ play }: Props) {
     },
   };
 
-  if (play) {
+  if (showAnimation) {
     return (
       <div
         style={{
