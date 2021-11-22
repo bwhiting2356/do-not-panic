@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
 import { ID } from "../shared/id.type";
 import { Todo } from "../shared/todo";
-import { Link } from "./Link";
+import { LinkWithRef } from "./Link";
 import { TextField } from "./TextField";
 import { Due } from "../shared/due.type";
 import { ProjectDropdown } from "./ProjectDropdown";
@@ -17,6 +17,7 @@ type Props = {
 };
 
 export function TodoRow({ todo }: Props) {
+  const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { editingTodoId, setEditingTodoId, selectedTodoId, setSelectedTodoId } =
     useAppContext();
@@ -72,16 +73,21 @@ export function TodoRow({ todo }: Props) {
     );
   };
 
+  const focusLink = () => linkRef?.current?.focus();
+
   const onEditProject = (newProject: string) => {
-    dispatch(
-      editTodo({
-        id,
-        newTodo: {
-          ...todo,
-          project: newProject,
-        },
-      })
-    );
+    if (newProject !== todo.project) {
+      dispatch(
+        editTodo({
+          id,
+          newTodo: {
+            ...todo,
+            project: newProject,
+          },
+        })
+      );
+      focusLink();
+    }
   };
 
   const onDeleteTodo = () => deleteTodoWithToast(todo);
@@ -161,7 +167,8 @@ export function TodoRow({ todo }: Props) {
       <td className="links vertical-align">
         <div>
           {links.map(({ id, url }) => (
-            <Link
+            <LinkWithRef
+              ref={linkRef}
               key={id}
               url={url}
               editing={isEditing}
