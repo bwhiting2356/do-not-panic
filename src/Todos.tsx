@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import './App.css';
 import { Button, ButtonGroup, Container } from 'react-bootstrap';
 import { TodoTable } from './components/TodoTable';
@@ -15,10 +15,11 @@ import { useReduxActionsWithContext, useAppContext } from './context/context';
 import { PomodoroTimer } from './components/PomodoroTimer';
 import { EventToastContainer } from './components/EventToastContainer';
 import { useGlobalKeyboardShortcuts } from './components/custom-hooks/useGlobalKeyboardShortcuts';
-import { TodoTemplates } from './shared/todo';
+import { Todo, TodoTemplates } from './shared/todo';
 import { IconButton } from './components/icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from './components/modals/project-analytics/ProjectAnalyticsModal';
 import { EditProjectsModal } from './components/modals/EditProjectsModal';
+import { ConfettiAnimation } from './components/animation/ConfettiAnimation';
 
 function Todos() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -27,10 +28,35 @@ function Todos() {
   const {
     showArchive,
     setShowArchive,
+    showAnimation,
+    setShowAnimation
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
-  useGlobalKeyboardShortcuts()
+  
+  useGlobalKeyboardShortcuts();
+
+  const prevTodosRef = useRef<Todo[]>(todayTodos);
+  useEffect(() => {
+    console.log('in effect');
+    const doneTodos = todayTodos.reduce((acc, curr) => {
+      if (curr.done) return acc + 1;
+      return acc;
+    }, 0)
+
+    const prevDoneTodos = prevTodosRef.current.reduce((acc, curr) => {
+      if (curr.done) return acc + 1;
+      return acc;
+    }, 0)
+
+    if (doneTodos > prevDoneTodos) {
+      setShowAnimation(true);
+      setTimeout(() => {
+        setShowAnimation(false)
+      }, 3000);
+    }
+    prevTodosRef.current = todayTodos;
+  }, [todayTodos, setShowAnimation])
 
   const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
@@ -75,6 +101,7 @@ function Todos() {
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
         <EditProjectsModal />
+        <ConfettiAnimation play={showAnimation} />
       </Container >
     </div>
   );

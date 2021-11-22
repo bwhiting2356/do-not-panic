@@ -7,10 +7,16 @@ type Props = {
   onEditLink: (url: string) => void;
   editing: boolean;
   onSubmit: () => void;
-  forwardRef?: any // TODO: fix
+  forwardRef?: any; // TODO: fix
 };
 
-export function Link({ url, onEditLink, editing, onSubmit, forwardRef }: Props) {
+export function Link({
+  url,
+  onEditLink,
+  editing,
+  onSubmit,
+  forwardRef,
+}: Props) {
   const [newUrl, setNewUrl] = useState(url);
 
   const onUrlChange = (e: any) => {
@@ -37,9 +43,16 @@ export function Link({ url, onEditLink, editing, onSubmit, forwardRef }: Props) 
 
   return (
     <Form onSubmit={submit}>
-      <Form.Control type="text" value={newUrl} onChange={onUrlChange} ref={forwardRef} />
+      <Form.Control
+        type="text"
+        value={newUrl}
+        onChange={onUrlChange}
+        ref={forwardRef}
+      />
     </Form>
   );
 }
 
-export const LinkWithRef = React.forwardRef<HTMLInputElement, Props>((props, ref) => <Link {...props} forwardRef={ref}/>)
+export const LinkWithRef = React.forwardRef<HTMLInputElement, Props>(
+  (props, ref) => <Link {...props} forwardRef={ref} />
+);

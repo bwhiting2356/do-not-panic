@@ -17,7 +17,12 @@ export function TodalToday() {
 
   return (
     <Table
-      style={{ textAlign: "right", width: "300px", minWidth: '300px', marginTop: "10px" }}
+      style={{
+        textAlign: "right",
+        width: "300px",
+        minWidth: "300px",
+        marginTop: "10px",
+      }}
       striped
       bordered
       size="sm"

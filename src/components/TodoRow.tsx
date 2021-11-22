@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
 import { ID } from "../shared/id.type";
@@ -11,6 +11,7 @@ import { ActionsDropdown } from "./ActionsDropdown";
 import { useAppDispatch } from "../app/hooks";
 import { editTodo } from "../features/todos/todoSlice";
 import { useReduxActionsWithContext, useAppContext } from "../context/context";
+import { ConfettiAnimation } from "./animation/ConfettiAnimation";
 
 type Props = {
   todo: Todo;
@@ -87,7 +88,7 @@ export function TodoRow({ todo }: Props) {
         })
       );
       focusLink();
-    } 
+    }
   };
 
   const onDeleteTodo = () => deleteTodoWithToast(todo);

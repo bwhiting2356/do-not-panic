@@ -36,6 +36,8 @@ export interface AppContextInterface {
   setShowKeyboardShortcuts: (show: boolean) => void;
   toasts: ToastData[];
   addToast: (newToast: string) => void;
+  showAnimation: boolean;
+  setShowAnimation: (show: boolean) => void;
 }
 
 const AppCtx = createContext<AppContextInterface>({
@@ -53,6 +55,8 @@ const AppCtx = createContext<AppContextInterface>({
   setShowKeyboardShortcuts: () => {},
   toasts: [],
   addToast: () => {},
+  showAnimation: false,
+  setShowAnimation: () => {},
 });
 
 export const useAppContextState = (): AppContextInterface => {
@@ -62,6 +66,7 @@ export const useAppContextState = (): AppContextInterface => {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showEditProjects, setShowEditProjects] = useState(false);
   const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
   const addToast = (text: string) => {
@@ -81,6 +86,8 @@ export const useAppContextState = (): AppContextInterface => {
     setShowProjectAnalytics,
     showEditProjects,
     setShowEditProjects,
+    showAnimation,
+    setShowAnimation,
     toasts,
     addToast,
   };
