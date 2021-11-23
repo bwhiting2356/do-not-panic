@@ -24,10 +24,10 @@ export function ProjectAnalyticsModal() {
     const { key, currentWeekIndex, currentMonthIndex  } = state;
     
 
-    const { timeDisplay: weekDisplay, todos: weeklyTodos } = todosByTimeBucket.weekly[currentWeekIndex];
+    const { timeDisplay: weekDisplay = '', todos: weeklyTodos = [] } = todosByTimeBucket.weekly[currentWeekIndex] || {};
     const weeklyChartData = aggregateChartData(weeklyTodos);
 
-    const { timeDisplay: monthDisplay, todos: monthlyTodos } = todosByTimeBucket.monthly[currentMonthIndex];
+    const { timeDisplay: monthDisplay = '', todos: monthlyTodos = [] } = todosByTimeBucket.monthly[currentMonthIndex] || {};
     const monthlyChartData = aggregateChartData(monthlyTodos);
 
     const { disabledLeft, disabledRight } = calculateDisabledArrows(state, totalWeeks, totalMonths);
