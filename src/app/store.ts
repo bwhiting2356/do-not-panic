@@ -41,9 +41,9 @@ const persistConfig = {
   version: 2,
   migrate: createMigrate(migrations, { debug: false }),
 };
-const rootReducer = combineReducers({ 
+const rootReducer = combineReducers({
   todos: todosReducer,
-  projects: projectsReducer 
+  projects: projectsReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -56,7 +56,6 @@ function Todos() {
   const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
     <div>
-      <Container>
         <EventToastContainer />
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '700px' }}>
@@ -97,7 +96,6 @@ function Todos() {
         <ProjectAnalyticsModal />
         <EditProjectsModal />
         <ConfettiAnimation />
-      </Container >
     </div>
   );
 }

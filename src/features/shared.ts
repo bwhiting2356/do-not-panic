@@ -37,14 +37,17 @@ export const reusableRedo = <T>(state: StateWithHistory<T>) => {
   };
 };
 
-export const addNewStateGoingForward = <T>(prevState: StateWithHistory<T>, newState: T): StateWithHistory<T> => {
-    const newPastState = [
-        ...prevState.pastState || [],
-        prevState.currentState
-    ].slice(MAX_TODO_HISTORY * -1);
-    return {
-        pastState: newPastState,
-        currentState: newState,
-        futureState: []
-    }
-}
+export const addNewStateGoingForward = <T>(
+  prevState: StateWithHistory<T>,
+  newState: T
+): StateWithHistory<T> => {
+  const newPastState = [
+    ...(prevState.pastState || []),
+    prevState.currentState,
+  ].slice(MAX_TODO_HISTORY * -1);
+  return {
+    pastState: newPastState,
+    currentState: newState,
+    futureState: [],
+  };
+};
