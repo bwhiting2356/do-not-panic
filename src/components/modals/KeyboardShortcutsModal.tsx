@@ -17,7 +17,7 @@ const KeyboardShortcutsTable = () => (
         <tr>
           <td>⌘↵</td>
           <td>Anywhere</td>
-          <td>Add new todo and start editing</td>
+          <td>Add new todo/project and start editing</td>
         </tr>
         <tr>
           <td>⌘Z</td>
@@ -32,16 +32,16 @@ const KeyboardShortcutsTable = () => (
         <tr>
           <td>Esc</td>
           <td>Anywhere</td>
-          <td>Unselect todo row if any</td>
+          <td>Unselect todo/project row if any</td>
         </tr>
         <tr>
           <td>⌘⇧1</td>
-          <td>Anywhere</td>
+          <td>On todo page</td>
           <td>Add new todo with 'start day' template</td>
         </tr>
         <tr>
           <td>⌘⇧2</td>
-          <td>Anywhere</td>
+          <td>On todo page</td>
           <td>Add new todo with 'start week' template</td>
         </tr>
         <tr>
@@ -66,17 +66,17 @@ const KeyboardShortcutsTable = () => (
         </tr>
         <tr>
           <td>e</td>
-          <td>While todo row is selected</td>
+          <td>While todo/project row is selected</td>
           <td>Edit todo</td>
         </tr>
         <tr>
           <td>↓</td>
-          <td>While todo row is selected</td>
+          <td>While todo/project row is selected</td>
           <td>Select row below</td>
         </tr>
         <tr>
           <td>↑</td>
-          <td>While todo row is selected</td>
+          <td>While todo/project row is selected</td>
           <td>Select row above</td>
         </tr>
         <tr>

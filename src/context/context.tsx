@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch } from "../app/hooks";
+import { addNewProject, redoProjects, undoProjects } from "../features/projects/projectSlice";
 import {
-  undo,
-  redo,
+  undoTodos,
+  redoTodos,
   archiveAllCompletedTodos,
   resortTodos,
   addTodoFromTemplate,
@@ -14,6 +15,7 @@ import {
 import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
+import { Project } from "../shared/project";
 import { Todo, TodoTemplates } from "../shared/todo";
 
 interface ToastData {
@@ -22,10 +24,10 @@ interface ToastData {
 }
 
 export interface AppContextInterface {
-  editingTodoId: ID;
-  selectedTodoId: ID;
-  setEditingTodoId: (id: ID) => void;
-  setSelectedTodoId: (id: ID) => void;
+  editingItemId: ID;
+  selectedItemId: ID;
+  setEditingItemId: (id: ID) => void;
+  setSelectedItemId: (id: ID) => void;
   showArchive: boolean;
   setShowArchive: (show: boolean) => void;
   showProjectAnalytics: boolean;
@@ -41,10 +43,10 @@ export interface AppContextInterface {
 }
 
 const AppCtx = createContext<AppContextInterface>({
-  editingTodoId: "",
-  selectedTodoId: "",
-  setEditingTodoId: () => {},
-  setSelectedTodoId: () => {},
+  editingItemId: "",
+  selectedItemId: "",
+  setEditingItemId: () => {},
+  setSelectedItemId: () => {},
   showArchive: false,
   setShowArchive: () => {},
   showProjectAnalytics: false,
@@ -60,8 +62,8 @@ const AppCtx = createContext<AppContextInterface>({
 });
 
 export const useAppContextState = (): AppContextInterface => {
-  const [editingTodoId, setEditingTodoId] = useState("");
-  const [selectedTodoId, setSelectedTodoId] = useState("");
+  const [editingItemId, setEditingItemId] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState("");
   const [showArchive, setShowArchive] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showEditProjects, setShowEditProjects] = useState(false);
@@ -74,10 +76,10 @@ export const useAppContextState = (): AppContextInterface => {
   };
 
   return {
-    editingTodoId,
-    setEditingTodoId,
-    selectedTodoId,
-    setSelectedTodoId,
+    editingItemId,
+    setEditingItemId,
+    selectedItemId,
+    setSelectedItemId,
     showArchive,
     setShowArchive,
     showKeyboardShortcuts,
@@ -101,15 +103,25 @@ export const AppCtxProvider: React.FC = ({ children }) => {
 };
 
 export const useReduxActionsWithContext = () => {
-  const { addToast, setSelectedTodoId, setEditingTodoId } = useAppContext();
+  const { addToast, setSelectedItemId, setEditingItemId } = useAppContext();
   const dispatch = useAppDispatch();
-  const undoWithToast = () => {
-    dispatch(undo());
+  const undoTodosWithToast = () => {
+    dispatch(undoTodos());
     addToast("undo");
   };
 
-  const redoWithToast = () => {
-    dispatch(redo());
+  const redoTodosWithToast = () => {
+    dispatch(redoTodos());
+    addToast("redo");
+  };
+
+  const undoProjectsWithToast = () => {
+    dispatch(undoProjects());
+    addToast("undo");
+  };
+
+  const redoProjectsWithToast = () => {
+    dispatch(redoProjects());
     addToast("redo");
   };
 
@@ -131,15 +143,22 @@ export const useReduxActionsWithContext = () => {
   const deleteTodoWithToast = (todo: Todo) => {
     dispatch(deleteTodo({ id: todo.id }));
     addToast(`${todo.name} deleted`);
-    setSelectedTodoId("");
+    setSelectedItemId("");
   };
 
   const addNewTodoAndStartEditing = () => {
     const newTodo = new Todo();
     dispatch(addNewTodo(newTodo));
     addToast("New todo added");
-    setEditingTodoId(newTodo.id);
+    setEditingItemId(newTodo.id);
   };
+
+  const addNewProjectAndStartEditing = () => {
+    const newProject = new Project();
+    dispatch(addNewProject(newProject))
+    addToast("New project added");
+    setEditingItemId(newProject.id);
+  }
 
   const archiveTodoWithToast = (todo: Todo) => {
     dispatch(
@@ -153,7 +172,7 @@ export const useReduxActionsWithContext = () => {
       })
     );
     addToast(`${todo.name} archived`);
-    setSelectedTodoId("");
+    setSelectedItemId("");
   };
 
   const moveTodoWithToast = (todo: Todo, newDue: Due) => {
@@ -167,14 +186,17 @@ export const useReduxActionsWithContext = () => {
   };
 
   return {
-    undoWithToast,
-    redoWithToast,
+    undoTodosWithToast,
+    redoTodosWithToast,
+    undoProjectsWithToast,
+    redoProjectsWithToast,
     sortTodosWithToast,
     onArchiveAllCompletedTodosWithToast,
     deleteTodoWithToast,
     archiveTodoWithToast,
     moveTodoWithToast,
     addNewTodoAndStartEditing,
+    addNewProjectAndStartEditing,
     addTodoFromTemplateWithToast,
   };
 };

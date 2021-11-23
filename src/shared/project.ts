@@ -1,9 +1,7 @@
-import { ID } from "./id.type";
 import { Link } from "./link";
-import { v4 as uuidv4 } from "uuid";
+import { Item } from "./item";
 
-export class Project {
-  id: ID;
+export class Project extends Item {
   archivedDate?: Date;
 
   constructor(
@@ -11,6 +9,6 @@ export class Project {
     public description: string = "",
     public link: Link = new Link()
   ) {
-    this.id = uuidv4();
+    super()
   }
 }

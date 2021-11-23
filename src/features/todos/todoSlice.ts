@@ -4,7 +4,7 @@ import { templateGenerators, Todo, TodoTemplates } from "../../shared/todo";
 import { sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 import { defaultProjects } from '../../shared/defaultProjects';
-import { addNewStateGoingForward, reusableRedo, reusableUndo, StateWithHistory } from '../shared';
+import { addNewStateGoingForward, redo, undo, StateWithHistory } from '../shared';
 
 interface TodoState {
     todos: Todo[];
@@ -101,11 +101,11 @@ export const todoSlice = createSlice({
                 { ...state.currentState, projects: action.payload}
             )
         },
-        undo: reusableUndo,
-        redo: reusableRedo
+        undoTodos: undo,
+        redoTodos: redo
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editProjects, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editProjects, undoTodos, redoTodos } = todoSlice.actions;
 
 export default todoSlice.reducer;

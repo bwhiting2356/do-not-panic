@@ -9,11 +9,10 @@ import { Due } from '../../shared/due.type';
 import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
 import { useReduxActionsWithContext, useAppContext } from '../../context/context';
 import { EventToastContainer } from '../EventToastContainer';
-import { useGlobalKeyboardShortcuts } from '../custom-hooks/useGlobalKeyboardShortcuts';
+import { useTodosKeyboardShortcuts } from './useTodosKeyboardShortcuts';
 import { Todo, TodoTemplates } from '../../shared/todo';
 import { IconButton } from '../icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from '../modals/project-analytics/ProjectAnalyticsModal';
-import { EditProjectsModal } from '../modals/EditProjectsModal';
 import { ConfettiAnimation } from '../animation/ConfettiAnimation';
 
 function Todos() {
@@ -27,8 +26,7 @@ function Todos() {
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
   
-  
-  useGlobalKeyboardShortcuts();
+  useTodosKeyboardShortcuts();
 
   const prevTodosRef = useRef<Todo[]>(todayTodos);
   useEffect(() => {
@@ -78,7 +76,6 @@ function Todos() {
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
         <KeyboardShortcutsModal />
         <ProjectAnalyticsModal />
-        <EditProjectsModal />
         <ConfettiAnimation />
     </div>
   );

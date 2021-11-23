@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Todos from './components/todos/Todos';
 import Projects from './components/projects/Projects';
-import { NavTabs } from './components/NavTabs';
-import { TopInfo } from './components/TopInfo';
+import { NavTabs } from './components/header/NavTabs';
+import { TopInfo } from './components/header/TopInfo';
 
 
 export function App() {

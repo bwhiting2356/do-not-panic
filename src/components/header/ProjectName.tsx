@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectDomainName } from "../features/todos/selectors";
-import { setProjectName } from "../features/todos/todoSlice";
-import { TextField } from "./TextField";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectDomainName } from "../../features/todos/selectors";
+import { setProjectName } from "../../features/todos/todoSlice";
+import { TextField } from "../TextField";
 
 export function ProjectName() {
   const dispatch = useAppDispatch();
