@@ -1,9 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ID } from '../../shared/id.type';
-import { templateGenerators, Todo, TodoTemplates } from "../../shared/todo";
-import { sortTodos } from '../../shared/util';
-import { Due } from '../../shared/due.type';
-import { addNewStateGoingForward, reusableRedo, reusableUndo, StateWithHistory } from '../shared';
+import { createSlice } from '@reduxjs/toolkit';
+import { reusableRedo, reusableUndo, StateWithHistory } from '../shared';
 import { Project } from '../../shared/project';
 
 interface ProjectState {
