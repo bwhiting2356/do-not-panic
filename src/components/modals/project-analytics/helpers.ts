@@ -1,5 +1,7 @@
 import { ChartData } from "chart.js";
 import moment from "moment";
+import { ID } from "../../../shared/id.type";
+import { Project } from "../../../shared/project";
 import { Todo } from "../../../shared/todo";
 import { convertStringPoms } from "../../../shared/util";
 
@@ -38,8 +40,13 @@ export const calculateDisabledArrows = ({
     return { disabledLeft, disabledRight }
   }
 
+  const mapProjectIdToTitle = (projects: Project[]) => (projectId: ID) => {
+    return projects.find(({ id }) => id === projectId)?.title || 'No Project';
+  }
+
   export const aggregateChartData = (
     todos: Todo[],
+    projects: Project[]
   ): ChartData<"pie", number[], string> => {
     const todoPomsByProject = todos.reduce(
       (acc, { projectId = "No Project", poms }) => {
@@ -56,7 +63,7 @@ export const calculateDisabledArrows = ({
     );
   
     return {
-      labels: Object.keys(todoPomsByProject),
+      labels: Object.keys(todoPomsByProject).map(mapProjectIdToTitle(projects)),
       datasets: [
         {
           data: Object.values(todoPomsByProject),

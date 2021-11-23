@@ -3,6 +3,7 @@ import { Modal, Tab, Tabs } from "react-bootstrap";
 import { Pie } from "react-chartjs-2";
 import { useAppSelector } from "../../../app/hooks";
 import { useAppContext } from "../../../context/context";
+import { selectProjects } from "../../../features/projects/selectors";
 import { selectArchivedTodos } from "../../../features/todos/selectors";
 import { ArrowButtons } from "./ArrowButtons";
 import { calculateDisabledArrows, aggregateChartData, ProjectModalState, TimeBucketType, groupTodosByTimeDisplayBuckets } from "./helpers";
@@ -10,6 +11,7 @@ import { calculateDisabledArrows, aggregateChartData, ProjectModalState, TimeBuc
 export function ProjectAnalyticsModal() {
     const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
     const archivedTodos = useAppSelector(selectArchivedTodos);
+    const projects = useAppSelector(selectProjects);
 
     const todosByTimeBucket = groupTodosByTimeDisplayBuckets(archivedTodos);
     const totalWeeks = todosByTimeBucket.weekly.length;
@@ -24,10 +26,10 @@ export function ProjectAnalyticsModal() {
     
 
     const { timeDisplay: weekDisplay = '', todos: weeklyTodos = [] } = todosByTimeBucket.weekly[currentWeekIndex] || {};
-    const weeklyChartData = aggregateChartData(weeklyTodos);
+    const weeklyChartData = aggregateChartData(weeklyTodos, projects);
 
     const { timeDisplay: monthDisplay = '', todos: monthlyTodos = [] } = todosByTimeBucket.monthly[currentMonthIndex] || {};
-    const monthlyChartData = aggregateChartData(monthlyTodos);
+    const monthlyChartData = aggregateChartData(monthlyTodos, projects);
 
     const { disabledLeft, disabledRight } = calculateDisabledArrows(state, totalWeeks, totalMonths);
 
