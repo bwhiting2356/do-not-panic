@@ -27,7 +27,7 @@ const initialState: TodoStateWithHistory = {
 }
 
 export const todoSlice = createSlice({
-    name: 'counter',
+    name: 'todos',
     initialState,
     reducers: {
         setProjectName: (state, action: PayloadAction<string>) => {

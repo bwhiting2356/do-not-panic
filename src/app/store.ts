@@ -9,6 +9,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import todosReducer from "../features/todos/todoSlice";
+import projectsReducer from "../features/projects/projectSlice";
 import { defaultProjects } from "../shared/defaultProjects";
 
 const migrations = {
@@ -40,7 +41,10 @@ const persistConfig = {
   version: 2,
   migrate: createMigrate(migrations, { debug: false }),
 };
-const rootReducer = combineReducers({ todos: todosReducer });
+const rootReducer = combineReducers({ 
+  todos: todosReducer,
+  projects: projectsReducer 
+});
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(persistedReducer, composeWithDevTools());
