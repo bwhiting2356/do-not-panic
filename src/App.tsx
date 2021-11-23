@@ -1,10 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Todos from './Todos';
-import Projects from './Projects';
+import Todos from './components/todos/Todos';
+import Projects from './components/projects/Projects';
 import { NavTabs } from './components/NavTabs';
 import { TopInfo } from './components/TopInfo';
 

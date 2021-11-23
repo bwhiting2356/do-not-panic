@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Archive, Pencil } from "react-bootstrap-icons";
-import { Project } from "../shared/project";
+import { Project } from "../../shared/project";
 
 type Props = {
   project: Project;

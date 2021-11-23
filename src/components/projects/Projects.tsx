@@ -1,17 +1,14 @@
 import React from 'react';
-import './App.css';
 import { Table } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useAppSelector } from './app/hooks';
-import { selectProjects } from './features/projects/selectors';
-import { ProjectActionsDropdown } from './components/ProjectActionsDropdown';
-import { ProjectRow } from './components/ProjectRow';
+import { useAppSelector } from '../../app/hooks';
+import { selectProjects } from '../../features/projects/selectors';
+import { ProjectRow } from './ProjectRow';
 
 function Projects() {
   const projects = useAppSelector(selectProjects);
   return (
     <div>
-      <Table striped bordered hover>
+      <Table size="sm">
         <thead>
           <tr>
             <th>Title</th>

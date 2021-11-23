@@ -1,16 +1,16 @@
 import React, { useRef } from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
-import { ID } from "../shared/id.type";
-import { Todo } from "../shared/todo";
-import { LinkWithRef } from "./Link";
-import { TextField } from "./TextField";
-import { Due } from "../shared/due.type";
-import { ProjectDropdown } from "./ProjectDropdown";
+import { ID } from "../../shared/id.type";
+import { Todo } from "../../shared/todo";
+import { LinkWithRef } from "../Link";
+import { TextField } from "../TextField";
+import { Due } from "../../shared/due.type";
+import { ProjectDropdown } from "../ProjectDropdown";
 import { TodoActionsDropdown } from "./TodoActionsDropdown";
-import { useAppDispatch } from "../app/hooks";
-import { editTodo } from "../features/todos/todoSlice";
-import { useReduxActionsWithContext, useAppContext } from "../context/context";
+import { useAppDispatch } from "../../app/hooks";
+import { editTodo } from "../../features/todos/todoSlice";
+import { useReduxActionsWithContext, useAppContext } from "../../context/context";
 
 type Props = {
   todo: Todo;

@@ -45,7 +45,6 @@ export function ProjectDropdown({
   }));
 
   const onOptionChange = (option: SingleValue<SelectOption>) => {
-    console.log("option", option);
     if (option) {
       setNewProjectOption(option);
       onChangeProject(option.value);

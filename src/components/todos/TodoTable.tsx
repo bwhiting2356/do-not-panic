@@ -1,10 +1,10 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { useAppContext } from "../context/context";
-import { Due } from "../shared/due.type";
-import { Todo } from "../shared/todo";
-import { SmallEditIconButton } from "./icon-buttons/SmallEditIconButton";
-import { SmallPieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
+import { useAppContext } from "../../context/context";
+import { Due } from "../../shared/due.type";
+import { Todo } from "../../shared/todo";
+import { SmallEditIconButton } from "../icon-buttons/SmallEditIconButton";
+import { SmallPieChartIconButton } from "../icon-buttons/SmallPieChartIconButton";
 import { TodoRow } from "./TodoRow";
 
 type Props = {
