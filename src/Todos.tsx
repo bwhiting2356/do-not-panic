@@ -37,7 +37,6 @@ function Todos() {
 
   const prevTodosRef = useRef<Todo[]>(todayTodos);
   useEffect(() => {
-    console.log('in effect');
     const doneTodos = todayTodos.reduce((acc, curr) => {
       if (curr.done) return acc + 1;
       return acc;

@@ -10,7 +10,6 @@ import { calculateDisabledArrows, aggregateChartData, ProjectModalState, TimeBuc
 export function ProjectAnalyticsModal() {
     const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
     const archivedTodos = useAppSelector(selectArchivedTodos);
-    console.log('archivedTodos', archivedTodos);
 
     const todosByTimeBucket = groupTodosByTimeDisplayBuckets(archivedTodos);
     const totalWeeks = todosByTimeBucket.weekly.length;
