@@ -2,7 +2,8 @@ import { createSelector } from 'reselect'
 import { RootState } from '../../app/store';
 import { Due } from '../../shared/due.type';
 
-const selectCurrentState = (state: RootState) => state.currentState;
+const selectTodoState = (state: RootState) => state.todos
+const selectCurrentState = createSelector(selectTodoState, (state) => state.currentState);
 const selectTodos = createSelector(
     selectCurrentState,
     currentState => currentState.todos
