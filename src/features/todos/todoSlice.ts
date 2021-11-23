@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ID } from '../../shared/id.type';
-import { MAX_TODO_HISTORY } from '../../shared/constants';
 import { templateGenerators, Todo, TodoTemplates } from "../../shared/todo";
 import { sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
 import { defaultProjects } from '../../shared/defaultProjects';
+import { addNewStateGoingForward, reusableRedo, reusableUndo, StateWithHistory } from '../shared';
 
 interface TodoState {
     todos: Todo[];
@@ -12,11 +12,7 @@ interface TodoState {
     domainName: string;
 }
 
-export interface TodoStateWithHistory {
-    pastState: TodoState[],
-    currentState: TodoState,
-    futureState: TodoState[]
-};
+export interface TodoStateWithHistory extends StateWithHistory<TodoState> {};
 
 const initialCurrentState: TodoState = {
     todos: [],
@@ -30,21 +26,8 @@ const initialState: TodoStateWithHistory = {
     futureState: []
 }
 
-
-const addNewStateGoingForward = (prevState: TodoStateWithHistory, newState: TodoState): TodoStateWithHistory => {
-    const newPastState = [
-        ...prevState.pastState || [],
-        prevState.currentState
-    ].slice(MAX_TODO_HISTORY * -1);
-    return {
-        pastState: newPastState,
-        currentState: newState,
-        futureState: []
-    }
-}
-
 export const todoSlice = createSlice({
-    name: 'counter',
+    name: 'todos',
     initialState,
     reducers: {
         setProjectName: (state, action: PayloadAction<string>) => {
@@ -112,47 +95,17 @@ export const todoSlice = createSlice({
             })
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
-        editNewTodo: (state, action: PayloadAction<Todo>) => {
-            return addNewStateGoingForward(state, { ...state.currentState });
-        },
         editProjects: (state, action: PayloadAction<string[]>) => {
             return addNewStateGoingForward(
                 state,
                 { ...state.currentState, projects: action.payload}
             )
         },
-        undo: (state) => {
-            const { pastState, currentState, futureState } = state;
-            const prevState = pastState[pastState.length - 1];
-            const newPastState = pastState.slice(0, pastState.length - 1);
-
-            if (prevState) {
-                return {
-                    pastState: newPastState,
-                    currentState: prevState,
-                    futureState: [currentState, ...futureState]
-                }
-            } else {
-                return {
-                    pastState,
-                    currentState,
-                    futureState
-                }
-            }
-        },
-        redo: (state: TodoStateWithHistory) => {
-            const { pastState, currentState, futureState } = state;
-            const nextState = futureState[0] || currentState;
-            const newFutureState = futureState.slice(1) || [];
-            return {
-                pastState: [...pastState, currentState],
-                currentState: nextState,
-                futureState: newFutureState
-            }
-        },
+        undo: reusableUndo,
+        redo: reusableRedo
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editNewTodo, editProjects, undo, redo } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editProjects, undo, redo } = todoSlice.actions;
 
 export default todoSlice.reducer;

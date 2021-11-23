@@ -10,6 +10,7 @@ import { calculateDisabledArrows, aggregateChartData, ProjectModalState, TimeBuc
 export function ProjectAnalyticsModal() {
     const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
     const archivedTodos = useAppSelector(selectArchivedTodos);
+
     const todosByTimeBucket = groupTodosByTimeDisplayBuckets(archivedTodos);
     const totalWeeks = todosByTimeBucket.weekly.length;
     const totalMonths = todosByTimeBucket.monthly.length;
@@ -20,11 +21,12 @@ export function ProjectAnalyticsModal() {
       currentMonthIndex: totalMonths - 1
     })
     const { key, currentWeekIndex, currentMonthIndex  } = state;
+    
 
-    const { timeDisplay: weekDisplay, todos: weeklyTodos } = todosByTimeBucket.weekly[currentWeekIndex];
+    const { timeDisplay: weekDisplay = '', todos: weeklyTodos = [] } = todosByTimeBucket.weekly[currentWeekIndex] || {};
     const weeklyChartData = aggregateChartData(weeklyTodos);
 
-    const { timeDisplay: monthDisplay, todos: monthlyTodos } = todosByTimeBucket.monthly[currentMonthIndex];
+    const { timeDisplay: monthDisplay = '', todos: monthlyTodos = [] } = todosByTimeBucket.monthly[currentMonthIndex] || {};
     const monthlyChartData = aggregateChartData(monthlyTodos);
 
     const { disabledLeft, disabledRight } = calculateDisabledArrows(state, totalWeeks, totalMonths);

@@ -85,7 +85,7 @@ export const useGlobalKeyboardShortcuts = () => {
         download(`backup-${time}.json`, JSON.stringify(state));
         download(
           `todos-${time}.csv`,
-          createCSVContents(state.currentState.todos)
+          createCSVContents(state.todos.currentState.todos)
         );
       }
 
