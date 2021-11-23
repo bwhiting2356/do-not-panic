@@ -19,7 +19,7 @@ export function TextField({
   onSubmit,
   onBlur,
   autoFocus = false,
-  type
+  type,
 }: Props) {
   const submit = (e: any) => {
     e.preventDefault();
@@ -46,7 +46,6 @@ export function TextField({
         />
       </Form>
     );
-
   }
   return (
     <Form onSubmit={submit}>

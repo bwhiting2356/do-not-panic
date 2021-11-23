@@ -9,6 +9,6 @@ export class Project extends Item {
     public description: string = "",
     public link: Link = new Link()
   ) {
-    super()
+    super();
   }
 }

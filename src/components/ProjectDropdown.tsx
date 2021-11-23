@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import Select, { SingleValue } from "react-select";
-import { selectProjects } from "../features/projects/selectors";
+import { selectCurrentProjects } from "../features/projects/selectors";
 import { ID } from "../shared/id.type";
 
 type Props = {
@@ -22,7 +22,7 @@ export function ProjectDropdown({
   onChangeProject,
   onSubmit,
 }: Props) {
-  const projectOptions = useAppSelector(selectProjects);
+  const projectOptions = useAppSelector(selectCurrentProjects);
   const currentProjectTitle =
     projectOptions.find((project) => project.id === projectId)?.title ||
     "No Project";

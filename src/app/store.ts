@@ -44,16 +44,17 @@ const migrations = {
 
       const currentTodos = state.todos.currentState.todos;
       const findProjectIdForString = (str: string) => {
-        return newProjects.find(
-          (project: Project) => project.title === str
-        )?.id || ''
-      }
+        return (
+          newProjects.find((project: Project) => project.title === str)?.id ||
+          ""
+        );
+      };
 
       const newTodos = currentTodos.map((todo: Todo) => ({
         ...todo,
-        projectId: findProjectIdForString((todo as any).project)
+        projectId: findProjectIdForString((todo as any).project),
       }));
-      
+
       return {
         ...state,
         todos: {

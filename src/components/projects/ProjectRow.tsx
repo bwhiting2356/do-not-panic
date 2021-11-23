@@ -43,6 +43,32 @@ export function ProjectRow({ project }: Props) {
     );
   };
 
+  const onArchiveProject = () => {
+    dispatch(
+      editProject({
+        id,
+        newProject: {
+          ...project,
+          archivedDate: new Date()
+        },
+      })
+    );
+  };
+
+  const onRemoveProjectFromArchive = () => {
+    dispatch(
+      editProject({
+        id,
+        newProject: {
+          ...project,
+          archivedDate: undefined
+        },
+      })
+    );
+  };
+
+
+
   const onToggleEditingTodoId = () => {
     if (isEditing) {
       setEditingItemId("");
@@ -92,7 +118,8 @@ export function ProjectRow({ project }: Props) {
         <ProjectActionsDropdown
           isEditing={isEditing}
           project={project}
-          onArchiveProject={() => {}}
+          onArchiveProject={onArchiveProject}
+          onRemoveProjectFromArchive={onRemoveProjectFromArchive}
           onToggleEditing={onToggleEditingProjectId}
         />
       </td>

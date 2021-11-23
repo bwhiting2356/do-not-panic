@@ -14,6 +14,7 @@ import { Todo, TodoTemplates } from '../../shared/todo';
 import { IconButton } from '../icon-buttons/IconButton';
 import { ProjectAnalyticsModal } from '../modals/project-analytics/ProjectAnalyticsModal';
 import { ConfettiAnimation } from '../animation/ConfettiAnimation';
+import { ArchiveToggleButton } from '../ArchiveToggleButton';
 
 function Todos() {
   const todayTodos = useAppSelector(selectTodosDueToday);
@@ -21,7 +22,6 @@ function Todos() {
   const archivedTodos = useAppSelector(selectArchivedTodos);
   const {
     showArchive,
-    setShowArchive,
     setShowAnimation
   } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast, addNewTodoAndStartEditing, addTodoFromTemplateWithToast } = useReduxActionsWithContext();
@@ -46,10 +46,9 @@ function Todos() {
     prevTodosRef.current = todayTodos;
   }, [todayTodos, setShowAnimation])
 
-  const toggleShowArchive = () => setShowArchive(!showArchive);
   return (
     <div>
-        <EventToastContainer />
+        {/* <EventToastContainer /> */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ marginRight: '10px' }}>Today</h3>
@@ -67,16 +66,8 @@ function Todos() {
         <TodoTable todos={todayTodos} due={Due.Today} />
         <h3>Later</h3>
         <TodoTable todos={laterTodos} due={Due.Later} />
-        <div style={{ display: 'flex' }}>
-          <div><h3>Archive</h3></div>
-          <Button variant="light" onClick={toggleShowArchive} style={{ marginLeft: '10px', marginBottom: '10px' }}>
-            {showArchive ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        </div>
+        <ArchiveToggleButton />
         {showArchive ? <TodoTable todos={archivedTodos} due={Due.Archived} /> : null}
-        <KeyboardShortcutsModal />
-        <ProjectAnalyticsModal />
-        <ConfettiAnimation />
     </div>
   );
 }

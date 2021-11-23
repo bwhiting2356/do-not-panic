@@ -1,7 +1,11 @@
 import { createContext, useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch } from "../app/hooks";
-import { addNewProject, redoProjects, undoProjects } from "../features/projects/projectSlice";
+import {
+  addNewProject,
+  redoProjects,
+  undoProjects,
+} from "../features/projects/projectSlice";
 import {
   undoTodos,
   redoTodos,
@@ -155,10 +159,10 @@ export const useReduxActionsWithContext = () => {
 
   const addNewProjectAndStartEditing = () => {
     const newProject = new Project();
-    dispatch(addNewProject(newProject))
+    dispatch(addNewProject(newProject));
     addToast("New project added");
     setEditingItemId(newProject.id);
-  }
+  };
 
   const archiveTodoWithToast = (todo: Todo) => {
     dispatch(

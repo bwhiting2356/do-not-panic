@@ -8,7 +8,10 @@ import Todos from './components/todos/Todos';
 import Projects from './components/projects/Projects';
 import { NavTabs } from './components/header/NavTabs';
 import { TopInfo } from './components/header/TopInfo';
-
+import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsModal';
+import { ProjectAnalyticsModal } from './components/modals/project-analytics/ProjectAnalyticsModal';
+import { ConfettiAnimation } from './components/animation/ConfettiAnimation';
+import { EventToastContainer } from './components/EventToastContainer';
 
 export function App() {
     return (
@@ -28,6 +31,11 @@ export function App() {
                     </Routes>
                 </div>
             </Container>
+            
+            <KeyboardShortcutsModal />
+            <ProjectAnalyticsModal />
+            <ConfettiAnimation />
+            <EventToastContainer />
         </Router>        
     )
 }

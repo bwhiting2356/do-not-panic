@@ -7,6 +7,7 @@ type Props = {
   project: Project;
   isEditing: boolean;
   onArchiveProject: () => void;
+  onRemoveProjectFromArchive: () => void;
   onToggleEditing: () => void;
 };
 
@@ -14,6 +15,7 @@ export function ProjectActionsDropdown({
   project,
   isEditing,
   onArchiveProject,
+  onRemoveProjectFromArchive,
   onToggleEditing,
 }: Props) {
   const [show, setShow] = useState(false);
@@ -30,7 +32,7 @@ export function ProjectActionsDropdown({
       ></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {project.archivedDate ? (
+        {!Boolean(project.archivedDate) ? (
           <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
             <span style={{ marginRight: "10px" }}>
               <Archive />
@@ -38,7 +40,7 @@ export function ProjectActionsDropdown({
             Archive
           </Dropdown.Item>
         ) : (
-          <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
+          <Dropdown.Item eventKey="1" onClick={onRemoveProjectFromArchive}>
             <span style={{ marginRight: "10px" }}>
               <Archive />
             </span>
