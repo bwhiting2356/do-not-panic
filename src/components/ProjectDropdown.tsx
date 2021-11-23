@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../app/hooks";
-import { selectProjects } from "../features/todos/selectors";
 import Select, { SingleValue } from "react-select";
+import { selectProjects } from "../features/projects/selectors";
+import { ID } from "../shared/id.type";
 
 type Props = {
-  project?: string;
+  projectId?: ID;
   isEditing: boolean;
   onChangeProject: (newProject: string) => void;
   onSubmit: () => void;
@@ -16,31 +17,35 @@ interface SelectOption {
 }
 
 export function ProjectDropdown({
-  project = "No Project",
+  projectId = "",
   isEditing,
   onChangeProject,
   onSubmit,
 }: Props) {
   const projectOptions = useAppSelector(selectProjects);
+  const currentProjectTitle =
+    projectOptions.find((project) => project.id === projectId)?.title ||
+    "No Project";
   const [newProjectOption, setNewProjectOption] = useState<SelectOption>({
-    value: project,
-    label: project,
+    value: projectId,
+    label: currentProjectTitle,
   });
 
   if (!isEditing) {
     return (
       <div className="editable-item">
-        <div className="content">{project}</div>
+        <div className="content">{currentProjectTitle}</div>
       </div>
     );
   }
 
-  const selectOptions: SelectOption[] = projectOptions.map((opt) => ({
-    value: opt,
-    label: opt,
+  const selectOptions: SelectOption[] = projectOptions.map((project) => ({
+    value: project.id,
+    label: project.title,
   }));
 
-  const onOptionChange = (option: SingleValue<SelectOption>, arg: any) => {
+  const onOptionChange = (option: SingleValue<SelectOption>) => {
+    console.log("option", option);
     if (option) {
       setNewProjectOption(option);
       onChangeProject(option.value);
@@ -49,6 +54,7 @@ export function ProjectDropdown({
 
   const onBlur = () => onChangeProject(newProjectOption.value);
   const onEnter = (e: any) => {
+    onChangeProject(newProjectOption.value);
     if (e.code === "Enter") onSubmit();
   };
 

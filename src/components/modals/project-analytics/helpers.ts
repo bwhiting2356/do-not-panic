@@ -39,14 +39,14 @@ export const calculateDisabledArrows = ({
   }
 
   export const aggregateChartData = (
-    todos: Todo[]
+    todos: Todo[],
   ): ChartData<"pie", number[], string> => {
     const todoPomsByProject = todos.reduce(
-      (acc, { project = "No Project", poms }) => {
-        if (acc[project]) {
-          acc[project] += convertStringPoms(poms);
+      (acc, { projectId = "No Project", poms }) => {
+        if (acc[projectId]) {
+          acc[projectId] += convertStringPoms(poms);
         } else {
-          acc[project] = convertStringPoms(poms);
+          acc[projectId] = convertStringPoms(poms);
         }
         return acc;
       },

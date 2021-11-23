@@ -7,7 +7,7 @@ export class Todo {
   id: ID;
   done: boolean;
   due: Due;
-  project?: string;
+  projectId?: ID;
   archivedDate?: Date;
 
   constructor(

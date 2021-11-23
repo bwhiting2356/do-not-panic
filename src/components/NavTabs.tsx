@@ -8,12 +8,12 @@ export function NavTabs() {
     <Nav variant="tabs" defaultActiveKey="/todos" activeKey={pathname}>
       <Nav.Item>
         <Nav.Link eventKey="/todos" as={Link} to="/todos">
-          Todos
+          <h5>Todos</h5>
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link eventKey="/projects" as={Link} to="/projects">
-          Projects
+          <h5>Projects</h5>
         </Nav.Link>
       </Nav.Item>
     </Nav>

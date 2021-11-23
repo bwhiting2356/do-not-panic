@@ -1,3 +1,9 @@
+import { createSelector } from "reselect";
 import { RootState } from "../../app/store";
 
-// const selectTodoState = (state: RootState) => state.projects;
+const selectProjectState = (state: RootState) => state.projects;
+
+export const selectProjects = createSelector(
+    selectProjectState,
+    state => state.currentState.projects
+)

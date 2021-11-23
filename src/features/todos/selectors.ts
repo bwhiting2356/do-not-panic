@@ -14,10 +14,10 @@ export const selectDomainName = createSelector(
     currentState => currentState.domainName
 )
 
-export const selectProjects = createSelector(
-    selectCurrentState,
-    currentState => currentState.projects
-)
+// export const selectProjects = createSelector(
+//     selectCurrentState,
+//     currentState => currentState.projects
+// )
 
 export const selectTodosDueToday = createSelector(
     selectTodos,

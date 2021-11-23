@@ -13,7 +13,7 @@ type Props = {
   onToggleEditing: () => void;
 };
 
-export function ActionsDropdown({
+export function TodoActionsDropdown({
   todo,
   isEditing,
   onEditTodoDue,
