@@ -9,6 +9,7 @@ import {
   undoProjects,
 } from "../features/projects/projectSlice";
 import { selectCurrentProjects } from "../features/projects/selectors";
+import { selectTemplates } from "../features/templates/selectors";
 import {
   addNewTemplate,
   deleteTemplate,
@@ -20,7 +21,6 @@ import {
   redoTodos,
   archiveAllCompletedTodos,
   resortTodos,
-  addTodoFromTemplate,
   editTodo,
   deleteTodo,
   addNewTodo,
@@ -29,8 +29,8 @@ import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
 import { Project } from "../shared/project";
-import { Template } from "../shared/template";
-import { Todo, TodoTemplates } from "../shared/todo";
+import { buildTodoFromTemplate, Template } from "../shared/template";
+import { Todo } from "../shared/todo";
 
 interface ToastData {
   id: ID;
@@ -113,6 +113,7 @@ export const useReduxActionsWithContext = () => {
   const { addToast, setSelectedItemId, setEditingItemId } = useAppContext();
   const dispatch = useAppDispatch();
   const projects = useAppSelector(selectCurrentProjects);
+  const templates = useAppSelector(selectTemplates);
   const noneProject = projects.find(
     (project) => project.title.toLowerCase() === "none"
   );
@@ -139,9 +140,16 @@ export const useReduxActionsWithContext = () => {
     addToast("redo");
   };
 
-  const addTodoFromTemplateWithToast = (template: TodoTemplates) => {
-    dispatch(addTodoFromTemplate(template));
-    addToast(`New todo with ${template} template`);
+  const addTodoFromTemplateWithToast = (templateId: ID) => {
+    const template = templates.find(({ id }) => id === templateId);
+    if (template) {
+      const newTodo = buildTodoFromTemplate(template);
+      dispatch(addNewTodo(newTodo));
+      addToast(`New todo added from ${template?.templateTitle} template`);
+      setEditingItemId(newTodo.id);
+    } else {
+      addToast(`No template found`);
+    }
   };
 
   const sortTodosWithToast = () => {
@@ -183,13 +191,6 @@ export const useReduxActionsWithContext = () => {
     );
     addToast(`${todo.name} archived`);
     setSelectedItemId("");
-  };
-
-  const addNewTodoAndStartEditing = () => {
-    const newTodo = new Todo();
-    dispatch(addNewTodo(newTodo));
-    addToast("New todo added");
-    setEditingItemId(newTodo.id);
   };
 
   /** PROJECTS **/
@@ -269,8 +270,7 @@ export const useReduxActionsWithContext = () => {
     deleteTodoWithToast,
     archiveTodoWithToast,
     moveTodoWithToast,
-    addNewTodoAndStartEditing,
-    addTodoFromTemplateWithToast, // TODO: remove
+    addTodoFromTemplateWithToast,
 
     /** PROJECTS **/
     undoProjectsWithToast,

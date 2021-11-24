@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useAppContext, useReduxActionsWithContext } from "../../context/context";
+import {
+  useAppContext,
+  useReduxActionsWithContext,
+} from "../../context/context";
+import { selectDefaultTemplate } from "../../features/templates/selectors";
 import {
   selectTodosDueLater,
   selectTodosDueToday,
@@ -8,21 +12,18 @@ import {
 import { editTodo } from "../../features/todos/todoSlice";
 import { URL_PREFIX } from "../../shared/constants";
 import { Due } from "../../shared/due.type";
-import { Todo, TodoTemplates } from "../../shared/todo";
+import { Todo } from "../../shared/todo";
 import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
 export const useTodosKeyboardShortcuts = () => {
-  useCommonKeyboardShortcuts()
+  useCommonKeyboardShortcuts();
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
+  const defaultTemplate = useAppSelector(selectDefaultTemplate);
   const dispatch = useAppDispatch();
-  const {
-    selectedItemId,
-    setSelectedItemId,
-    editingItemId,
-    setEditingItemId,
-  } = useAppContext();
+  const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
+    useAppContext();
   const {
     addTodoFromTemplateWithToast,
     sortTodosWithToast,
@@ -30,7 +31,6 @@ export const useTodosKeyboardShortcuts = () => {
     moveTodoWithToast,
     archiveTodoWithToast,
     deleteTodoWithToast,
-    addNewTodoAndStartEditing,
     redoTodosWithToast,
     undoTodosWithToast,
   } = useReduxActionsWithContext();
@@ -38,7 +38,7 @@ export const useTodosKeyboardShortcuts = () => {
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === "Enter") {
-        addNewTodoAndStartEditing();
+        addTodoFromTemplateWithToast(defaultTemplate?.id || "");
         setSelectedItemId("");
       }
 
@@ -48,14 +48,6 @@ export const useTodosKeyboardShortcuts = () => {
         } else {
           undoTodosWithToast();
         }
-      }
-
-      if (event.metaKey && event.shiftKey && event.key === "1") {
-        addTodoFromTemplateWithToast(TodoTemplates.StartDay);
-      }
-
-      if (event.metaKey && event.shiftKey && event.key === "2") {
-        addTodoFromTemplateWithToast(TodoTemplates.StartWeek);
       }
 
       if (event.key === "Escape") {
@@ -70,7 +62,10 @@ export const useTodosKeyboardShortcuts = () => {
           onArchiveAllCompletedTodosWithToast();
         }
         const allTodosOrdered = [...todayTodos, ...laterTodos];
-        if (Boolean(selectedItemId) && allTodosOrdered.find(({ id }) => id === selectedItemId)) {
+        if (
+          Boolean(selectedItemId) &&
+          allTodosOrdered.find(({ id }) => id === selectedItemId)
+        ) {
           const todoIdInfo = getItemIdInfoForArrowSelection(
             allTodosOrdered,
             selectedItemId
@@ -122,4 +117,3 @@ export const useTodosKeyboardShortcuts = () => {
       window.removeEventListener("keydown", listenForKeyboardShortcuts);
   });
 };
-

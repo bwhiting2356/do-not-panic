@@ -99,8 +99,14 @@ export function createCSVContents(todos: Todo[]) {
   );
 }
 
-export const canDeleteProject = (project: Project, todos: Todo[], templates: Template[]): boolean => {
+export const canDeleteProject = (
+  project: Project,
+  todos: Todo[],
+  templates: Template[]
+): boolean => {
   if (project.title.toLowerCase() === "none") return false;
-  return !todos.some(({ projectId }) => projectId === project.id) 
-        && !templates.some(({ projectId }) => projectId === project.id) 
+  return (
+    !todos.some(({ projectId }) => projectId === project.id) &&
+    !templates.some(({ projectId }) => projectId === project.id)
+  );
 };

@@ -16,7 +16,7 @@ type Props = {
 export function TodoTable({ todos, due }: Props) {
   const navigate = useNavigate();
   const { setShowProjectAnalytics } = useAppContext();
-  const navigateToProjects = () => navigate('/projects');
+  const navigateToProjects = () => navigate("/projects");
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -35,9 +35,7 @@ export function TodoTable({ todos, due }: Props) {
                   onClick={() => setShowProjectAnalytics(true)}
                 />
               ) : (
-                <SmallEditIconButton
-                  onClick={navigateToProjects}
-                />
+                <SmallEditIconButton onClick={navigateToProjects} />
               )}
             </th>
             <th className="links">Link</th>

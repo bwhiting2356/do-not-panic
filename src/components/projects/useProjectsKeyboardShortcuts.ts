@@ -1,31 +1,33 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
-import { useAppContext, useReduxActionsWithContext } from "../../context/context";
+import {
+  useAppContext,
+  useReduxActionsWithContext,
+} from "../../context/context";
 import { selectCurrentProjects } from "../../features/projects/selectors";
 import { selectTemplates } from "../../features/templates/selectors";
 import { selectTodos } from "../../features/todos/selectors";
 import { Project } from "../../shared/project";
-import { canDeleteProject, getItemIdInfoForArrowSelection } from "../../shared/util";
+import {
+  canDeleteProject,
+  getItemIdInfoForArrowSelection,
+} from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
 export const useProjectsKeyboardShortcuts = () => {
-  useCommonKeyboardShortcuts()
+  useCommonKeyboardShortcuts();
   const currentProjects = useAppSelector(selectCurrentProjects);
   const todos = useAppSelector(selectTodos);
-  const templates= useAppSelector(selectTemplates);
-  const {
-    selectedItemId,
-    setSelectedItemId,
-    editingItemId,
-    setEditingItemId,
-  } = useAppContext();
+  const templates = useAppSelector(selectTemplates);
+  const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
+    useAppContext();
   const {
     redoProjectsWithToast,
     undoProjectsWithToast,
     addNewProjectAndStartEditing,
     archiveProjectWithToast,
     deleteProjectWithToast,
-    addToast
+    addToast,
   } = useReduxActionsWithContext();
 
   useEffect(() => {
@@ -48,7 +50,12 @@ export const useProjectsKeyboardShortcuts = () => {
       }
 
       if (!Boolean(editingItemId)) {
-        if (Boolean(selectedItemId && currentProjects.find(({ id }) => id === selectedItemId))) {
+        if (
+          Boolean(
+            selectedItemId &&
+              currentProjects.find(({ id }) => id === selectedItemId)
+          )
+        ) {
           const projectIdInfo = getItemIdInfoForArrowSelection(
             currentProjects,
             selectedItemId
@@ -57,24 +64,24 @@ export const useProjectsKeyboardShortcuts = () => {
             ({ id }) => id === selectedItemId
           ) as Project;
 
-          const isNoneProject = project.title.toLowerCase() === 'none';
+          const isNoneProject = project.title.toLowerCase() === "none";
           if (event.key === "a") {
             if (isNoneProject) {
-              addToast(`Cannot archive 'none' project`)
+              addToast(`Cannot archive 'none' project`);
             } else {
               archiveProjectWithToast(project);
             }
           } else if (event.key === "d") {
             if (isNoneProject) {
-              addToast(`Cannot delete 'none' project`)
+              addToast(`Cannot delete 'none' project`);
             } else {
               const canDelete = canDeleteProject(project, todos, templates);
               if (canDelete) {
                 deleteProjectWithToast(project);
               } else {
-                addToast(`Delete linked todos & tempaltes first`)
+                addToast(`Delete linked todos & tempaltes first`);
               }
-            }  
+            }
           } else if (event.key === "e") {
             setEditingItemId(project.id);
             event.preventDefault();
@@ -88,7 +95,7 @@ export const useProjectsKeyboardShortcuts = () => {
               setSelectedItemId(projectIdInfo.previousItemUUID);
           } else if (event.key === "Escape") {
             setSelectedItemId("");
-          } 
+          }
         } else if (event.code === "ArrowDown") {
           const firstItem = currentProjects[0];
           setSelectedItemId(firstItem?.id);

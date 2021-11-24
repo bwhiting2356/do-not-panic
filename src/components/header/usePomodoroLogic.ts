@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { POMODORO_BREAK_TIME, POMODORO_WORK_TIME } from "../../shared/constants";
+import {
+  POMODORO_BREAK_TIME,
+  POMODORO_WORK_TIME,
+} from "../../shared/constants";
 import { padZeros } from "../../shared/util";
 
 export enum TimerStatus {

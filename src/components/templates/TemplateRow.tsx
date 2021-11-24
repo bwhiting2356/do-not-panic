@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import cn from "classnames";
 import { useAppDispatch } from "../../app/hooks";
-import { useAppContext, useReduxActionsWithContext } from "../../context/context";
+import {
+  useAppContext,
+  useReduxActionsWithContext,
+} from "../../context/context";
 import { TextField } from "../TextField";
 import { Template } from "../../shared/template";
 import { editTemplate } from "../../features/templates/templateSlice";
@@ -15,7 +18,7 @@ type Props = {
 };
 
 export function TemplateRow({ template }: Props) {
-const linkRef = useRef<HTMLInputElement>(null);
+  const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
@@ -23,6 +26,7 @@ const linkRef = useRef<HTMLInputElement>(null);
   const { id, templateTitle, name, poms, projectId, links } = template;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
+  const isDefaultTemplate = template.templateTitle.toLowerCase() === "default";
 
   const onEditTemplateTitle = (newTitle: string) => {
     dispatch(
@@ -38,39 +42,39 @@ const linkRef = useRef<HTMLInputElement>(null);
 
   const onEditName = (newName: string) => {
     dispatch(
-        editTemplate({
-          id,
-          newTemplate: {
-            ...template,
-            name: newName,
-          },
-        })
-      );
-  }
+      editTemplate({
+        id,
+        newTemplate: {
+          ...template,
+          name: newName,
+        },
+      })
+    );
+  };
 
   const onEditPoms = (newPoms: string) => {
     dispatch(
-        editTemplate({
-          id,
-          newTemplate: {
-            ...template,
-            poms: newPoms,
-          },
-        })
-      );
-  }
+      editTemplate({
+        id,
+        newTemplate: {
+          ...template,
+          poms: newPoms,
+        },
+      })
+    );
+  };
 
   const onEditProject = (newProjectId: ID) => {
     dispatch(
-        editTemplate({
-          id,
-          newTemplate: {
-            ...template,
-            projectId: newProjectId,
-          },
-        })
-      );
-  }
+      editTemplate({
+        id,
+        newTemplate: {
+          ...template,
+          projectId: newProjectId,
+        },
+      })
+    );
+  };
 
   const onEditLink = (linkId: ID, newUrl: string) => {
     dispatch(
@@ -113,17 +117,21 @@ const linkRef = useRef<HTMLInputElement>(null);
   };
 
   return (
-    <tr key={id} className={cn({ "table-secondary": isSelected })} onClick={onRowClick}>
+    <tr
+      key={id}
+      className={cn({ "table-secondary": isSelected })}
+      onClick={onRowClick}
+    >
       <td className="template-title vertical-align">
         <TextField
-            autoFocus={true}
-            editing={isEditing}
-            text={templateTitle}
-            onEditText={onEditTemplateTitle}
-            onSubmit={onToggleEditingTemplateId}
-          />
-        </td>
-        <td className="name vertical-align">
+          autoFocus={true}
+          editing={isDefaultTemplate ? false : isEditing}
+          text={templateTitle}
+          onEditText={onEditTemplateTitle}
+          onSubmit={onToggleEditingTemplateId}
+        />
+      </td>
+      <td className="name vertical-align">
         <TextField
           editing={isEditing}
           text={name}
@@ -166,7 +174,6 @@ const linkRef = useRef<HTMLInputElement>(null);
       <td className="actions vertical-align">
         <TemplateActionsDropdown
           onDeleteTemplate={() => deleteTemplateWithToast(template)}
-        //   canDelete={canDelete}
           isEditing={isEditing}
           template={template}
           onToggleEditing={onToggleEditingTemplateId}
@@ -175,4 +182,3 @@ const linkRef = useRef<HTMLInputElement>(null);
     </tr>
   );
 }
-

@@ -1,25 +1,25 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
-import { useAppContext, useReduxActionsWithContext } from "../../context/context";
+import {
+  useAppContext,
+  useReduxActionsWithContext,
+} from "../../context/context";
 import { selectTemplates } from "../../features/templates/selectors";
 import { Template } from "../../shared/template";
 import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
 export const useTemplatesKeyboardShortcuts = () => {
-  useCommonKeyboardShortcuts()
+  useCommonKeyboardShortcuts();
   const templates = useAppSelector(selectTemplates);
-  const {
-    selectedItemId,
-    setSelectedItemId,
-    editingItemId,
-    setEditingItemId,
-  } = useAppContext();
+  const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
+    useAppContext();
   const {
     redoTemplatesWithToast,
     undoTemplatesWithToast,
     addNewTemplateAndStartEditing,
     deleteTemplateWithToast,
+    addToast,
   } = useReduxActionsWithContext();
 
   useEffect(() => {
@@ -31,9 +31,9 @@ export const useTemplatesKeyboardShortcuts = () => {
 
       if (event.metaKey && event.key === "z") {
         if (event.shiftKey) {
-            redoTemplatesWithToast();
+          redoTemplatesWithToast();
         } else {
-            undoTemplatesWithToast();
+          undoTemplatesWithToast();
         }
       }
 
@@ -42,7 +42,11 @@ export const useTemplatesKeyboardShortcuts = () => {
       }
 
       if (!Boolean(editingItemId)) {
-        if (Boolean(selectedItemId && templates.find(({ id }) => id === selectedItemId))) {
+        if (
+          Boolean(
+            selectedItemId && templates.find(({ id }) => id === selectedItemId)
+          )
+        ) {
           const projectIdInfo = getItemIdInfoForArrowSelection(
             templates,
             selectedItemId
@@ -50,9 +54,16 @@ export const useTemplatesKeyboardShortcuts = () => {
           const template = templates.find(
             ({ id }) => id === selectedItemId
           ) as Template;
-          
+
+          const isDefaultTemplate =
+            template.templateTitle.toLowerCase() === "default";
+
           if (event.key === "d") {
-            deleteTemplateWithToast(template);
+            if (isDefaultTemplate) {
+              addToast(`Cannot delete default template`);
+            } else {
+              deleteTemplateWithToast(template);
+            }
           } else if (event.key === "e") {
             setEditingItemId(template.id);
             event.preventDefault();
@@ -66,7 +77,7 @@ export const useTemplatesKeyboardShortcuts = () => {
               setSelectedItemId(projectIdInfo.previousItemUUID);
           } else if (event.key === "Escape") {
             setSelectedItemId("");
-          } 
+          }
         } else if (event.code === "ArrowDown") {
           const firstItem = templates[0];
           setSelectedItemId(firstItem?.id);

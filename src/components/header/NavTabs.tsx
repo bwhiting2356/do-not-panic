@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export function NavTabs() {
   const { pathname } = useLocation();
-  const key = pathname !== '/' ? pathname : '/todos';
+  const key = pathname !== "/" ? pathname : "/todos";
 
   return (
     <Nav variant="tabs" defaultActiveKey="/todos" activeKey={key}>

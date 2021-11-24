@@ -21,11 +21,10 @@ export function ProjectActionsDropdown({
   onRemoveProjectFromArchive,
   onToggleEditing,
   canDelete,
-  onDelete
+  onDelete,
 }: Props) {
-  
   const [show, setShow] = useState(false);
-  const isNoneProject = project.title.toLowerCase() === 'none';
+  const isNoneProject = project.title.toLowerCase() === "none";
 
   if (isNoneProject) {
     return (
@@ -39,20 +38,20 @@ export function ProjectActionsDropdown({
           id="dropdown-basic"
           size="sm"
         ></Dropdown.Toggle>
-  
+
         <Dropdown.Menu>
-        <Dropdown.Item
-          eventKey="1"
-          onClick={() => {
-            onToggleEditing();
-            setShow(false);
-          }}
-        >
-          <span style={{ marginRight: "10px" }}>
-            <Pencil />
-          </span>
-          {isEditing ? "Stop editing" : "Edit"}
-        </Dropdown.Item>
+          <Dropdown.Item
+            eventKey="1"
+            onClick={() => {
+              onToggleEditing();
+              setShow(false);
+            }}
+          >
+            <span style={{ marginRight: "10px" }}>
+              <Pencil />
+            </span>
+            {isEditing ? "Stop editing" : "Edit"}
+          </Dropdown.Item>
           <DisabledDropdownItemWithTooltip tooltipText="Cannot archive 'None' project">
             <div>
               <span style={{ marginRight: "10px" }}>
@@ -62,17 +61,16 @@ export function ProjectActionsDropdown({
             </div>
           </DisabledDropdownItemWithTooltip>
           <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'None' project">
-              <div>
-                  <span style={{ marginRight: "10px" }}>
-                    <Trash />
-                  </span>
-                  Delete
-                </div>
-            </DisabledDropdownItemWithTooltip>
+            <div>
+              <span style={{ marginRight: "10px" }}>
+                <Trash />
+              </span>
+              Delete
+            </div>
+          </DisabledDropdownItemWithTooltip>
         </Dropdown.Menu>
       </Dropdown>
     );
-
   }
   return (
     <Dropdown
@@ -114,26 +112,24 @@ export function ProjectActionsDropdown({
           </span>
           {isEditing ? "Stop editing" : "Edit"}
         </Dropdown.Item>
-          { !canDelete && (
-            <DisabledDropdownItemWithTooltip tooltipText="Delete linked todos & templates first">
-              <div>
-                  <span style={{ marginRight: "10px" }}>
-                    <Trash />
-                  </span>
-                  Delete
-                </div>
-            </DisabledDropdownItemWithTooltip>
-            )
-          }
-          { canDelete && (
-            <Dropdown.Item eventKey="1" onClick={onDelete}>
-                <span style={{ marginRight: "10px" }}>
-                  <Trash />
-                </span>
-                Delete
-            </Dropdown.Item>
-            )
-          }
+        {!canDelete && (
+          <DisabledDropdownItemWithTooltip tooltipText="Delete linked todos & templates first">
+            <div>
+              <span style={{ marginRight: "10px" }}>
+                <Trash />
+              </span>
+              Delete
+            </div>
+          </DisabledDropdownItemWithTooltip>
+        )}
+        {canDelete && (
+          <Dropdown.Item eventKey="1" onClick={onDelete}>
+            <span style={{ marginRight: "10px" }}>
+              <Trash />
+            </span>
+            Delete
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );

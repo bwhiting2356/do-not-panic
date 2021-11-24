@@ -11,8 +11,9 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
 import templatesReducer from "../features/templates/templateSlice";
+import { Template } from "../shared/template";
 import { Project } from "../shared/project";
-import { Todo } from "../shared/todo";
+import { Link } from "../shared/link";
 
 const migrations = {
   1: (state: any) => {
@@ -34,41 +35,49 @@ const migrations = {
     }
     return state;
   },
-  4: (state: any) => {
-    if (state.todos.currentState.projects) {
-      const currentProjects = state.todos.currentState.projects;
-      const newProjects = currentProjects.map(
-        (title: string) => new Project(title)
+  5: (state: any) => {
+    if (!state.templates) {
+      let noneProject = state.projects.currentState.projects.find(
+        (project: Project) => project.title.toLowerCase() === "none"
       );
 
-      const currentTodos = state.todos.currentState.todos;
-      const findProjectIdForString = (str: string) => {
-        return (
-          newProjects.find((project: Project) => project.title === str)?.id ||
-          ""
-        );
-      };
+      let adminProject = state.projects.currentState.projects.find(
+        (project: Project) => project.title.toLowerCase() === "admin"
+      );
 
-      const newTodos = currentTodos.map((todo: Todo) => ({
-        ...todo,
-        projectId: findProjectIdForString((todo as any).project),
-      }));
+      let newProjects = state.projects.currentState.projects;
+
+      if (!noneProject) {
+        noneProject = new Project("None");
+        newProjects = [...newProjects, noneProject];
+      }
+      if (!adminProject) {
+        adminProject = new Project("Admin");
+        newProjects = [...newProjects, adminProject];
+      }
 
       return {
         ...state,
-        todos: {
-          pastState: [],
-          currentState: {
-            ...state.todos.currentState,
-            todos: newTodos,
-          },
-          futureState: [],
-        },
         projects: {
-          pastState: [],
           currentState: {
             projects: newProjects,
           },
+          pastState: [],
+          futureState: [],
+        },
+        templates: {
+          currentState: {
+            templates: [
+              new Template("Default", noneProject.id),
+              new Template("Start Day", adminProject.id, "Start Day", "0.5", [
+                new Link("http://go/pwaivers:daily"),
+              ]),
+              new Template("Start Week", adminProject.id, "Start Week", "1", [
+                new Link("http://go/pwaivers:weekly"),
+              ]),
+            ],
+          },
+          pastState: [],
           futureState: [],
         },
       };
@@ -79,7 +88,7 @@ const migrations = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 4,
+  version: 5,
   migrate: createMigrate(migrations, { debug: false }),
 };
 const rootReducer = combineReducers({
