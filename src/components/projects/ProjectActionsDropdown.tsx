@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dropdown, OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { Archive, Pencil, Trash } from "react-bootstrap-icons";
 import { Project } from "../../shared/project";
 import { DisabledDropdownItemWithTooltip } from "./DisableWithTooltip";

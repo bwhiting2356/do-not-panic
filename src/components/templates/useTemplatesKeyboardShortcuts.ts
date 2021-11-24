@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
-import { selectCurrentProjects } from "../../features/projects/selectors";
 import { selectTemplates } from "../../features/templates/selectors";
-import { selectTodos } from "../../features/todos/selectors";
-import { Project } from "../../shared/project";
 import { Template } from "../../shared/template";
 import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";

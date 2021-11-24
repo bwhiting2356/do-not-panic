@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import cn from "classnames";
-// import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import { TextField } from "../TextField";
 import { Template } from "../../shared/template";

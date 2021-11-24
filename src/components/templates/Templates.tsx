@@ -1,8 +1,7 @@
 import React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
-import { PieChart } from 'react-bootstrap-icons';
 import { useAppSelector } from '../../app/hooks';
-import { useAppContext, useReduxActionsWithContext } from '../../context/context';
+import { useReduxActionsWithContext } from '../../context/context';
 import { selectTemplates } from '../../features/templates/selectors';
 import { AddIconButton } from '../icon-buttons/AddIconButton';
 import { TemplateTable } from './TemplateTable';
