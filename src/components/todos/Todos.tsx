@@ -48,7 +48,6 @@ function Todos() {
 
   return (
     <div>
-        {/* <EventToastContainer /> */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ marginRight: '10px' }}>Today</h3>

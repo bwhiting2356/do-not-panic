@@ -3,12 +3,10 @@ import { ID } from '../../shared/id.type';
 import { templateGenerators, Todo, TodoTemplates } from "../../shared/todo";
 import { sortTodos } from '../../shared/util';
 import { Due } from '../../shared/due.type';
-import { defaultProjects } from '../../shared/defaultProjects';
 import { addNewStateGoingForward, redo, undo, StateWithHistory } from '../shared';
 
 interface TodoState {
     todos: Todo[];
-    projects: string[],
     domainName: string;
 }
 
@@ -16,7 +14,6 @@ export interface TodoStateWithHistory extends StateWithHistory<TodoState> {};
 
 const initialCurrentState: TodoState = {
     todos: [],
-    projects: defaultProjects,
     domainName: 'work',
 }
 
@@ -95,17 +92,11 @@ export const todoSlice = createSlice({
             })
             return addNewStateGoingForward(state, { ...state.currentState, todos: newTodos });
         },
-        editProjects: (state, action: PayloadAction<string[]>) => {
-            return addNewStateGoingForward(
-                state,
-                { ...state.currentState, projects: action.payload}
-            )
-        },
         undoTodos: undo,
         redoTodos: redo
     }
 })
 
-export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, editProjects, undoTodos, redoTodos } = todoSlice.actions;
+export const { setProjectName, resortTodos, editTodo, deleteTodo, addNewTodo, addTodoFromTemplate, archiveAllCompletedTodos, undoTodos, redoTodos } = todoSlice.actions;
 
 export default todoSlice.reducer;

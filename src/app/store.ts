@@ -10,7 +10,6 @@ import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
-import { defaultProjects } from "../shared/defaultProjects";
 import { Project } from "../shared/project";
 import { Todo } from "../shared/todo";
 
@@ -20,7 +19,6 @@ const migrations = {
       return {
         currentState: {
           ...state.currentState,
-          projects: defaultProjects,
           domainName: state.currentState.projectName,
         },
         pastState: [],

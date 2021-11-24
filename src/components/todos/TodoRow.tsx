@@ -76,7 +76,6 @@ export function TodoRow({ todo }: Props) {
   const focusLink = () => linkRef?.current?.focus();
 
   const onEditProject = (newProjectId: ID) => {
-    console.log("newProjectId", newProjectId);
     if (newProjectId !== todo.projectId) {
       dispatch(
         editTodo({
