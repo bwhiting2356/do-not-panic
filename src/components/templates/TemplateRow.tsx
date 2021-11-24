@@ -9,6 +9,7 @@ import { editTemplate } from "../../features/templates/templateSlice";
 import { ProjectDropdown } from "../ProjectDropdown";
 import { ID } from "../../shared/id.type";
 import { LinkWithRef } from "../Link";
+import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
 
 type Props = {
   template: Template;
@@ -19,7 +20,7 @@ const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
-  const { deleteProjectWithToast, archiveProjectWithToast, removeProjectFromArchiveWithToast } = useReduxActionsWithContext();
+  const { deleteTemplateWithToast } = useReduxActionsWithContext();
   const { id, templateTitle, name, poms, projectId, links } = template;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
@@ -162,6 +163,15 @@ const linkRef = useRef<HTMLInputElement>(null);
             />
           ))}
         </div>
+      </td>
+      <td className="actions vertical-align">
+        <TemplateActionsDropdown
+          onDeleteTemplate={() => deleteTemplateWithToast(template)}
+        //   canDelete={canDelete}
+          isEditing={isEditing}
+          template={template}
+          onToggleEditing={onToggleEditingTemplateId}
+        />
       </td>
     </tr>
   );

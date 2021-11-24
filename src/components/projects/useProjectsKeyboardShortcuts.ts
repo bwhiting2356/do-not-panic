@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import { selectCurrentProjects } from "../../features/projects/selectors";
+import { selectTemplates } from "../../features/templates/selectors";
 import { selectTodos } from "../../features/todos/selectors";
 import { Project } from "../../shared/project";
 import { canDeleteProject, getItemIdInfoForArrowSelection } from "../../shared/util";
@@ -11,6 +12,7 @@ export const useProjectsKeyboardShortcuts = () => {
   useCommonKeyboardShortcuts()
   const currentProjects = useAppSelector(selectCurrentProjects);
   const todos = useAppSelector(selectTodos);
+  const templates= useAppSelector(selectTemplates);
   const {
     selectedItemId,
     setSelectedItemId,
@@ -54,20 +56,25 @@ export const useProjectsKeyboardShortcuts = () => {
           const project = currentProjects.find(
             ({ id }) => id === selectedItemId
           ) as Project;
-          
+
+          const isNoneProject = project.title.toLowerCase() === 'none';
           if (event.key === "a") {
-            archiveProjectWithToast(project);
-          } else if (event.key === "d") {
-            const canDelete = canDeleteProject(project, todos);
-            if (canDelete) {
-              deleteProjectWithToast(project);
+            if (isNoneProject) {
+              addToast(`Cannot archive 'none' project`)
             } else {
-              if (project.title.toLowerCase() === 'none') {
-                addToast(`Cannot delete 'none' project`)
-              } else {
-                addToast(`Delete linked todos first`)
-              }
+              archiveProjectWithToast(project);
             }
+          } else if (event.key === "d") {
+            if (isNoneProject) {
+              addToast(`Cannot delete 'none' project`)
+            } else {
+              const canDelete = canDeleteProject(project, todos, templates);
+              if (canDelete) {
+                deleteProjectWithToast(project);
+              } else {
+                addToast(`Delete linked todos & tempaltes first`)
+              }
+            }  
           } else if (event.key === "e") {
             setEditingItemId(project.id);
             event.preventDefault();

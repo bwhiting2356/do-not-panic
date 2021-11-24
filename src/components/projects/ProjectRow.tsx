@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
 import { Project } from "../../shared/project";
@@ -7,6 +7,8 @@ import { useAppContext, useReduxActionsWithContext } from "../../context/context
 import { TextField } from "../TextField";
 import { editProject } from "../../features/projects/projectSlice";
 import { selectTodos } from "../../features/todos/selectors";
+import { canDeleteProject } from "../../shared/util";
+import { selectTemplates } from "../../features/templates/selectors";
 
 type Props = {
   project: Project;
@@ -15,13 +17,18 @@ type Props = {
 export function ProjectRow({ project }: Props) {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(selectTodos)
+  const templates = useAppSelector(selectTemplates);
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
   const { deleteProjectWithToast, archiveProjectWithToast, removeProjectFromArchiveWithToast } = useReduxActionsWithContext();
   const { id, title, description } = project;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
-  const canDelete = !todos.some(({ projectId }) => projectId === id);
+  const [canDelete, setCanDelete] = useState(() => canDeleteProject(project, todos, templates))
+  const isNoneProject = project.title.toLowerCase() === 'none';
+  useEffect(() => {
+    setCanDelete(canDeleteProject(project, todos, templates))
+  }, [setCanDelete, project, todos, templates]);
 
   const onEditTitle = (newTitle: string) => {
     dispatch(
@@ -77,7 +84,7 @@ export function ProjectRow({ project }: Props) {
       <td className="title vertical-align">
         <TextField
             autoFocus={true}
-            editing={isEditing}
+            editing={isNoneProject ? false : isEditing}
             text={title}
             onEditText={onEditTitle}
             onSubmit={onToggleEditingTodoId}

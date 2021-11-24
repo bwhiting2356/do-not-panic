@@ -5,6 +5,7 @@ import json2csv from "json2csv";
 import { Link } from "./link";
 import { Item } from "./item";
 import { Project } from "./project";
+import { Template } from "./template";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -98,7 +99,8 @@ export function createCSVContents(todos: Todo[]) {
   );
 }
 
-export const canDeleteProject = (project: Project, todos: Todo[]): boolean => {
+export const canDeleteProject = (project: Project, todos: Todo[], templates: Template[]): boolean => {
   if (project.title.toLowerCase() === "none") return false;
-  return !todos.some(({ projectId }) => projectId === project.id);
+  return !todos.some(({ projectId }) => projectId === project.id) 
+        && !templates.some(({ projectId }) => projectId === project.id) 
 };

@@ -35,16 +35,6 @@ const KeyboardShortcutsTable = () => (
           <td>Unselect todo/project row if any</td>
         </tr>
         <tr>
-          <td>⌘⇧1</td>
-          <td>On todo page</td>
-          <td>Add new todo with 'start day' template</td>
-        </tr>
-        <tr>
-          <td>⌘⇧2</td>
-          <td>On todo page</td>
-          <td>Add new todo with 'start week' template</td>
-        </tr>
-        <tr>
           <td>⇧?</td>
           <td>Anywhere</td>
           <td>Show/Hide keyboard shortcuts</td>
