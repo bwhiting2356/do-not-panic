@@ -79,7 +79,7 @@ export const useProjectsKeyboardShortcuts = () => {
               if (canDelete) {
                 deleteProjectWithToast(project);
               } else {
-                addToast(`Delete linked todos & tempaltes first`);
+                addToast(`Delete linked todos & templates first`);
               }
             }
           } else if (event.key === "e") {
