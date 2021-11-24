@@ -1,19 +1,15 @@
 import React, { useRef, useEffect } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 import { TodoTable } from './TodoTable';
 import { useAppSelector } from '../../app/hooks';
 import { AddIconButton } from '../icon-buttons/AddIconButton';
-import { KeyboardShortcutsModal } from '../modals/KeyboardShortcutsModal';
 import { selectArchivedTodos, selectTodosDueLater, selectTodosDueToday } from '../../features/todos/selectors';
 import { Due } from '../../shared/due.type';
-import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, ChevronDown, ChevronUp, Filter } from 'react-bootstrap-icons';
+import { ArchiveFill, BrightnessAltHigh, BrightnessHigh, Filter } from 'react-bootstrap-icons';
 import { useReduxActionsWithContext, useAppContext } from '../../context/context';
-import { EventToastContainer } from '../EventToastContainer';
 import { useTodosKeyboardShortcuts } from './useTodosKeyboardShortcuts';
 import { Todo, TodoTemplates } from '../../shared/todo';
 import { IconButton } from '../icon-buttons/IconButton';
-import { ProjectAnalyticsModal } from '../modals/project-analytics/ProjectAnalyticsModal';
-import { ConfettiAnimation } from '../animation/ConfettiAnimation';
 import { ArchiveToggleButton } from '../ArchiveToggleButton';
 
 function Todos() {
