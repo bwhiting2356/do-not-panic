@@ -27,7 +27,7 @@ export function App() {
                     <Routes>
                         <Route path="/todos" element={<Todos />} />
                         <Route path="/projects" element={<Projects />} />
-                        <Route index element={<Todos />} />
+                        <Route path="/" element={<Todos />} />
                     </Routes>
                 </div>
             </Container>

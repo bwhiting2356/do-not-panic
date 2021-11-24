@@ -51,7 +51,7 @@ function Todos() {
                 <AddIconButton onClick={addNewTodoAndStartEditing} />
                 <IconButton text="Start Day" Icon={BrightnessAltHigh} variant="outline-primary" onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartDay)} />
                 <IconButton text="Start Week" Icon={BrightnessHigh} variant="outline-secondary" onClick={() => addTodoFromTemplateWithToast(TodoTemplates.StartWeek)} />
-              </ButtonGroup>
+            </ButtonGroup>
           </div>
           <ButtonGroup>
             <IconButton text="Sort Todos" Icon={Filter} variant="outline-secondary" onClick={sortTodosWithToast} />
