@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Dropdown, OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { Archive, Pencil, Trash } from "react-bootstrap-icons";
 import { Project } from "../../shared/project";
+import { DisabledDropdownItemWithTooltip } from "./DisableWithTooltip";
 
 type Props = {
   project: Project;
@@ -22,19 +23,9 @@ export function ProjectActionsDropdown({
   canDelete,
   onDelete
 }: Props) {
-
-  const renderTooltip = (props: TooltipProps) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Linked todos must be deleted first
-    </Tooltip>
-  );
   
   const [show, setShow] = useState(false);
-
-  const doNothingOnClick = (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }
+  const isNoneProject = project.title.toLowerCase() === 'none';
   return (
     <Dropdown
       show={show}
@@ -75,30 +66,37 @@ export function ProjectActionsDropdown({
           </span>
           {isEditing ? "Stop editing" : "Edit"}
         </Dropdown.Item>
-        {canDelete ? (
-          <Dropdown.Item eventKey="1" onClick={onDelete}>
-            <span style={{ marginRight: "10px" }}>
-              <Trash />
-            </span>
-            Delete
-          </Dropdown.Item>
-
-        ) : (
-          <Dropdown.Item eventKey="1" onClick={doNothingOnClick} disabled>
-            <OverlayTrigger
-                placement="left"
-                delay={{ show: 0, hide: 400 }}
-                overlay={renderTooltip}
-              >
-              <div>
+          { isNoneProject && (
+            <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'None' project">
+            <div>
                 <span style={{ marginRight: "10px" }}>
                   <Trash />
                 </span>
                 Delete
               </div>
-            </OverlayTrigger>
-          </Dropdown.Item>
-        )}
+          </DisabledDropdownItemWithTooltip>
+          )}
+          { !canDelete && !isNoneProject && (
+            <DisabledDropdownItemWithTooltip tooltipText="Linked todos must be deleted first">
+              <div>
+                  <span style={{ marginRight: "10px" }}>
+                    <Trash />
+                  </span>
+                  Delete
+                </div>
+            </DisabledDropdownItemWithTooltip>
+            )
+          }
+          { canDelete && !isNoneProject && (
+            <Dropdown.Item eventKey="1" onClick={onDelete}>
+                <span style={{ marginRight: "10px" }}>
+                  <Trash />
+                </span>
+                Delete
+            </Dropdown.Item>
+            )
+          }
+          
       </Dropdown.Menu>
     </Dropdown>
   );

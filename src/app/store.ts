@@ -10,6 +10,7 @@ import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
+import templatesReducer from "../features/templates/templateSlice";
 import { Project } from "../shared/project";
 import { Todo } from "../shared/todo";
 
@@ -84,6 +85,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   todos: todosReducer,
   projects: projectsReducer,
+  templates: templatesReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -40,7 +40,7 @@ export function TodoTable({ todos, due }: Props) {
                 />
               )}
             </th>
-            <th className="links">Links</th>
+            <th className="links">Link</th>
             <th className="actions">Actions</th>
           </tr>
         </thead>

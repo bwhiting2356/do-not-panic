@@ -18,6 +18,11 @@ export function NavTabs() {
           <h5>Projects</h5>
         </Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="/templates" as={Link} to="/templates">
+          <h5>Templates</h5>
+        </Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 }

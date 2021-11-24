@@ -74,7 +74,7 @@ export function ProjectRow({ project }: Props) {
 
   return (
     <tr key={id} className={cn({ "table-secondary": isSelected })} onClick={onRowClick}>
-      <td className="title">
+      <td className="title vertical-align">
         <TextField
             autoFocus={true}
             editing={isEditing}
@@ -83,7 +83,7 @@ export function ProjectRow({ project }: Props) {
             onSubmit={onToggleEditingTodoId}
           />
         </td>
-      <td className="description">
+      <td className="description vertical-align">
         <TextField
           type="textarea"
             editing={isEditing}

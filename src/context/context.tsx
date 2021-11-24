@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addNewProject,
   deleteProject,
@@ -8,6 +8,13 @@ import {
   redoProjects,
   undoProjects,
 } from "../features/projects/projectSlice";
+import { selectCurrentProjects } from "../features/projects/selectors";
+import {
+  addNewTemplate,
+  deleteTemplate,
+  redoTemplates,
+  undoTemplates,
+} from "../features/templates/templateSlice";
 import {
   undoTodos,
   redoTodos,
@@ -22,6 +29,7 @@ import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
 import { Project } from "../shared/project";
+import { Template } from "../shared/template";
 import { Todo, TodoTemplates } from "../shared/todo";
 
 interface ToastData {
@@ -104,6 +112,13 @@ export const AppCtxProvider: React.FC = ({ children }) => {
 export const useReduxActionsWithContext = () => {
   const { addToast, setSelectedItemId, setEditingItemId } = useAppContext();
   const dispatch = useAppDispatch();
+  const projects = useAppSelector(selectCurrentProjects);
+  const noneProject = projects.find(
+    (project) => project.title.toLowerCase() === "none"
+  );
+
+  /** TODOS **/
+
   const undoTodosWithToast = () => {
     dispatch(undoTodos());
     addToast("undo");
@@ -145,24 +160,14 @@ export const useReduxActionsWithContext = () => {
     setSelectedItemId("");
   };
 
-  const deleteProjectWithToast = (project: Project) => {
-    dispatch(deleteProject({ id: project.id }))
-    addToast(`${project.title} deleted`);
-    setSelectedItemId("");
-  }
-
-  const addNewTodoAndStartEditing = () => {
-    const newTodo = new Todo();
-    dispatch(addNewTodo(newTodo));
-    addToast("New todo added");
-    setEditingItemId(newTodo.id);
-  };
-
-  const addNewProjectAndStartEditing = () => {
-    const newProject = new Project();
-    dispatch(addNewProject(newProject));
-    addToast("New project added");
-    setEditingItemId(newProject.id);
+  const moveTodoWithToast = (todo: Todo, newDue: Due) => {
+    dispatch(
+      editTodo({
+        id: todo.id,
+        newTodo: { ...todo, due: newDue },
+      })
+    );
+    addToast(`${todo.name} moved to ${newDue.toLowerCase()}`);
   };
 
   const archiveTodoWithToast = (todo: Todo) => {
@@ -180,20 +185,41 @@ export const useReduxActionsWithContext = () => {
     setSelectedItemId("");
   };
 
+  const addNewTodoAndStartEditing = () => {
+    const newTodo = new Todo();
+    dispatch(addNewTodo(newTodo));
+    addToast("New todo added");
+    setEditingItemId(newTodo.id);
+  };
+
+  /** PROJECTS **/
+
+  const deleteProjectWithToast = (project: Project) => {
+    dispatch(deleteProject({ id: project.id }));
+    addToast(`${project.title} deleted`);
+    setSelectedItemId("");
+  };
+
+  const addNewProjectAndStartEditing = () => {
+    const newProject = new Project();
+    dispatch(addNewProject(newProject));
+    addToast("New project added");
+    setEditingItemId(newProject.id);
+  };
+
   const archiveProjectWithToast = (project: Project) => {
     dispatch(
       editProject({
         id: project.id,
         newProject: {
           ...project,
-          archivedDate: new Date()
+          archivedDate: new Date(),
         },
       })
     );
     addToast(`${project.title} archived`);
     setSelectedItemId("");
-
-  }
+  };
 
   const removeProjectFromArchiveWithToast = (project: Project) => {
     dispatch(
@@ -201,42 +227,65 @@ export const useReduxActionsWithContext = () => {
         id: project.id,
         newProject: {
           ...project,
-          archivedDate: undefined
+          archivedDate: undefined,
         },
       })
     );
     addToast(`${project.title} removed from archived`);
     setSelectedItemId("");
+  };
 
-  }
+  /** TEMPLATES **/
 
-  const moveTodoWithToast = (todo: Todo, newDue: Due) => {
-    dispatch(
-      editTodo({
-        id: todo.id,
-        newTodo: { ...todo, due: newDue },
-      })
-    );
-    addToast(`${todo.name} moved to ${newDue.toLowerCase()}`);
+  const addNewTemplateAndStartEditing = () => {
+    const newTemplate = new Template("", noneProject?.id as string);
+    dispatch(addNewTemplate(newTemplate));
+    addToast("New template added");
+    setEditingItemId(newTemplate.id);
+  };
+
+  const deleteTemplateWithToast = (template: Template) => {
+    dispatch(deleteTemplate({ id: template.id }));
+    addToast(`${template.templateTitle} deleted`);
+    setSelectedItemId("");
+  };
+
+  const undoTemplatesWithToast = () => {
+    dispatch(undoTemplates());
+    addToast("undo");
+  };
+
+  const redoTemplatesWithToast = () => {
+    dispatch(redoTemplates());
+    addToast("redo");
   };
 
   return {
+    /** TODOS */
     undoTodosWithToast,
     redoTodosWithToast,
-    undoProjectsWithToast,
-    redoProjectsWithToast,
     sortTodosWithToast,
     onArchiveAllCompletedTodosWithToast,
     deleteTodoWithToast,
     archiveTodoWithToast,
     moveTodoWithToast,
     addNewTodoAndStartEditing,
+    addTodoFromTemplateWithToast, // TODO: remove
+
+    /** PROJECTS **/
+    undoProjectsWithToast,
+    redoProjectsWithToast,
     addNewProjectAndStartEditing,
     deleteProjectWithToast,
     archiveProjectWithToast,
     removeProjectFromArchiveWithToast,
-    addTodoFromTemplateWithToast,
-    addToast
+
+    /** TEMPLATES */
+    undoTemplatesWithToast,
+    redoTemplatesWithToast,
+    addNewTemplateAndStartEditing,
+    deleteTemplateWithToast,
+    addToast,
   };
 };
 

@@ -12,6 +12,7 @@ import { KeyboardShortcutsModal } from './components/modals/KeyboardShortcutsMod
 import { ProjectAnalyticsModal } from './components/modals/project-analytics/ProjectAnalyticsModal';
 import { ConfettiAnimation } from './components/animation/ConfettiAnimation';
 import { EventToastContainer } from './components/EventToastContainer';
+import Templates from './components/templates/Templates';
 
 export function App() {
     return (
@@ -27,6 +28,7 @@ export function App() {
                     <Routes>
                         <Route path="/todos" element={<Todos />} />
                         <Route path="/projects" element={<Projects />} />
+                        <Route path="/templates" element={<Templates />} />
                         <Route path="/" element={<Todos />} />
                     </Routes>
                 </div>

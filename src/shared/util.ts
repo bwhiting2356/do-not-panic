@@ -4,6 +4,7 @@ import { Todo } from "./todo";
 import json2csv from "json2csv";
 import { Link } from "./link";
 import { Item } from "./item";
+import { Project } from "./project";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -96,3 +97,8 @@ export function createCSVContents(todos: Todo[]) {
     todos.map((todo) => ({ ...todo, links: mapLinkListToString(todo.links) }))
   );
 }
+
+export const canDeleteProject = (project: Project, todos: Todo[]): boolean => {
+  if (project.title.toLowerCase() === "none") return false;
+  return !todos.some(({ projectId }) => projectId === project.id);
+};

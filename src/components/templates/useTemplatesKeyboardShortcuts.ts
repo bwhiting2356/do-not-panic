@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import { selectCurrentProjects } from "../../features/projects/selectors";
+import { selectTemplates } from "../../features/templates/selectors";
 import { selectTodos } from "../../features/todos/selectors";
 import { Project } from "../../shared/project";
-import { canDeleteProject, getItemIdInfoForArrowSelection } from "../../shared/util";
+import { Template } from "../../shared/template";
+import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
-export const useProjectsKeyboardShortcuts = () => {
+export const useTemplatesKeyboardShortcuts = () => {
   useCommonKeyboardShortcuts()
-  const currentProjects = useAppSelector(selectCurrentProjects);
-  const todos = useAppSelector(selectTodos);
+  const templates = useAppSelector(selectTemplates);
   const {
     selectedItemId,
     setSelectedItemId,
@@ -18,26 +19,24 @@ export const useProjectsKeyboardShortcuts = () => {
     setEditingItemId,
   } = useAppContext();
   const {
-    redoProjectsWithToast,
-    undoProjectsWithToast,
-    addNewProjectAndStartEditing,
-    archiveProjectWithToast,
-    deleteProjectWithToast,
-    addToast
+    redoTemplatesWithToast,
+    undoTemplatesWithToast,
+    addNewTemplateAndStartEditing,
+    deleteTemplateWithToast,
   } = useReduxActionsWithContext();
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === "Enter") {
-        addNewProjectAndStartEditing();
+        addNewTemplateAndStartEditing();
         setSelectedItemId("");
       }
 
       if (event.metaKey && event.key === "z") {
         if (event.shiftKey) {
-          redoProjectsWithToast();
+            redoTemplatesWithToast();
         } else {
-          undoProjectsWithToast();
+            undoTemplatesWithToast();
         }
       }
 
@@ -46,30 +45,19 @@ export const useProjectsKeyboardShortcuts = () => {
       }
 
       if (!Boolean(editingItemId)) {
-        if (Boolean(selectedItemId && currentProjects.find(({ id }) => id === selectedItemId))) {
+        if (Boolean(selectedItemId && templates.find(({ id }) => id === selectedItemId))) {
           const projectIdInfo = getItemIdInfoForArrowSelection(
-            currentProjects,
+            templates,
             selectedItemId
           );
-          const project = currentProjects.find(
+          const template = templates.find(
             ({ id }) => id === selectedItemId
-          ) as Project;
+          ) as Template;
           
-          if (event.key === "a") {
-            archiveProjectWithToast(project);
-          } else if (event.key === "d") {
-            const canDelete = canDeleteProject(project, todos);
-            if (canDelete) {
-              deleteProjectWithToast(project);
-            } else {
-              if (project.title.toLowerCase() === 'none') {
-                addToast(`Cannot delete 'none' project`)
-              } else {
-                addToast(`Delete linked todos first`)
-              }
-            }
+          if (event.key === "d") {
+            deleteTemplateWithToast(template);
           } else if (event.key === "e") {
-            setEditingItemId(project.id);
+            setEditingItemId(template.id);
             event.preventDefault();
           } else if (event.code === "ArrowDown") {
             event.preventDefault();
@@ -83,7 +71,7 @@ export const useProjectsKeyboardShortcuts = () => {
             setSelectedItemId("");
           } 
         } else if (event.code === "ArrowDown") {
-          const firstItem = currentProjects[0];
+          const firstItem = templates[0];
           setSelectedItemId(firstItem?.id);
         }
       }
