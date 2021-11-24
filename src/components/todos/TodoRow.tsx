@@ -1,16 +1,16 @@
 import React, { useRef } from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
-import { ID } from "../shared/id.type";
-import { Todo } from "../shared/todo";
-import { LinkWithRef } from "./Link";
-import { TextField } from "./TextField";
-import { Due } from "../shared/due.type";
-import { ProjectDropdown } from "./ProjectDropdown";
-import { ActionsDropdown } from "./ActionsDropdown";
-import { useAppDispatch } from "../app/hooks";
-import { editTodo } from "../features/todos/todoSlice";
-import { useReduxActionsWithContext, useAppContext } from "../context/context";
+import { ID } from "../../shared/id.type";
+import { Todo } from "../../shared/todo";
+import { LinkWithRef } from "../Link";
+import { TextField } from "../TextField";
+import { Due } from "../../shared/due.type";
+import { ProjectDropdown } from "../ProjectDropdown";
+import { useAppDispatch } from "../../app/hooks";
+import { editTodo } from "../../features/todos/todoSlice";
+import { useReduxActionsWithContext, useAppContext } from "../../context/context";
+import { TodoActionsDropdown } from "./TodoActionsDropdown";
 
 type Props = {
   todo: Todo;
@@ -19,12 +19,12 @@ type Props = {
 export function TodoRow({ todo }: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const { editingTodoId, setEditingTodoId, selectedTodoId, setSelectedTodoId } =
+  const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
   const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
     useReduxActionsWithContext();
-  const { id, done, name, poms, links, project, archivedDate, due } = todo;
-  const isSelected = id === selectedTodoId;
+  const { id, done, name, poms, links, projectId, archivedDate, due } = todo;
+  const isSelected = id === selectedItemId;
 
   const onEditDone = (done: boolean) => {
     dispatch(editTodo({ id, newTodo: { ...todo, done } }));
@@ -75,14 +75,14 @@ export function TodoRow({ todo }: Props) {
 
   const focusLink = () => linkRef?.current?.focus();
 
-  const onEditProject = (newProject: string) => {
-    if (newProject !== todo.project) {
+  const onEditProject = (newProjectId: ID) => {
+    if (newProjectId !== todo.projectId) {
       dispatch(
         editTodo({
           id,
           newTodo: {
             ...todo,
-            project: newProject,
+            projectId: newProjectId,
           },
         })
       );
@@ -93,13 +93,13 @@ export function TodoRow({ todo }: Props) {
   const onDeleteTodo = () => deleteTodoWithToast(todo);
   const onArchiveTodo = () => archiveTodoWithToast(todo);
 
-  const isEditing = editingTodoId === id;
+  const isEditing = editingItemId === id;
 
   const onToggleEditingTodoId = () => {
     if (isEditing) {
-      setEditingTodoId("");
+      setEditingItemId("");
     } else {
-      setEditingTodoId(todo.id);
+      setEditingItemId(todo.id);
     }
   };
 
@@ -107,15 +107,15 @@ export function TodoRow({ todo }: Props) {
     const { tagName } = e.target;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     if (due === Due.Archived) return;
-    setSelectedTodoId(todo.id);
-    if (editingTodoId !== todo.id) {
-      setEditingTodoId("");
+    setSelectedItemId(todo.id);
+    if (editingItemId !== todo.id) {
+      setEditingItemId("");
     }
   };
 
   const onProjectDropdownSubmit = () => {
     if (isEditing) {
-      setEditingTodoId("");
+      setEditingItemId("");
     }
   };
 
@@ -158,7 +158,7 @@ export function TodoRow({ todo }: Props) {
         <div>
           <ProjectDropdown
             isEditing={isEditing}
-            project={project}
+            projectId={projectId}
             onChangeProject={onEditProject}
             onSubmit={onProjectDropdownSubmit}
           />
@@ -179,7 +179,7 @@ export function TodoRow({ todo }: Props) {
         </div>
       </td>
       <td className="actions vertical-align">
-        <ActionsDropdown
+        <TodoActionsDropdown
           isEditing={isEditing}
           todo={todo}
           onEditTodoDue={onEditDue}

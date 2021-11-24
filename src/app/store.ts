@@ -10,7 +10,8 @@ import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
-import { defaultProjects } from "../shared/defaultProjects";
+import { Project } from "../shared/project";
+import { Todo } from "../shared/todo";
 
 const migrations = {
   1: (state: any) => {
@@ -18,7 +19,6 @@ const migrations = {
       return {
         currentState: {
           ...state.currentState,
-          projects: defaultProjects,
           domainName: state.currentState.projectName,
         },
         pastState: [],
@@ -33,17 +33,57 @@ const migrations = {
     }
     return state;
   },
+  4: (state: any) => {
+    if (state.todos.currentState.projects) {
+      const currentProjects = state.todos.currentState.projects;
+      const newProjects = currentProjects.map(
+        (title: string) => new Project(title)
+      );
+
+      const currentTodos = state.todos.currentState.todos;
+      const findProjectIdForString = (str: string) => {
+        return (
+          newProjects.find((project: Project) => project.title === str)?.id ||
+          ""
+        );
+      };
+
+      const newTodos = currentTodos.map((todo: Todo) => ({
+        ...todo,
+        projectId: findProjectIdForString((todo as any).project),
+      }));
+
+      return {
+        ...state,
+        todos: {
+          pastState: [],
+          currentState: {
+            ...state.todos.currentState,
+            todos: newTodos,
+          },
+          futureState: [],
+        },
+        projects: {
+          pastState: [],
+          currentState: {
+            projects: newProjects,
+          },
+          futureState: [],
+        },
+      };
+    }
+  },
 };
 
 const persistConfig = {
   key: "root",
   storage,
-  version: 2,
+  version: 4,
   migrate: createMigrate(migrations, { debug: false }),
 };
-const rootReducer = combineReducers({ 
+const rootReducer = combineReducers({
   todos: todosReducer,
-  projects: projectsReducer 
+  projects: projectsReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

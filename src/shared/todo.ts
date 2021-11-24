@@ -1,13 +1,12 @@
-import { v4 as uuidv4 } from "uuid";
 import { Due } from "./due.type";
 import { ID } from "./id.type";
+import { Item } from "./item";
 import { Link } from "./link";
 
-export class Todo {
-  id: ID;
+export class Todo extends Item {
   done: boolean;
   due: Due;
-  project?: string;
+  projectId?: ID;
   archivedDate?: Date;
 
   constructor(
@@ -15,7 +14,7 @@ export class Todo {
     public name: string = "",
     public links: Link[] = [new Link()]
   ) {
-    this.id = uuidv4();
+    super();
     this.due = Due.Today;
     this.done = false;
   }

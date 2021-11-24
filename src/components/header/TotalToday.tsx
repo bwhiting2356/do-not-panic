@@ -1,9 +1,9 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { useAppSelector } from "../app/hooks";
-import { selectTodosDueToday } from "../features/todos/selectors";
-import { POMODORO_TOTAL_MINUTES } from "../shared/constants";
-import { convertMinutesToHours, sumTodoPomodoros } from "../shared/util";
+import { useAppSelector } from "../../app/hooks";
+import { selectTodosDueToday } from "../../features/todos/selectors";
+import { POMODORO_TOTAL_MINUTES } from "../../shared/constants";
+import { convertMinutesToHours, sumTodoPomodoros } from "../../shared/util";
 
 export function TodalToday() {
   const todayTodos = useAppSelector(selectTodosDueToday);

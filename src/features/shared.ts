@@ -6,7 +6,7 @@ export interface StateWithHistory<T> {
   futureState: T[];
 }
 
-export const reusableUndo = <T>(state: StateWithHistory<T>) => {
+export const undo = <T>(state: StateWithHistory<T>) => {
   const { pastState, currentState, futureState } = state;
   const prevState = pastState[pastState.length - 1];
   const newPastState = pastState.slice(0, pastState.length - 1);
@@ -26,7 +26,7 @@ export const reusableUndo = <T>(state: StateWithHistory<T>) => {
   }
 };
 
-export const reusableRedo = <T>(state: StateWithHistory<T>) => {
+export const redo = <T>(state: StateWithHistory<T>) => {
   const { pastState, currentState, futureState } = state;
   const nextState = futureState[0] || currentState;
   const newFutureState = futureState.slice(1) || [];
@@ -37,14 +37,17 @@ export const reusableRedo = <T>(state: StateWithHistory<T>) => {
   };
 };
 
-export const addNewStateGoingForward = <T>(prevState: StateWithHistory<T>, newState: T): StateWithHistory<T> => {
-    const newPastState = [
-        ...prevState.pastState || [],
-        prevState.currentState
-    ].slice(MAX_TODO_HISTORY * -1);
-    return {
-        pastState: newPastState,
-        currentState: newState,
-        futureState: []
-    }
-}
+export const addNewStateGoingForward = <T>(
+  prevState: StateWithHistory<T>,
+  newState: T
+): StateWithHistory<T> => {
+  const newPastState = [
+    ...(prevState.pastState || []),
+    prevState.currentState,
+  ].slice(MAX_TODO_HISTORY * -1);
+  return {
+    pastState: newPastState,
+    currentState: newState,
+    futureState: [],
+  };
+};

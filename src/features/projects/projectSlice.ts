@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { reusableRedo, reusableUndo, StateWithHistory } from '../shared';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { addNewStateGoingForward, redo, undo, StateWithHistory } from '../shared';
 import { Project } from '../../shared/project';
+import { ID } from '../../shared/id.type';
 
 interface ProjectState {
     projects: Project[],
@@ -22,11 +23,36 @@ export const projectSlice = createSlice({
     name: 'projects',
     initialState,
     reducers: {
-        undo: reusableUndo,
-        redo: reusableRedo
+        editProject: (state, action: PayloadAction<{ id: ID, newProject: Project }>) => {
+            const { projects } = state.currentState;
+            const { id, newProject } = action.payload;
+            const newProjects = projects.slice().map(project => {
+                if (project.id === id) {
+                    return { ...project, ...newProject }
+                } else {
+                    return project;
+                }
+            })
+            
+            return addNewStateGoingForward(state, { ...state.currentState, projects: newProjects });
+        },
+        addNewProject: (state, action: PayloadAction<Project>) => {
+            const newProjects = [
+                { ...action.payload },
+                ...state.currentState.projects,
+            ];
+            return addNewStateGoingForward(
+                state, {
+                ...state.currentState,
+                projects: newProjects,
+            }
+            );
+        },
+        undoProjects: undo,
+        redoProjects: redo
     }
 })
 
-export const { undo, redo } = projectSlice.actions;
+export const { editProject, undoProjects, redoProjects, addNewProject } = projectSlice.actions;
 
 export default projectSlice.reducer;

@@ -1,7 +1,5 @@
-import moment from "moment";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { store } from "../../app/store";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import {
   selectTodosDueLater,
@@ -12,51 +10,46 @@ import { URL_PREFIX } from "../../shared/constants";
 import { Due } from "../../shared/due.type";
 import { Todo, TodoTemplates } from "../../shared/todo";
 import {
-  createCSVContents,
-  download,
-  getTodoIdInfoForArrowSelection,
+  getItemIdInfoForArrowSelection,
 } from "../../shared/util";
+import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
-export const useGlobalKeyboardShortcuts = () => {
+export const useTodosKeyboardShortcuts = () => {
+  useCommonKeyboardShortcuts()
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
   const dispatch = useAppDispatch();
   const {
-    showKeyboardShortcuts,
-    setShowKeyboardShortcuts,
-    selectedTodoId,
-    setSelectedTodoId,
-    editingTodoId,
-    setEditingTodoId,
-    showEditProjects,
-    setShowEditProjects,
-    setShowProjectAnalytics,
+    selectedItemId,
+    setSelectedItemId,
+    editingItemId,
+    setEditingItemId,
   } = useAppContext();
   const {
     addTodoFromTemplateWithToast,
-    undoWithToast,
-    redoWithToast,
     sortTodosWithToast,
     onArchiveAllCompletedTodosWithToast,
     moveTodoWithToast,
     archiveTodoWithToast,
     deleteTodoWithToast,
     addNewTodoAndStartEditing,
+    redoTodosWithToast,
+    undoTodosWithToast,
   } = useReduxActionsWithContext();
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
-      if (event.shiftKey && event.code === "Slash") {
-        setShowKeyboardShortcuts(!showKeyboardShortcuts);
-        setShowEditProjects(false);
-        setShowProjectAnalytics(false);
-      }
-
-      if (showEditProjects) return;
-
       if (event.metaKey && event.key === "Enter") {
         addNewTodoAndStartEditing();
-        setSelectedTodoId("");
+        setSelectedItemId("");
+      }
+
+      if (event.metaKey && event.key === "z") {
+        if (event.shiftKey) {
+          redoTodosWithToast();
+        } else {
+          undoTodosWithToast();
+        }
       }
 
       if (event.metaKey && event.shiftKey && event.key === "1") {
@@ -68,28 +61,10 @@ export const useGlobalKeyboardShortcuts = () => {
       }
 
       if (event.key === "Escape") {
-        setEditingTodoId("");
+        setEditingItemId("");
       }
 
-      if (event.metaKey && event.key === "z") {
-        if (event.shiftKey) {
-          redoWithToast();
-        } else {
-          undoWithToast();
-        }
-      }
-
-      if (event.metaKey && event.key === "x") {
-        const state = store.getState();
-        const time = moment().format("MMMM Do YYYY, h:mm:ss a");
-        download(`backup-${time}.json`, JSON.stringify(state));
-        download(
-          `todos-${time}.csv`,
-          createCSVContents(state.todos.currentState.todos)
-        );
-      }
-
-      if (!Boolean(editingTodoId)) {
+      if (!Boolean(editingItemId)) {
         if (event.key === "s") {
           sortTodosWithToast();
         }
@@ -97,13 +72,13 @@ export const useGlobalKeyboardShortcuts = () => {
           onArchiveAllCompletedTodosWithToast();
         }
         const allTodosOrdered = [...todayTodos, ...laterTodos];
-        if (Boolean(selectedTodoId)) {
-          const todoIdInfo = getTodoIdInfoForArrowSelection(
+        if (Boolean(selectedItemId) && allTodosOrdered.find(({ id }) => id === selectedItemId)) {
+          const todoIdInfo = getItemIdInfoForArrowSelection(
             allTodosOrdered,
-            selectedTodoId
+            selectedItemId
           );
           const todo = allTodosOrdered.find(
-            ({ id }) => id === selectedTodoId
+            ({ id }) => id === selectedItemId
           ) as Todo;
           if (event.key === "m") {
             moveTodoWithToast(
@@ -115,23 +90,23 @@ export const useGlobalKeyboardShortcuts = () => {
           } else if (event.key === "d") {
             deleteTodoWithToast(todo);
           } else if (event.key === "e") {
-            setEditingTodoId(todo.id);
+            setEditingItemId(todo.id);
             event.preventDefault();
           } else if (event.code === "ArrowDown") {
             event.preventDefault();
-            todoIdInfo.nextTodoUUID &&
-              setSelectedTodoId(todoIdInfo.nextTodoUUID);
+            todoIdInfo.nextItemUUID &&
+              setSelectedItemId(todoIdInfo.nextItemUUID);
           } else if (event.code === "ArrowUp") {
             event.preventDefault();
-            todoIdInfo.previousTodoUUID &&
-              setSelectedTodoId(todoIdInfo.previousTodoUUID);
+            todoIdInfo.previousItemUUID &&
+              setSelectedItemId(todoIdInfo.previousItemUUID);
           } else if (event.code === "Space") {
             dispatch(
               editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done } })
             );
             event.preventDefault();
           } else if (event.key === "Escape") {
-            setSelectedTodoId("");
+            setSelectedItemId("");
           } else if (event.key === "Enter") {
             const topLinkUrl = todo.links[0]?.url;
             if (topLinkUrl && topLinkUrl !== URL_PREFIX) {
@@ -140,7 +115,7 @@ export const useGlobalKeyboardShortcuts = () => {
           }
         } else if (event.code === "ArrowDown") {
           const firstItem = allTodosOrdered[0];
-          setSelectedTodoId(firstItem?.id);
+          setSelectedItemId(firstItem?.id);
         }
       }
     };

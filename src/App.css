@@ -19,6 +19,14 @@
   width: 200px;
 }
 
+.title {
+  width: 30%;
+}
+
+.description {
+  width: 70%;
+}
+
 .actions {
   width: 50px;
   text-align: center;

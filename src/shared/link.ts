@@ -1,9 +1,7 @@
-import { ID } from "./id.type";
-import { v4 as uuidv4 } from "uuid";
+import { Item } from "./item";
 
-export class Link {
-  id: ID;
+export class Link extends Item {
   constructor(public url: string = "") {
-    this.id = uuidv4();
+    super();
   }
 }

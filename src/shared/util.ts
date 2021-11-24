@@ -3,6 +3,7 @@ import { ID } from "./id.type";
 import { Todo } from "./todo";
 import json2csv from "json2csv";
 import { Link } from "./link";
+import { Item } from "./item";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -52,20 +53,20 @@ export const convertMinutesToHours = (minutes: number) => {
 };
 
 interface ArrowSelectionInfo {
-  currentTodoListId?: number;
-  nextTodoUUID?: ID;
-  previousTodoUUID?: ID;
+  currentItemListId?: number;
+  nextItemUUID?: ID;
+  previousItemUUID?: ID;
 }
 
-export const getTodoIdInfoForArrowSelection = (
-  todos: Todo[],
-  selectedTodoId: ID
+export const getItemIdInfoForArrowSelection = (
+  items: Item[],
+  selectedItemId: ID
 ): ArrowSelectionInfo => {
-  return todos.reduce((acc, curr, currentIndex) => {
-    if (selectedTodoId === curr.id) {
-      acc.currentTodoListId = currentIndex;
-      acc.previousTodoUUID = todos[currentIndex - 1]?.id;
-      acc.nextTodoUUID = todos[currentIndex + 1]?.id;
+  return items.reduce((acc, curr, currentIndex) => {
+    if (selectedItemId === curr.id) {
+      acc.currentItemListId = currentIndex;
+      acc.previousItemUUID = items[currentIndex - 1]?.id;
+      acc.nextItemUUID = items[currentIndex + 1]?.id;
     }
     return acc;
   }, {} as ArrowSelectionInfo);

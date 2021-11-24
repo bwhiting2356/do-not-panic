@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MutableRefObject, useState } from "react";
 import { Form } from "react-bootstrap";
 import { padUrlWithHttp, truncateUrl } from "../shared/util";
 
@@ -7,7 +7,10 @@ type Props = {
   onEditLink: (url: string) => void;
   editing: boolean;
   onSubmit: () => void;
-  forwardRef?: any; // TODO: fix
+  forwardRef?:
+    | MutableRefObject<HTMLInputElement | null>
+    | ((instance: HTMLInputElement | null) => void)
+    | null;
 };
 
 export function Link({

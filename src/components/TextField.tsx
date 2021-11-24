@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ElementType } from "react";
 import { Form } from "react-bootstrap";
 import { prettifyPoms } from "../shared/util";
 
@@ -9,6 +9,7 @@ type Props = {
   onSubmit: () => void;
   onBlur?: () => void;
   autoFocus?: boolean;
+  type?: ElementType<any>;
 };
 
 export function TextField({
@@ -18,6 +19,7 @@ export function TextField({
   onSubmit,
   onBlur,
   autoFocus = false,
+  type,
 }: Props) {
   const submit = (e: any) => {
     e.preventDefault();
@@ -31,11 +33,24 @@ export function TextField({
       </div>
     );
   }
+
+  if (type) {
+    return (
+      <Form onSubmit={submit}>
+        <Form.Control
+          autoFocus={autoFocus}
+          as={type}
+          value={text}
+          onChange={(e) => onEditText(e.target.value)}
+          onBlur={onBlur}
+        />
+      </Form>
+    );
+  }
   return (
     <Form onSubmit={submit}>
       <Form.Control
         autoFocus={autoFocus}
-        type="text"
         value={text}
         onChange={(e) => onEditText(e.target.value)}
         onBlur={onBlur}

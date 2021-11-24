@@ -1,10 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import { Table } from "react-bootstrap";
-import { useAppContext } from "../context/context";
-import { Due } from "../shared/due.type";
-import { Todo } from "../shared/todo";
-import { SmallEditIconButton } from "./icon-buttons/SmallEditIconButton";
-import { SmallPieChartIconButton } from "./icon-buttons/SmallPieChartIconButton";
+import { useAppContext } from "../../context/context";
+import { Due } from "../../shared/due.type";
+import { Todo } from "../../shared/todo";
+import { SmallEditIconButton } from "../icon-buttons/SmallEditIconButton";
+import { SmallPieChartIconButton } from "../icon-buttons/SmallPieChartIconButton";
 import { TodoRow } from "./TodoRow";
 
 type Props = {
@@ -13,7 +14,9 @@ type Props = {
 };
 
 export function TodoTable({ todos, due }: Props) {
-  const { setShowProjectAnalytics, setShowEditProjects } = useAppContext();
+  const navigate = useNavigate();
+  const { setShowProjectAnalytics } = useAppContext();
+  const navigateToProjects = () => navigate('/projects');
   return (
     <div
       className={due !== Due.Archived ? "main-todos" : ""}
@@ -33,7 +36,7 @@ export function TodoTable({ todos, due }: Props) {
                 />
               ) : (
                 <SmallEditIconButton
-                  onClick={() => setShowEditProjects(true)}
+                  onClick={navigateToProjects}
                 />
               )}
             </th>
