@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/"
-  to = "/todos"
-  status = 301
-  force = false
