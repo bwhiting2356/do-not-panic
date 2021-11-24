@@ -9,7 +9,10 @@ import { Due } from "../../shared/due.type";
 import { ProjectDropdown } from "../ProjectDropdown";
 import { useAppDispatch } from "../../app/hooks";
 import { editTodo } from "../../features/todos/todoSlice";
-import { useReduxActionsWithContext, useAppContext } from "../../context/context";
+import {
+  useReduxActionsWithContext,
+  useAppContext,
+} from "../../context/context";
 import { TodoActionsDropdown } from "./TodoActionsDropdown";
 
 type Props = {

@@ -35,16 +35,6 @@ const KeyboardShortcutsTable = () => (
           <td>Unselect todo/project row if any</td>
         </tr>
         <tr>
-          <td>⌘⇧1</td>
-          <td>On todo page</td>
-          <td>Add new todo with 'start day' template</td>
-        </tr>
-        <tr>
-          <td>⌘⇧2</td>
-          <td>On todo page</td>
-          <td>Add new todo with 'start week' template</td>
-        </tr>
-        <tr>
           <td>⇧?</td>
           <td>Anywhere</td>
           <td>Show/Hide keyboard shortcuts</td>
@@ -113,7 +103,11 @@ export function KeyboardShortcutsModal() {
   const { showKeyboardShortcuts, setShowKeyboardShortcuts } = useAppContext();
   const handleClose = () => setShowKeyboardShortcuts(!showKeyboardShortcuts);
   return (
-    <Modal show={showKeyboardShortcuts} onHide={handleClose} dialogClassName="wide-modal">
+    <Modal
+      show={showKeyboardShortcuts}
+      onHide={handleClose}
+      dialogClassName="wide-modal"
+    >
       <Modal.Dialog>
         <Modal.Header closeButton>
           <Modal.Title>Keyboard Shortcuts</Modal.Title>

@@ -4,44 +4,36 @@ import {
   useAppContext,
   useReduxActionsWithContext,
 } from "../../context/context";
-import { selectCurrentProjects } from "../../features/projects/selectors";
 import { selectTemplates } from "../../features/templates/selectors";
-import { selectTodos } from "../../features/todos/selectors";
-import { Project } from "../../shared/project";
-import {
-  canDeleteProject,
-  getItemIdInfoForArrowSelection,
-} from "../../shared/util";
+import { Template } from "../../shared/template";
+import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
-export const useProjectsKeyboardShortcuts = () => {
+export const useTemplatesKeyboardShortcuts = () => {
   useCommonKeyboardShortcuts();
-  const currentProjects = useAppSelector(selectCurrentProjects);
-  const todos = useAppSelector(selectTodos);
   const templates = useAppSelector(selectTemplates);
   const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
     useAppContext();
   const {
-    redoProjectsWithToast,
-    undoProjectsWithToast,
-    addNewProjectAndStartEditing,
-    archiveProjectWithToast,
-    deleteProjectWithToast,
+    redoTemplatesWithToast,
+    undoTemplatesWithToast,
+    addNewTemplateAndStartEditing,
+    deleteTemplateWithToast,
     addToast,
   } = useReduxActionsWithContext();
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === "Enter") {
-        addNewProjectAndStartEditing();
+        addNewTemplateAndStartEditing();
         setSelectedItemId("");
       }
 
       if (event.metaKey && event.key === "z") {
         if (event.shiftKey) {
-          redoProjectsWithToast();
+          redoTemplatesWithToast();
         } else {
-          undoProjectsWithToast();
+          undoTemplatesWithToast();
         }
       }
 
@@ -52,38 +44,28 @@ export const useProjectsKeyboardShortcuts = () => {
       if (!Boolean(editingItemId)) {
         if (
           Boolean(
-            selectedItemId &&
-              currentProjects.find(({ id }) => id === selectedItemId)
+            selectedItemId && templates.find(({ id }) => id === selectedItemId)
           )
         ) {
           const projectIdInfo = getItemIdInfoForArrowSelection(
-            currentProjects,
+            templates,
             selectedItemId
           );
-          const project = currentProjects.find(
+          const template = templates.find(
             ({ id }) => id === selectedItemId
-          ) as Project;
+          ) as Template;
 
-          const isNoneProject = project.title.toLowerCase() === "none";
-          if (event.key === "a") {
-            if (isNoneProject) {
-              addToast(`Cannot archive 'none' project`);
+          const isDefaultTemplate =
+            template.templateTitle.toLowerCase() === "default";
+
+          if (event.key === "d") {
+            if (isDefaultTemplate) {
+              addToast(`Cannot delete default template`);
             } else {
-              archiveProjectWithToast(project);
-            }
-          } else if (event.key === "d") {
-            if (isNoneProject) {
-              addToast(`Cannot delete 'none' project`);
-            } else {
-              const canDelete = canDeleteProject(project, todos, templates);
-              if (canDelete) {
-                deleteProjectWithToast(project);
-              } else {
-                addToast(`Delete linked todos & templates first`);
-              }
+              deleteTemplateWithToast(template);
             }
           } else if (event.key === "e") {
-            setEditingItemId(project.id);
+            setEditingItemId(template.id);
             event.preventDefault();
           } else if (event.code === "ArrowDown") {
             event.preventDefault();
@@ -97,7 +79,7 @@ export const useProjectsKeyboardShortcuts = () => {
             setSelectedItemId("");
           }
         } else if (event.code === "ArrowDown") {
-          const firstItem = currentProjects[0];
+          const firstItem = templates[0];
           setSelectedItemId(firstItem?.id);
         }
       }

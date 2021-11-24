@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./app/store";
 import { Provider as ReduxProvider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";

@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
-import { POMODORO_BREAK_TIME, POMODORO_WORK_TIME } from "../../shared/constants";
+import {
+  POMODORO_BREAK_TIME,
+  POMODORO_WORK_TIME,
+} from "../../shared/constants";
 import { TimerStatus, usePomodoroLogic } from "./usePomodoroLogic";
 export function PomodoroTimer() {
   const audioRef = useRef<HTMLAudioElement>(null);

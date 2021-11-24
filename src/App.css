@@ -23,6 +23,10 @@
   width: 30%;
 }
 
+.template-title {
+  width: 250px;
+}
+
 .description {
   width: 70%;
 }
@@ -76,4 +80,8 @@
   border-color: white;
   margin: 0;
   padding: 0;
+}
+
+.dropdown-item.disabled {
+  pointer-events: all; /* allow hover */
 }

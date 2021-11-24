@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
 import { Project } from "../../shared/project";
-import { useAppDispatch } from "../../app/hooks";
-import { useAppContext } from "../../context/context";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  useAppContext,
+  useReduxActionsWithContext,
+} from "../../context/context";
 import { TextField } from "../TextField";
 import { editProject } from "../../features/projects/projectSlice";
+import { selectTodos } from "../../features/todos/selectors";
+import { canDeleteProject } from "../../shared/util";
+import { selectTemplates } from "../../features/templates/selectors";
 
 type Props = {
   project: Project;
@@ -13,11 +19,25 @@ type Props = {
 
 export function ProjectRow({ project }: Props) {
   const dispatch = useAppDispatch();
+  const todos = useAppSelector(selectTodos);
+  const templates = useAppSelector(selectTemplates);
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
+  const {
+    deleteProjectWithToast,
+    archiveProjectWithToast,
+    removeProjectFromArchiveWithToast,
+  } = useReduxActionsWithContext();
   const { id, title, description } = project;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
+  const [canDelete, setCanDelete] = useState(() =>
+    canDeleteProject(project, todos, templates)
+  );
+  const isNoneProject = project.title.toLowerCase() === "none";
+  useEffect(() => {
+    setCanDelete(canDeleteProject(project, todos, templates));
+  }, [setCanDelete, project, todos, templates]);
 
   const onEditTitle = (newTitle: string) => {
     dispatch(
@@ -42,32 +62,6 @@ export function ProjectRow({ project }: Props) {
       })
     );
   };
-
-  const onArchiveProject = () => {
-    dispatch(
-      editProject({
-        id,
-        newProject: {
-          ...project,
-          archivedDate: new Date()
-        },
-      })
-    );
-  };
-
-  const onRemoveProjectFromArchive = () => {
-    dispatch(
-      editProject({
-        id,
-        newProject: {
-          ...project,
-          archivedDate: undefined
-        },
-      })
-    );
-  };
-
-
 
   const onToggleEditingTodoId = () => {
     if (isEditing) {
@@ -95,35 +89,42 @@ export function ProjectRow({ project }: Props) {
   };
 
   return (
-    <tr key={id} className={cn({ "table-secondary": isSelected })} onClick={onRowClick}>
-      <td className="title">
+    <tr
+      key={id}
+      className={cn({ "table-secondary": isSelected })}
+      onClick={onRowClick}
+    >
+      <td className="title vertical-align">
         <TextField
-            autoFocus={true}
-            editing={isEditing}
-            text={title}
-            onEditText={onEditTitle}
-            onSubmit={onToggleEditingTodoId}
-          />
-        </td>
-      <td className="description">
+          autoFocus={true}
+          editing={isNoneProject ? false : isEditing}
+          text={title}
+          onEditText={onEditTitle}
+          onSubmit={onToggleEditingTodoId}
+        />
+      </td>
+      <td className="description vertical-align">
         <TextField
           type="textarea"
-            editing={isEditing}
-            text={description}
-            onEditText={onEditDescription}
-            onSubmit={onToggleEditingTodoId}
-          />
-        </td>
+          editing={isEditing}
+          text={description}
+          onEditText={onEditDescription}
+          onSubmit={onToggleEditingTodoId}
+        />
+      </td>
       <td className="actions vertical-align">
         <ProjectActionsDropdown
+          onDelete={() => deleteProjectWithToast(project)}
+          canDelete={canDelete}
           isEditing={isEditing}
           project={project}
-          onArchiveProject={onArchiveProject}
-          onRemoveProjectFromArchive={onRemoveProjectFromArchive}
+          onArchiveProject={() => archiveProjectWithToast(project)}
+          onRemoveProjectFromArchive={() =>
+            removeProjectFromArchiveWithToast(project)
+          }
           onToggleEditing={onToggleEditingProjectId}
         />
       </td>
     </tr>
   );
 }
-
