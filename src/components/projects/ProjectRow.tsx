@@ -2,10 +2,11 @@ import React from "react";
 import cn from "classnames";
 import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
 import { Project } from "../../shared/project";
-import { useAppDispatch } from "../../app/hooks";
-import { useAppContext } from "../../context/context";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import { TextField } from "../TextField";
 import { editProject } from "../../features/projects/projectSlice";
+import { selectTodos } from "../../features/todos/selectors";
 
 type Props = {
   project: Project;
@@ -13,11 +14,14 @@ type Props = {
 
 export function ProjectRow({ project }: Props) {
   const dispatch = useAppDispatch();
+  const todos = useAppSelector(selectTodos)
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
+  const { deleteProjectWithToast, archiveProjectWithToast, removeProjectFromArchiveWithToast } = useReduxActionsWithContext();
   const { id, title, description } = project;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
+  const canDelete = !todos.some(({ projectId }) => projectId === id);
 
   const onEditTitle = (newTitle: string) => {
     dispatch(
@@ -41,33 +45,7 @@ export function ProjectRow({ project }: Props) {
         },
       })
     );
-  };
-
-  const onArchiveProject = () => {
-    dispatch(
-      editProject({
-        id,
-        newProject: {
-          ...project,
-          archivedDate: new Date()
-        },
-      })
-    );
-  };
-
-  const onRemoveProjectFromArchive = () => {
-    dispatch(
-      editProject({
-        id,
-        newProject: {
-          ...project,
-          archivedDate: undefined
-        },
-      })
-    );
-  };
-
-
+  };  
 
   const onToggleEditingTodoId = () => {
     if (isEditing) {
@@ -116,10 +94,12 @@ export function ProjectRow({ project }: Props) {
         </td>
       <td className="actions vertical-align">
         <ProjectActionsDropdown
+          onDelete={() => deleteProjectWithToast(project)}
+          canDelete={canDelete}
           isEditing={isEditing}
           project={project}
-          onArchiveProject={onArchiveProject}
-          onRemoveProjectFromArchive={onRemoveProjectFromArchive}
+          onArchiveProject={() => archiveProjectWithToast(project)}
+          onRemoveProjectFromArchive={() => removeProjectFromArchiveWithToast(project)}
           onToggleEditing={onToggleEditingProjectId}
         />
       </td>

@@ -48,11 +48,15 @@ export const projectSlice = createSlice({
             }
             );
         },
+        deleteProject: (state, action: PayloadAction<{ id: ID }>) => {
+            const newProjects = state.currentState.projects.filter(project => project.id !== action.payload.id);
+            return addNewStateGoingForward(state, { ...state.currentState, projects: newProjects });
+        },
         undoProjects: undo,
         redoProjects: redo
     }
 })
 
-export const { editProject, undoProjects, redoProjects, addNewProject } = projectSlice.actions;
+export const { editProject, undoProjects, redoProjects, addNewProject, deleteProject } = projectSlice.actions;
 
 export default projectSlice.reducer;

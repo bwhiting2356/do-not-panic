@@ -4,7 +4,7 @@ import { Due } from '../../shared/due.type';
 
 const selectTodoState = (state: RootState) => state.todos
 const selectCurrentState = createSelector(selectTodoState, (state) => state.currentState);
-const selectTodos = createSelector(
+export const selectTodos = createSelector(
     selectCurrentState,
     currentState => currentState.todos
 )

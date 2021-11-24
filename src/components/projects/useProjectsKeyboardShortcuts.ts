@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useAppContext, useReduxActionsWithContext } from "../../context/context";
 import { selectCurrentProjects } from "../../features/projects/selectors";
+import { selectTodos } from "../../features/todos/selectors";
 import { Project } from "../../shared/project";
 import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
@@ -9,6 +10,7 @@ import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 export const useProjectsKeyboardShortcuts = () => {
   useCommonKeyboardShortcuts()
   const currentProjects = useAppSelector(selectCurrentProjects);
+  const todos = useAppSelector(selectTodos);
   const {
     selectedItemId,
     setSelectedItemId,
@@ -19,6 +21,9 @@ export const useProjectsKeyboardShortcuts = () => {
     redoProjectsWithToast,
     undoProjectsWithToast,
     addNewProjectAndStartEditing,
+    archiveProjectWithToast,
+    deleteProjectWithToast,
+    addToast
   } = useReduxActionsWithContext();
 
   useEffect(() => {
@@ -49,7 +54,17 @@ export const useProjectsKeyboardShortcuts = () => {
           const project = currentProjects.find(
             ({ id }) => id === selectedItemId
           ) as Project;
-          if (event.key === "e") {
+          
+          if (event.key === "a") {
+            archiveProjectWithToast(project);
+          } else if (event.key === "d") {
+            const canDelete = !todos.some(({ projectId }) => projectId === project.id);
+            if (canDelete) {
+              deleteProjectWithToast(project);
+            } else {
+              addToast(`Delete linked todos first`)
+            }
+          } else if (event.key === "e") {
             setEditingItemId(project.id);
             event.preventDefault();
           } else if (event.code === "ArrowDown") {

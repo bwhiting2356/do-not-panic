@@ -9,9 +9,7 @@ import { editTodo } from "../../features/todos/todoSlice";
 import { URL_PREFIX } from "../../shared/constants";
 import { Due } from "../../shared/due.type";
 import { Todo, TodoTemplates } from "../../shared/todo";
-import {
-  getItemIdInfoForArrowSelection,
-} from "../../shared/util";
+import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
 export const useTodosKeyboardShortcuts = () => {
@@ -124,3 +122,4 @@ export const useTodosKeyboardShortcuts = () => {
       window.removeEventListener("keydown", listenForKeyboardShortcuts);
   });
 };
+

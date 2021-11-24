@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch } from "../app/hooks";
 import {
   addNewProject,
+  deleteProject,
+  editProject,
   redoProjects,
   undoProjects,
 } from "../features/projects/projectSlice";
@@ -143,6 +145,12 @@ export const useReduxActionsWithContext = () => {
     setSelectedItemId("");
   };
 
+  const deleteProjectWithToast = (project: Project) => {
+    dispatch(deleteProject({ id: project.id }))
+    addToast(`${project.title} deleted`);
+    setSelectedItemId("");
+  }
+
   const addNewTodoAndStartEditing = () => {
     const newTodo = new Todo();
     dispatch(addNewTodo(newTodo));
@@ -172,6 +180,36 @@ export const useReduxActionsWithContext = () => {
     setSelectedItemId("");
   };
 
+  const archiveProjectWithToast = (project: Project) => {
+    dispatch(
+      editProject({
+        id: project.id,
+        newProject: {
+          ...project,
+          archivedDate: new Date()
+        },
+      })
+    );
+    addToast(`${project.title} archived`);
+    setSelectedItemId("");
+
+  }
+
+  const removeProjectFromArchiveWithToast = (project: Project) => {
+    dispatch(
+      editProject({
+        id: project.id,
+        newProject: {
+          ...project,
+          archivedDate: undefined
+        },
+      })
+    );
+    addToast(`${project.title} removed from archived`);
+    setSelectedItemId("");
+
+  }
+
   const moveTodoWithToast = (todo: Todo, newDue: Due) => {
     dispatch(
       editTodo({
@@ -194,7 +232,11 @@ export const useReduxActionsWithContext = () => {
     moveTodoWithToast,
     addNewTodoAndStartEditing,
     addNewProjectAndStartEditing,
+    deleteProjectWithToast,
+    archiveProjectWithToast,
+    removeProjectFromArchiveWithToast,
     addTodoFromTemplateWithToast,
+    addToast
   };
 };
 
