@@ -7,24 +7,27 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Todos from "./components/todos/Todos";
 import Projects from "./components/projects/Projects";
 import { NavTabs } from "./components/header/NavTabs";
-import { TopInfo } from "./components/header/TopInfo";
 import { KeyboardShortcutsModal } from "./components/modals/KeyboardShortcutsModal";
 import { ProjectAnalyticsModal } from "./components/modals/project-analytics/ProjectAnalyticsModal";
 import { ConfettiAnimation } from "./components/animation/ConfettiAnimation";
 import { EventToastContainer } from "./components/EventToastContainer";
 import Templates from "./components/templates/Templates";
+import { PomodoroTimer } from "./components/header/PomodoroTimer";
+import { TodalToday } from "./components/header/TotalToday";
 
 export function App() {
   return (
     <Router>
       <Container>
         <div
-          style={{ position: "relative", display: "flex", marginTop: "35px" }}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
         >
-          <div style={{ position: "absolute", top: "-27px", right: 0 }}>
-            <TopInfo />
-          </div>
           <NavTabs />
+          <PomodoroTimer />
+          <TodalToday />
         </div>
         <div style={{ paddingTop: "20px" }}>
           <Routes>
