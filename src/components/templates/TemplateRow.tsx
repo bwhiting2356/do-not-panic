@@ -12,6 +12,7 @@ import { ProjectDropdown } from "../ProjectDropdown";
 import { ID } from "../../shared/id.type";
 import { LinkWithRef } from "../Link";
 import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
+import { Form } from "react-bootstrap";
 
 type Props = {
   template: Template;
@@ -23,7 +24,7 @@ export function TemplateRow({ template }: Props) {
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
   const { deleteTemplateWithToast } = useReduxActionsWithContext();
-  const { id, templateTitle, name, poms, projectId, links } = template;
+  const { id, templateTitle, autofocus, name, poms, projectId, links } = template;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
   const isDefaultTemplate = template.templateTitle.toLowerCase() === "default";
@@ -39,6 +40,19 @@ export function TemplateRow({ template }: Props) {
       })
     );
   };
+
+  const onEditAutofocus = (newFocus: boolean) => {
+    dispatch(
+        editTemplate({
+          id,
+          newTemplate: {
+            ...template,
+            autofocus: newFocus,
+          },
+        })
+      );
+
+  }
 
   const onEditName = (newName: string) => {
     dispatch(
@@ -130,6 +144,14 @@ export function TemplateRow({ template }: Props) {
           onEditText={onEditTemplateTitle}
           onSubmit={onToggleEditingTemplateId}
         />
+      </td>
+      <td className="autofocus vertical-align">
+      <Form.Check
+            className="toggle"
+            type="checkbox"
+            checked={autofocus}
+            onChange={(e: any) => onEditAutofocus(e.target.checked)}
+          />
       </td>
       <td className="name vertical-align">
         <TextField

@@ -12,6 +12,7 @@ export function TemplateTable({ templates }: Props) {
       <thead>
         <tr>
           <th className="template-title">Template Title</th>
+          <th className="autofocus">Focus</th>
           <th className="name">Todo Name</th>
           <th className="poms">Poms</th>
           <th className="project">Project</th>
