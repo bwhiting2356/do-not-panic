@@ -85,19 +85,19 @@ export function ProjectActionsDropdown({
       ></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {!Boolean(project.archivedDate) ? (
-          <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
-            <span style={{ marginRight: "10px" }}>
-              <Archive />
-            </span>
-            Archive
-          </Dropdown.Item>
-        ) : (
+        {project.archivedDate ? (
           <Dropdown.Item eventKey="1" onClick={onRemoveProjectFromArchive}>
             <span style={{ marginRight: "10px" }}>
               <Archive />
             </span>
             Remove from Archive
+          </Dropdown.Item>
+        ) : (
+          <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
+            <span style={{ marginRight: "10px" }}>
+              <Archive />
+            </span>
+            Archive
           </Dropdown.Item>
         )}
         <Dropdown.Item

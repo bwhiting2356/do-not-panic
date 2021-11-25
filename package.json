@@ -26,9 +26,11 @@
     "react-dom": "^17.0.2",
     "react-lottie": "^1.2.3",
     "react-redux": "^7.2.0",
+    "react-router": "^6.0.2",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "react-select": "^5.2.1",
+    "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "reselect": "^4.1.1",
     "typescript": "~4.1.5",
@@ -43,7 +45,50 @@
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "airbnb-typescript",
+      "airbnb/hooks",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:jest/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": ["react", "@typescript-eslint", "jest"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+      "serviceWorker.ts"
+    ],
+    "rules": {
+      "linebreak-style": "off",
+      "array-callback-return": "error",
+      "no-console": "error",
+      "no-new": "error",
+      "no-negated-condition": "error",
+      "no-param-reassign": "error",
+      "no-promise-executor-return": "error",
+      "no-template-curly-in-string": "error",
+      "require-atomic-updates": "error",
+      "block-scoped-var": "error",
+      "camelcase": "error",
+      "no-empty-function": "error",
+      "multiline-comment-style": ["error", "starred-block"],
+      "no-extra-boolean-cast": "error",
+      "no-implicit-globals": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -75,7 +120,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "prettier": "^2.4.1",
-    "redux-devtools-extension": "^2.13.9"
+    "prettier": "^2.4.1"
   }
 }

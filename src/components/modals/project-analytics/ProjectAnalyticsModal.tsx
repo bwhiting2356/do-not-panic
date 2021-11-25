@@ -72,10 +72,10 @@ export function ProjectAnalyticsModal() {
     }
   };
 
-  const onSetKey = (key: string | null) => {
-    setState((state) => ({
-      ...state,
-      key: (key as TimeBucketType) || "weekly",
+  const onSetKey = (newKey: string | null) => {
+    setState((prevState) => ({
+      ...prevState,
+      key: (newKey as TimeBucketType) || "weekly",
     }));
   };
 

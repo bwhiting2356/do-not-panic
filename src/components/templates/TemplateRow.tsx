@@ -115,8 +115,8 @@ export function TemplateRow({ template }: Props) {
     }
   };
 
-  const onRowClick = (e: any) => {
-    const { tagName } = e.target;
+  const onRowClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     setSelectedItemId(template.id);
     if (editingItemId !== template.id) {
@@ -150,7 +150,9 @@ export function TemplateRow({ template }: Props) {
           className="toggle"
           type="checkbox"
           checked={autofocus}
-          onChange={(e: any) => onEditAutofocus(e.target.checked)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onEditAutofocus(e.target.checked)
+          }
         />
       </td>
       <td className="name vertical-align">
@@ -181,13 +183,13 @@ export function TemplateRow({ template }: Props) {
       </td>
       <td className="links vertical-align">
         <div>
-          {links.map(({ id, url }) => (
+          {links.map((link) => (
             <LinkWithRef
               ref={linkRef}
-              key={id}
-              url={url}
+              key={link.id}
+              url={link.url}
               editing={isEditing}
-              onEditLink={(newUrl) => onEditLink(id, newUrl)}
+              onEditLink={(newUrl) => onEditLink(link.id, newUrl)}
               onSubmit={onToggleEditingTemplateId}
             />
           ))}

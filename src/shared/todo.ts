@@ -5,7 +5,9 @@ import { Link } from "./link";
 
 export class Todo extends Item {
   done: boolean;
+
   due: Due;
+
   archivedDate?: Date;
 
   constructor(
@@ -19,15 +21,3 @@ export class Todo extends Item {
     this.done = false;
   }
 }
-
-// export enum TodoTemplates {
-//   StartDay = "start-day",
-//   StartWeek = "start-week",
-// }
-
-// export const templateGenerators: { [key in TodoTemplates]: () => Todo } = {
-//   [TodoTemplates.StartDay]: () =>
-//     new Todo("0.5", "Start Day", [new Link("http://go/pwaivers:daily")]),
-//   [TodoTemplates.StartWeek]: () =>
-//     new Todo("1", "Start Week", [new Link("http://go/pwaivers:weekly")]),
-// };

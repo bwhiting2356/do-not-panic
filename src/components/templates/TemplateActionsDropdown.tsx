@@ -47,12 +47,14 @@ export function TemplateActionsDropdown({
             {isEditing ? "Stop editing" : "Edit"}
           </Dropdown.Item>
           <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'Default' project">
-            <div>
-              <span style={{ marginRight: "10px" }}>
-                <Trash />
-              </span>
-              Delete
-            </div>
+            {() => (
+              <div>
+                <span style={{ marginRight: "10px" }}>
+                  <Trash />
+                </span>
+                Delete
+              </div>
+            )}
           </DisabledDropdownItemWithTooltip>
         </Dropdown.Menu>
       </Dropdown>

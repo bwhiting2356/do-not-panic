@@ -23,6 +23,7 @@ export function ConfettiAnimation() {
   const defaultOptions = {
     loop: false,
     autoplay: true,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     animationData: (confetti as any).default,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",

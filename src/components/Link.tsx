@@ -1,4 +1,9 @@
-import React, { MutableRefObject, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FormEventHandler,
+  MutableRefObject,
+  useState,
+} from "react";
 import { Form } from "react-bootstrap";
 import { padUrlWithHttp, truncateUrl } from "../shared/util";
 
@@ -22,11 +27,11 @@ export function Link({
 }: Props) {
   const [newUrl, setNewUrl] = useState(url);
 
-  const onUrlChange = (e: any) => {
+  const onUrlChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setNewUrl(e.target.value);
   };
 
-  const submit = (e: any) => {
+  const submit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     onEditLink(padUrlWithHttp(newUrl));
     onSubmit();

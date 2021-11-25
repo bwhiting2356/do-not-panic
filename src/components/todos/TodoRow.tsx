@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ChangeEventHandler, MouseEventHandler, useRef } from "react";
 import cn from "classnames";
 import { Form } from "react-bootstrap";
 import { ID } from "../../shared/id.type";
@@ -29,11 +29,11 @@ export function TodoRow({ todo }: Props) {
   const { id, done, name, poms, links, projectId, archivedDate, due } = todo;
   const isSelected = id === selectedItemId;
 
-  const onEditDone = (done: boolean) => {
-    dispatch(editTodo({ id, newTodo: { ...todo, done } }));
+  const onEditDone = (newDone: boolean) => {
+    dispatch(editTodo({ id, newTodo: { ...todo, done: newDone } }));
   };
 
-  const onEditDue = (due: Due) => moveTodoWithToast(todo, due);
+  const onEditDue = (newDue: Due) => moveTodoWithToast(todo, newDue);
 
   const onEditLink = (linkId: ID, newUrl: string) => {
     dispatch(
@@ -106,8 +106,8 @@ export function TodoRow({ todo }: Props) {
     }
   };
 
-  const onRowClick = (e: any) => {
-    const { tagName } = e.target;
+  const onRowClick: MouseEventHandler<HTMLTableRowElement> = (e) => {
+    const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     if (due === Due.Archived) return;
     setSelectedItemId(todo.id);
@@ -120,6 +120,10 @@ export function TodoRow({ todo }: Props) {
     if (isEditing) {
       setEditingItemId("");
     }
+  };
+
+  const onToggleSwitch: ChangeEventHandler<HTMLInputElement> = (e) => {
+    onEditDone(!e.target.checked);
   };
 
   return (
@@ -136,7 +140,7 @@ export function TodoRow({ todo }: Props) {
             className="toggle"
             type="switch"
             checked={!done}
-            onChange={(e: any) => onEditDone(!e.target.checked)}
+            onChange={onToggleSwitch}
           />
         )}
       </td>
@@ -169,13 +173,13 @@ export function TodoRow({ todo }: Props) {
       </td>
       <td className="links vertical-align">
         <div>
-          {links.map(({ id, url }) => (
+          {links.map((link) => (
             <LinkWithRef
               ref={linkRef}
-              key={id}
-              url={url}
+              key={link.id}
+              url={link.url}
               editing={isEditing}
-              onEditLink={(newUrl) => onEditLink(id, newUrl)}
+              onEditLink={(newUrl) => onEditLink(link.id, newUrl)}
               onSubmit={onToggleEditingTodoId}
             />
           ))}

@@ -15,7 +15,7 @@ interface TodoState {
   domainName: string;
 }
 
-export interface TodoStateWithHistory extends StateWithHistory<TodoState> {}
+export type TodoStateWithHistory = StateWithHistory<TodoState>;
 
 const initialCurrentState: TodoState = {
   todos: [],

@@ -23,7 +23,10 @@ export function TemplateButtons() {
     setShowDropdown(false);
   };
 
-  const addFromTemplate = (e: any, templateId: ID) => {
+  const addFromTemplate = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    templateId: ID
+  ) => {
     e.stopPropagation();
     e.preventDefault();
     setTimeout(() => {

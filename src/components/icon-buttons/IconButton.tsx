@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { Icon } from "react-bootstrap-icons";
+import { Icon as RBIcon } from "react-bootstrap-icons";
 
 type Props = {
   onClick?: () => void;
   tabIndex?: number;
-  Icon: Icon;
+  Icon: RBIcon;
   variant: string;
   text?: string;
 };

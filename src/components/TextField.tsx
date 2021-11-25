@@ -9,6 +9,7 @@ type Props = {
   onSubmit: () => void;
   onBlur?: () => void;
   autoFocus?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type?: ElementType<any>;
 };
 
@@ -21,7 +22,7 @@ export function TextField({
   autoFocus = false,
   type,
 }: Props) {
-  const submit = (e: any) => {
+  const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     onSubmit();
   };

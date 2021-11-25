@@ -71,8 +71,8 @@ export function ProjectRow({ project }: Props) {
     }
   };
 
-  const onRowClick = (e: any) => {
-    const { tagName } = e.target;
+  const onRowClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
+    const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     setSelectedItemId(project.id);
     if (editingItemId !== project.id) {

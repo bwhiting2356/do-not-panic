@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { KeyboardEventHandler, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import Select, { SingleValue } from "react-select";
 import { selectCurrentProjects } from "../features/projects/selectors";
@@ -52,9 +52,11 @@ export function ProjectDropdown({
   };
 
   const onBlur = () => onChangeProject(newProjectOption.value);
-  const onEnter = (e: any) => {
+  const onEnter: KeyboardEventHandler<HTMLDivElement> = (e) => {
     onChangeProject(newProjectOption.value);
-    if (e.code === "Enter") onSubmit();
+    if (e.key === "Enter") {
+      onSubmit();
+    }
   };
 
   return (

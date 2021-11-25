@@ -12,8 +12,7 @@ interface TemplateState {
   templates: Template[];
 }
 
-export interface TemplateStateWithHistory
-  extends StateWithHistory<TemplateState> {}
+export type TemplateStateWithHistory = StateWithHistory<TemplateState>;
 
 const initialCurrentState: TemplateState = {
   templates: [],

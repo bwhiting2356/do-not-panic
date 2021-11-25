@@ -62,7 +62,7 @@ export const computeSecondsRemaining = (
     const startTime = new Date(curr.startTime);
     const endTime = curr.endTime ? new Date(curr.endTime) : new Date();
     const difference = endTime.getTime() - startTime.getTime();
-    return (acc += difference);
+    return acc + difference;
   }, 0);
   const totalSeconds = targetMinutes * 60;
   const secondsRemaining = totalSeconds - Math.floor(milliseconds / 1000);
@@ -132,7 +132,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
       const newInterval = window.setInterval(() => {
         recomputeTimeRemaining();
       }, 1000);
-      setInterval(newInterval);
+      setInterval(() => newInterval);
     }
 
     return window.clearInterval(interval);

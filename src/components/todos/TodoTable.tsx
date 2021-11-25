@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { useNavigate } from "react-router";
 import { Table } from "react-bootstrap";
 import { useAppContext } from "../../context/context";
@@ -19,7 +20,7 @@ export function TodoTable({ todos, due }: Props) {
   const navigateToProjects = () => navigate("/projects");
   return (
     <div
-      className={due !== Due.Archived ? "main-todos" : ""}
+      className={cn({ "main-todos": due !== Due.Archived })}
       style={{ textAlign: "left" }}
     >
       <Table className="table" size="sm">

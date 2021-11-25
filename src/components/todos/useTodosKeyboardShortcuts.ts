@@ -54,7 +54,7 @@ export const useTodosKeyboardShortcuts = () => {
         setEditingItemId("");
       }
 
-      if (!Boolean(editingItemId)) {
+      if (!editingItemId) {
         if (event.key === "s") {
           sortTodosWithToast();
         }
@@ -87,12 +87,14 @@ export const useTodosKeyboardShortcuts = () => {
             event.preventDefault();
           } else if (event.code === "ArrowDown") {
             event.preventDefault();
-            todoIdInfo.nextItemUUID &&
+            if (todoIdInfo.nextItemUUID) {
               setSelectedItemId(todoIdInfo.nextItemUUID);
+            }
           } else if (event.code === "ArrowUp") {
             event.preventDefault();
-            todoIdInfo.previousItemUUID &&
+            if (todoIdInfo.previousItemUUID) {
               setSelectedItemId(todoIdInfo.previousItemUUID);
+            }
           } else if (event.code === "Space") {
             dispatch(
               editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done } })

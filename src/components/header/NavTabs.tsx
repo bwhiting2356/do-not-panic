@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 export function NavTabs() {
   const [expanded, setExpanded] = useState(false);
   const { pathname } = useLocation();
-  const key = pathname !== "/" ? pathname : "/todos";
+  const key = pathname === "/" ? "/todos" : pathname;
 
   const keyHeaderMap: Record<string, string> = {
     "/todos": "Todos",
@@ -33,14 +33,14 @@ export function NavTabs() {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              {Object.keys(keyHeaderMap).map((key) => (
+              {Object.keys(keyHeaderMap).map((pathKey) => (
                 <Nav.Link
-                  key={key}
+                  key={pathKey}
                   as={Link}
-                  to={key}
+                  to={pathKey}
                   onClick={() => setExpanded(false)}
                 >
-                  {keyHeaderMap[key]}
+                  {keyHeaderMap[pathKey]}
                 </Nav.Link>
               ))}
             </Nav>
@@ -48,22 +48,5 @@ export function NavTabs() {
         </Navbar.Offcanvas>
       </Container>
     </Navbar>
-    // <Nav variant="tabs" defaultActiveKey="/todos" activeKey={key}>
-    //   <Nav.Item>
-    //     <Nav.Link eventKey="/todos" as={Link} to="/todos">
-    //       <h5>Todos</h5>
-    //     </Nav.Link>
-    //   </Nav.Item>
-    //   <Nav.Item>
-    //     <Nav.Link eventKey="/projects" as={Link} to="/projects">
-    //       <h5>Projects</h5>
-    //     </Nav.Link>
-    //   </Nav.Item>
-    //   <Nav.Item>
-    //     <Nav.Link eventKey="/templates" as={Link} to="/templates">
-    //       <h5>Templates</h5>
-    //     </Nav.Link>
-    //   </Nav.Item>
-    // </Nav>
   );
 }

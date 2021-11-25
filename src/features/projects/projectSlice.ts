@@ -12,8 +12,7 @@ interface ProjectState {
   projects: Project[];
 }
 
-export interface ProjectStateWithHistory
-  extends StateWithHistory<ProjectState> {}
+export type ProjectStateWithHistory = StateWithHistory<ProjectState>;
 
 const initialCurrentState: ProjectState = {
   projects: [],

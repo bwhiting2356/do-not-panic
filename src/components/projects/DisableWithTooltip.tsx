@@ -1,4 +1,9 @@
-import { JSXElementConstructor, ReactElement, ReactNode } from "react";
+import {
+  JSXElementConstructor,
+  MouseEventHandler,
+  ReactElement,
+  ReactNode,
+} from "react";
 import {
   Dropdown,
   OverlayTrigger,
@@ -10,7 +15,10 @@ import { OverlayTriggerRenderProps } from "react-bootstrap/esm/OverlayTrigger";
 interface Props {
   tooltipText: string;
   children:
-    | ReactElement<any, string | JSXElementConstructor<any>>
+    | ReactElement<
+        HTMLDivElement,
+        string | JSXElementConstructor<HTMLDivElement>
+      >
     | ((props: OverlayTriggerRenderProps) => ReactNode);
 }
 export const DisabledDropdownItemWithTooltip = ({
@@ -23,7 +31,7 @@ export const DisabledDropdownItemWithTooltip = ({
     </Tooltip>
   );
 
-  const doNothingOnClick = (e: any) => {
+  const doNothingOnClick: MouseEventHandler<HTMLElement> = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };

@@ -13,12 +13,12 @@ export const padUrlWithHttp = (url: string) => {
 };
 
 export const padZeros = (str: string | number) => {
-  let strNumber = typeof str === "string" ? str : String(str);
+  const strNumber = typeof str === "string" ? str : String(str);
   if (strNumber.length === 1) return `0${strNumber}`;
   return strNumber;
 };
 
-export const truncateUrl = (str: string, length: number = 40) => {
+export const truncateUrl = (str: string, length = 40) => {
   const removeHttp = str.replace(/http(s)?:\/\//, "");
   if (removeHttp.length < length) return removeHttp;
   return `${removeHttp.substring(length, 0)}...`;
@@ -30,14 +30,13 @@ export const prettifyPoms = (poms: string) => {
   return oneHalfOptions.includes(poms) ? "½" : poms;
 };
 
-export const sumTodoPomodoros = (acc: number, curr: Todo) => {
-  acc += convertStringPoms(curr.poms) || 0;
-  return acc;
-};
-
 export const convertStringPoms = (poms: string) => {
   if (oneHalfOptions.includes(poms)) return 0.5;
   return parseFloat(poms) || 0;
+};
+
+export const sumTodoPomodoros = (acc: number, curr: Todo) => {
+  return acc + convertStringPoms(curr.poms) || 0;
 };
 
 export const sortTodos = (a: Todo, b: Todo) => {
@@ -75,7 +74,7 @@ export const getItemIdInfoForArrowSelection = (
 };
 
 export function download(filename: string, text: string) {
-  var element = document.createElement("a");
+  const element = document.createElement("a");
   element.setAttribute(
     "href",
     "data:text/plain;charset=utf-8," + encodeURIComponent(text)
@@ -86,7 +85,6 @@ export function download(filename: string, text: string) {
   document.body.appendChild(element);
 
   element.click();
-
   document.body.removeChild(element);
 }
 

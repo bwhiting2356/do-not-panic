@@ -49,12 +49,10 @@ export const useProjectsKeyboardShortcuts = () => {
         setEditingItemId("");
       }
 
-      if (!Boolean(editingItemId)) {
+      if (!editingItemId) {
         if (
-          Boolean(
-            selectedItemId &&
-              currentProjects.find(({ id }) => id === selectedItemId)
-          )
+          selectedItemId &&
+          currentProjects.find(({ id }) => id === selectedItemId)
         ) {
           const projectIdInfo = getItemIdInfoForArrowSelection(
             currentProjects,
@@ -87,12 +85,14 @@ export const useProjectsKeyboardShortcuts = () => {
             event.preventDefault();
           } else if (event.code === "ArrowDown") {
             event.preventDefault();
-            projectIdInfo.nextItemUUID &&
+            if (projectIdInfo.nextItemUUID) {
               setSelectedItemId(projectIdInfo.nextItemUUID);
+            }
           } else if (event.code === "ArrowUp") {
             event.preventDefault();
-            projectIdInfo.previousItemUUID &&
+            if (projectIdInfo.previousItemUUID) {
               setSelectedItemId(projectIdInfo.previousItemUUID);
+            }
           } else if (event.key === "Escape") {
             setSelectedItemId("");
           }
