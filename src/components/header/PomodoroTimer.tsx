@@ -35,7 +35,6 @@ export function PomodoroTimer() {
     <div
       style={{
         display: "flex",
-        margin: "0 100px",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",

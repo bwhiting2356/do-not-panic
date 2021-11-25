@@ -21,11 +21,14 @@ export function TemplateButtons() {
   const addFromTemlate = (id: ID) => {
     addTodoFromTemplateWithToast(id || "");
     setShowDropdown(false);
-    if (dropdownRef?.current) {
-      setTimeout(() => {
-        dropdownRef?.current?.blur();
-      }, 10);
-    }
+  };
+
+  const addFromTemplate = (e: any, templateId: ID) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setTimeout(() => {
+      addFromTemlate(templateId || "");
+    }, 1);
   };
 
   return (
@@ -34,34 +37,33 @@ export function TemplateButtons() {
         <AddIconButton
           onClick={() => addFromTemlate(defaultTemplate?.id || "")}
         />
-        { customTemplates && (
-             <Dropdown
-             as={ButtonGroup}
-             show={showDropdown}
-             onMouseEnter={() => setShowDropdown(true)}
-             onMouseLeave={() => setShowDropdown(false)}
-           >
-             <Dropdown.Toggle
-               variant="outline-primary"
-               id="dropdown-basic"
-               ref={dropdownRef}
-             >
-               From template
-             </Dropdown.Toggle>
-   
-             <Dropdown.Menu>
-               {customTemplates.map((template) => (
-                 <Dropdown.Item
-                   eventKey="1"
-                   onClick={() => addFromTemlate(template.id || "")}
-                 >
-                   {template.templateTitle}
-                 </Dropdown.Item>
-               ))}
-             </Dropdown.Menu>
-           </Dropdown>
+        {customTemplates && (
+          <Dropdown
+            as={ButtonGroup}
+            show={showDropdown}
+            onMouseEnter={() => setShowDropdown(true)}
+            onMouseLeave={() => setShowDropdown(false)}
+          >
+            <Dropdown.Toggle
+              variant="outline-primary"
+              id="dropdown-basic"
+              ref={dropdownRef}
+            >
+              From template
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {customTemplates.map((template) => (
+                <Dropdown.Item
+                  eventKey="1"
+                  onClick={(e) => addFromTemplate(e, template.id)}
+                >
+                  {template.templateTitle}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         )}
-       
       </ButtonGroup>
     </div>
   );

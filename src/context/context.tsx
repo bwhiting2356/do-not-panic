@@ -145,8 +145,10 @@ export const useReduxActionsWithContext = () => {
     if (template) {
       const newTodo = buildTodoFromTemplate(template);
       dispatch(addNewTodo(newTodo));
-      addToast(`New todo added from ${template?.templateTitle} template`);
-      setEditingItemId(newTodo.id);
+      addToast(`${template?.templateTitle} todo added`);
+      if (template.autofocus) {
+        setEditingItemId(newTodo.id);
+      }
     } else {
       addToast(`No template found`);
     }
