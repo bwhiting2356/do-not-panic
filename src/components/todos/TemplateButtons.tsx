@@ -24,12 +24,12 @@ export function TemplateButtons() {
   };
 
   const addFromTemplate = (e: any, templateId: ID) => {
-      e.stopPropagation();
-      e.preventDefault();
-      setTimeout(() => {
-        addFromTemlate(templateId || "");
-      }, 1)
-  }
+    e.stopPropagation();
+    e.preventDefault();
+    setTimeout(() => {
+      addFromTemlate(templateId || "");
+    }, 1);
+  };
 
   return (
     <div>
@@ -56,7 +56,7 @@ export function TemplateButtons() {
               {customTemplates.map((template) => (
                 <Dropdown.Item
                   eventKey="1"
-                  onClick={e => addFromTemplate(e, template.id)}
+                  onClick={(e) => addFromTemplate(e, template.id)}
                 >
                   {template.templateTitle}
                 </Dropdown.Item>
