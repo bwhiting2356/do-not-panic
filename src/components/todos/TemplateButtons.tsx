@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
+import React, { useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useReduxActionsWithContext } from "../../context/context";
 import {
@@ -8,7 +9,6 @@ import {
 } from "../../features/templates/selectors";
 import { AddIconButton } from "../icon-buttons/AddIconButton";
 
-import { Dropdown } from "react-bootstrap";
 import { ID } from "../../shared/id.type";
 
 export function TemplateButtons() {

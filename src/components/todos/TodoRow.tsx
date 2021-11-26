@@ -1,6 +1,7 @@
-import React, { ChangeEventHandler, MouseEventHandler, useRef } from "react";
-import cn from "classnames";
 import { Form } from "react-bootstrap";
+import cn from "classnames";
+import React, { ChangeEventHandler, MouseEventHandler, useRef } from "react";
+import { TodoActionsDropdown } from "./TodoActionsDropdown";
 import { ID } from "../../shared/id.type";
 import { Todo } from "../../shared/todo";
 import { LinkWithRef } from "../Link";
@@ -10,10 +11,9 @@ import { ProjectDropdown } from "../ProjectDropdown";
 import { useAppDispatch } from "../../app/hooks";
 import { editTodo } from "../../features/todos/todoSlice";
 import {
-  useReduxActionsWithContext,
   useAppContext,
+  useReduxActionsWithContext,
 } from "../../context/context";
-import { TodoActionsDropdown } from "./TodoActionsDropdown";
 
 type Props = {
   todo: Todo;

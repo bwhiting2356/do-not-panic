@@ -97,7 +97,7 @@ export const useProjectsKeyboardShortcuts = () => {
             setSelectedItemId("");
           }
         } else if (event.code === "ArrowDown") {
-          const firstItem = currentProjects[0];
+          const [firstItem] = currentProjects;
           setSelectedItemId(firstItem?.id);
         }
       }

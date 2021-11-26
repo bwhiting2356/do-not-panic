@@ -1,7 +1,11 @@
-import { URL_PREFIX } from "./constants";
+import json2csv from "json2csv";
+import {
+  SECONDS_PER_MINUTE,
+  URL_PREFIX,
+  URL_TRUNCATE_LENGTH,
+} from "./constants";
 import { ID } from "./id.type";
 import { Todo } from "./todo";
-import json2csv from "json2csv";
 import { Link } from "./link";
 import { Item } from "./item";
 import { Project } from "./project";
@@ -18,7 +22,7 @@ export const padZeros = (str: string | number) => {
   return strNumber;
 };
 
-export const truncateUrl = (str: string, length = 40) => {
+export const truncateUrl = (str: string, length = URL_TRUNCATE_LENGTH) => {
   const removeHttp = str.replace(/http(s)?:\/\//, "");
   if (removeHttp.length < length) return removeHttp;
   return `${removeHttp.substring(length, 0)}...`;
@@ -48,8 +52,8 @@ export const sortTodos = (a: Todo, b: Todo) => {
 };
 
 export const convertMinutesToHours = (minutes: number) => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
+  const hours = Math.floor(minutes / SECONDS_PER_MINUTE);
+  const remainingMinutes = minutes % SECONDS_PER_MINUTE;
   return `${hours}:${padZeros(remainingMinutes)}`;
 };
 

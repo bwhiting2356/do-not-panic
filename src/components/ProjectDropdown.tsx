@@ -1,6 +1,6 @@
+import Select, { SingleValue } from "react-select";
 import React, { KeyboardEventHandler, useState } from "react";
 import { useAppSelector } from "../app/hooks";
-import Select, { SingleValue } from "react-select";
 import { selectCurrentProjects } from "../features/projects/selectors";
 import { ID } from "../shared/id.type";
 
@@ -27,8 +27,8 @@ export function ProjectDropdown({
     projectOptions.find((project) => project.id === projectId)?.title ||
     "No Project";
   const [newProjectOption, setNewProjectOption] = useState<SelectOption>({
-    value: projectId,
     label: currentProjectTitle,
+    value: projectId,
   });
 
   if (!isEditing) {
@@ -40,8 +40,8 @@ export function ProjectDropdown({
   }
 
   const selectOptions: SelectOption[] = projectOptions.map((project) => ({
-    value: project.id,
     label: project.title,
+    value: project.id,
   }));
 
   const onOptionChange = (option: SingleValue<SelectOption>) => {

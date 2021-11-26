@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import cn from "classnames";
+import React, { useEffect, useState } from "react";
 import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
 import { Project } from "../../shared/project";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";

@@ -1,7 +1,7 @@
 import React from "react";
 import { ToastContainer } from "react-bootstrap";
-import { useAppContext } from "../context/context";
 import { EventToast } from "./EventToast";
+import { useAppContext } from "../context/context";
 
 export function EventToastContainer() {
   const { toasts } = useAppContext();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 
@@ -8,9 +8,9 @@ export function NavTabs() {
   const key = pathname === "/" ? "/todos" : pathname;
 
   const keyHeaderMap: Record<string, string> = {
-    "/todos": "Todos",
     "/projects": "Projects",
     "/templates": "Templates",
+    "/todos": "Todos",
   };
 
   return (

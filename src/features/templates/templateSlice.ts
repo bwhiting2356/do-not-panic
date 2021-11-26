@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  StateWithHistory,
   addNewStateGoingForward,
   redo,
   undo,
-  StateWithHistory,
 } from "../shared";
 import { Template } from "../../shared/template";
 import { ID } from "../../shared/id.type";
@@ -19,20 +19,30 @@ const initialCurrentState: TemplateState = {
 };
 
 const initialState: TemplateStateWithHistory = {
-  pastState: [],
   currentState: initialCurrentState,
   futureState: [],
+  pastState: [],
 };
 
 export const templateSlice = createSlice({
-  name: "templates",
   initialState,
+  name: "templates",
+
   reducers: {
     addNewTemplate: (state, action: PayloadAction<Template>) => {
       const newTemplates = [
         { ...action.payload },
         ...state.currentState.templates,
       ];
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        templates: newTemplates,
+      });
+    },
+    deleteTemplate: (state, action: PayloadAction<{ id: ID }>) => {
+      const newTemplates = state.currentState.templates.filter(
+        (template) => template.id !== action.payload.id
+      );
       return addNewStateGoingForward(state, {
         ...state.currentState,
         templates: newTemplates,
@@ -57,18 +67,8 @@ export const templateSlice = createSlice({
         templates: newTemplates,
       });
     },
-
-    deleteTemplate: (state, action: PayloadAction<{ id: ID }>) => {
-      const newTemplates = state.currentState.templates.filter(
-        (template) => template.id !== action.payload.id
-      );
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        templates: newTemplates,
-      });
-    },
-    undoTemplates: undo,
     redoTemplates: redo,
+    undoTemplates: undo,
   },
 });
 

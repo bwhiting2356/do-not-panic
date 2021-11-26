@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ThunkAction,
-  Action,
-  createStore,
-  combineReducers,
-} from "@reduxjs/toolkit";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { persistStore, persistReducer } from "redux-persist";
-import createMigrate from "redux-persist/es/createMigrate";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import createMigrate from "redux-persist/es/createMigrate";
+import { persistReducer, persistStore } from "redux-persist";
+import { composeWithDevTools } from "redux-devtools-extension";
+import {
+  Action,
+  ThunkAction,
+  combineReducers,
+  createStore,
+} from "@reduxjs/toolkit";
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
 import templatesReducer from "../features/templates/templateSlice";
@@ -24,8 +24,8 @@ const migrations = {
           ...state.currentState,
           domainName: state.currentState.projectName,
         },
-        pastState: [],
         futureState: [],
+        pastState: [],
       };
     }
     return state;
@@ -63,8 +63,8 @@ const migrations = {
           currentState: {
             projects: newProjects,
           },
-          pastState: [],
           futureState: [],
+          pastState: [],
         },
         templates: {
           currentState: {
@@ -78,8 +78,8 @@ const migrations = {
               ]),
             ],
           },
-          pastState: [],
           futureState: [],
+          pastState: [],
         },
       };
     }
@@ -88,14 +88,14 @@ const migrations = {
 
 const persistConfig = {
   key: "root",
+  migrate: createMigrate(migrations, { debug: false }),
   storage,
   version: 5,
-  migrate: createMigrate(migrations, { debug: false }),
 };
 const rootReducer = combineReducers({
-  todos: todosReducer,
   projects: projectsReducer,
   templates: templatesReducer,
+  todos: todosReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

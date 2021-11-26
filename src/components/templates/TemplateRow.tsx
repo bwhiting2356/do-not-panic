@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
 import cn from "classnames";
+import React, { useRef } from "react";
+import { Form } from "react-bootstrap";
+import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
 import { useAppDispatch } from "../../app/hooks";
 import {
   useAppContext,
@@ -11,8 +13,6 @@ import { editTemplate } from "../../features/templates/templateSlice";
 import { ProjectDropdown } from "../ProjectDropdown";
 import { ID } from "../../shared/id.type";
 import { LinkWithRef } from "../Link";
-import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
-import { Form } from "react-bootstrap";
 
 type Props = {
   template: Template;

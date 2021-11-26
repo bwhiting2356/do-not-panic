@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Template } from "../../shared/template";
 import { TemplateRow } from "./TemplateRow";
+import { Template } from "../../shared/template";
 
 interface Props {
   templates: Template[];

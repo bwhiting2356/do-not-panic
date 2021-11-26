@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Project } from "../../shared/project";
 import { ProjectRow } from "./ProjectRow";
+import { Project } from "../../shared/project";
 
 interface Props {
   projects: Project[];

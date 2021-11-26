@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Archive, Pencil, Trash } from "react-bootstrap-icons";
-import { Project } from "../../shared/project";
 import { DisabledDropdownItemWithTooltip } from "./DisableWithTooltip";
+import { Project } from "../../shared/project";
 
 type Props = {
   project: Project;

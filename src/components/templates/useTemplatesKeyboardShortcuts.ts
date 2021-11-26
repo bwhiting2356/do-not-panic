@@ -80,7 +80,7 @@ export const useTemplatesKeyboardShortcuts = () => {
             setSelectedItemId("");
           }
         } else if (event.code === "ArrowDown") {
-          const firstItem = templates[0];
+          const [firstItem] = templates;
           setSelectedItemId(firstItem?.id);
         }
       }

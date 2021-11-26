@@ -40,7 +40,7 @@ export const DisabledDropdownItemWithTooltip = ({
     <Dropdown.Item eventKey="1" onClick={doNothingOnClick} disabled>
       <OverlayTrigger
         placement="left"
-        delay={{ show: 0, hide: 400 }}
+        delay={{ hide: 400, show: 0 }}
         overlay={renderTooltip}
       >
         {children}

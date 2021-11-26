@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+  MILLISECONDS_PER_SECOND,
   POMODORO_BREAK_TIME,
   POMODORO_WORK_TIME,
+  SECONDS_PER_MINUTE,
 } from "../../shared/constants";
 import { padZeros } from "../../shared/util";
 
@@ -18,15 +20,15 @@ export interface TimerSegment {
 }
 
 interface PomodoroState {
-  timerStatus: TimerStatus;
   segments: TimerSegment[];
   targetMinutes: number;
+  timerStatus: TimerStatus;
 }
 
 const defaultValue: PomodoroState = {
-  timerStatus: TimerStatus.Stopped,
   segments: [],
   targetMinutes: POMODORO_WORK_TIME,
+  timerStatus: TimerStatus.Stopped,
 };
 
 export function usePomodoroPersistentState(): [
@@ -64,8 +66,9 @@ export const computeSecondsRemaining = (
     const difference = endTime.getTime() - startTime.getTime();
     return acc + difference;
   }, 0);
-  const totalSeconds = targetMinutes * 60;
-  const secondsRemaining = totalSeconds - Math.floor(milliseconds / 1000);
+  const totalSeconds = targetMinutes * SECONDS_PER_MINUTE;
+  const secondsRemaining =
+    totalSeconds - Math.floor(milliseconds / MILLISECONDS_PER_SECOND);
   if (secondsRemaining <= 0) return 0;
   return secondsRemaining;
 };
@@ -77,8 +80,10 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   const [secondsRemaining, setSecondsRemaining] = useState(
     computeSecondsRemaining(segments, targetMinutes)
   );
-  const minutesDisplay = padZeros(Math.floor(secondsRemaining / 60));
-  const secondsDisplay = padZeros(secondsRemaining % 60);
+  const minutesDisplay = padZeros(
+    Math.floor(secondsRemaining / SECONDS_PER_MINUTE)
+  );
+  const secondsDisplay = padZeros(secondsRemaining % SECONDS_PER_MINUTE);
 
   const playSound = useCallback(() => audioRef?.current?.play(), [audioRef]);
 
@@ -108,12 +113,13 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
               ? POMODORO_BREAK_TIME
               : POMODORO_WORK_TIME;
           return {
+            segments: [],
             targetMinutes: newTarget,
             timerStatus: TimerStatus.Stopped,
-            segments: [],
           };
         });
-      }, 2000);
+        // eslint-disable-next-line no-magic-numbers
+      }, MILLISECONDS_PER_SECOND * 2);
     }
     setSecondsRemaining(newSecondsRemaining);
   }, [
@@ -131,7 +137,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     if (timerStatus === TimerStatus.Playing) {
       const newInterval = window.setInterval(() => {
         recomputeTimeRemaining();
-      }, 1000);
+      }, MILLISECONDS_PER_SECOND);
       setInterval(() => newInterval);
     }
 
@@ -147,8 +153,8 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
       ];
       return {
         ...prev,
-        timerStatus: TimerStatus.Playing,
         segments: newSegments,
+        timerStatus: TimerStatus.Playing,
       };
     });
   };
@@ -158,8 +164,8 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
       segmentsCopy[segmentsCopy.length - 1].endTime = new Date();
       return {
         ...prev,
-        timerStatus: TimerStatus.Paused,
         segments: segmentsCopy,
+        timerStatus: TimerStatus.Paused,
       };
     });
   };
@@ -168,36 +174,36 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     stopSound();
     setState((prev) => ({
       ...prev,
-      timerStatus: TimerStatus.Stopped,
       segments: [],
+      timerStatus: TimerStatus.Stopped,
     }));
   };
 
   const onSetTargetToWork = () => {
     setState({
-      timerStatus: TimerStatus.Stopped,
       segments: [],
       targetMinutes: POMODORO_WORK_TIME,
+      timerStatus: TimerStatus.Stopped,
     });
   };
 
   const onSetTargetToBreak = () => {
     setState({
-      timerStatus: TimerStatus.Stopped,
       segments: [],
       targetMinutes: POMODORO_BREAK_TIME,
+      timerStatus: TimerStatus.Stopped,
     });
   };
 
   return {
     minutesDisplay,
-    secondsDisplay,
-    timerStatus,
-    targetMinutes,
-    onPlay,
     onPause,
-    onStop,
-    onSetTargetToWork,
+    onPlay,
     onSetTargetToBreak,
+    onSetTargetToWork,
+    onStop,
+    secondsDisplay,
+    targetMinutes,
+    timerStatus,
   };
 }

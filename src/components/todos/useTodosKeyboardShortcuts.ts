@@ -109,7 +109,7 @@ export const useTodosKeyboardShortcuts = () => {
             }
           }
         } else if (event.code === "ArrowDown") {
-          const firstItem = allTodosOrdered[0];
+          const [firstItem] = allTodosOrdered;
           setSelectedItemId(firstItem?.id);
         }
       }

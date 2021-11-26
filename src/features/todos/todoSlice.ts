@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ID } from "../../shared/id.type";
 import { Todo } from "../../shared/todo";
 import { sortTodos } from "../../shared/util";
 import { Due } from "../../shared/due.type";
 import {
+  StateWithHistory,
   addNewStateGoingForward,
   redo,
   undo,
-  StateWithHistory,
 } from "../shared";
 
 interface TodoState {
@@ -18,35 +18,43 @@ interface TodoState {
 export type TodoStateWithHistory = StateWithHistory<TodoState>;
 
 const initialCurrentState: TodoState = {
-  todos: [],
   domainName: "work",
+  todos: [],
 };
 
 const initialState: TodoStateWithHistory = {
-  pastState: [],
   currentState: initialCurrentState,
   futureState: [],
+  pastState: [],
 };
 
 export const todoSlice = createSlice({
-  name: "todos",
   initialState,
+  name: "todos",
   reducers: {
-    setProjectName: (state, action: PayloadAction<string>) => {
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        domainName: action.payload,
-      });
-    },
-    resortTodos: (state) => {
-      const sortedTodos = state.currentState.todos.slice().sort(sortTodos);
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        todos: sortedTodos,
-      });
-    },
     addNewTodo: (state, action: PayloadAction<Todo>) => {
       const newTodos = [{ ...action.payload }, ...state.currentState.todos];
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        todos: newTodos,
+      });
+    },
+    archiveAllCompletedTodos: (state) => {
+      const newTodos = state.currentState.todos.map((todo) => {
+        if (todo.due !== Due.Archived && todo.done) {
+          return { ...todo, archivedDate: new Date(), due: Due.Archived };
+        }
+        return todo;
+      });
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        todos: newTodos,
+      });
+    },
+    deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
+      const newTodos = state.currentState.todos.filter(
+        (todo) => todo.id !== action.payload.id
+      );
       return addNewStateGoingForward(state, {
         ...state.currentState,
         todos: newTodos,
@@ -68,29 +76,22 @@ export const todoSlice = createSlice({
         todos: newTodos,
       });
     },
-    deleteTodo: (state, action: PayloadAction<{ id: ID }>) => {
-      const newTodos = state.currentState.todos.filter(
-        (todo) => todo.id !== action.payload.id
-      );
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        todos: newTodos,
-      });
-    },
-    archiveAllCompletedTodos: (state) => {
-      const newTodos = state.currentState.todos.map((todo) => {
-        if (todo.due !== Due.Archived && todo.done) {
-          return { ...todo, due: Due.Archived, archivedDate: new Date() };
-        }
-        return todo;
-      });
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        todos: newTodos,
-      });
-    },
-    undoTodos: undo,
     redoTodos: redo,
+    resortTodos: (state) => {
+      const sortedTodos = state.currentState.todos.slice().sort(sortTodos);
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        todos: sortedTodos,
+      });
+    },
+    setProjectName: (state, action: PayloadAction<string>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        domainName: action.payload,
+      });
+    },
+
+    undoTodos: undo,
   },
 });
 
@@ -101,8 +102,8 @@ export const {
   deleteTodo,
   addNewTodo,
   archiveAllCompletedTodos,
-  undoTodos,
   redoTodos,
+  undoTodos,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
