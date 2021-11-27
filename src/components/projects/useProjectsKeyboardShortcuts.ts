@@ -49,57 +49,59 @@ export const useProjectsKeyboardShortcuts = () => {
         setEditingItemId("");
       }
 
-      if (!editingItemId) {
-        if (
-          selectedItemId &&
-          currentProjects.find(({ id }) => id === selectedItemId)
-        ) {
-          const projectIdInfo = getItemIdInfoForArrowSelection(
-            currentProjects,
-            selectedItemId
-          );
-          const project = currentProjects.find(
-            ({ id }) => id === selectedItemId
-          ) as Project;
+      if (editingItemId) return;
 
-          const isNoneProject = project.title.toLowerCase() === "none";
-          if (event.key === "a") {
-            if (isNoneProject) {
-              addToast(`Cannot archive 'none' project`);
-            } else {
-              archiveProjectWithToast(project);
-            }
-          } else if (event.key === "d") {
-            if (isNoneProject) {
-              addToast(`Cannot delete 'none' project`);
-            } else {
-              const canDelete = canDeleteProject(project, todos, templates);
-              if (canDelete) {
-                deleteProjectWithToast(project);
-              } else {
-                addToast(`Delete linked todos & templates first`);
-              }
-            }
-          } else if (event.key === "e") {
-            setEditingItemId(project.id);
-            event.preventDefault();
-          } else if (event.code === "ArrowDown") {
-            event.preventDefault();
-            if (projectIdInfo.nextItemUUID) {
-              setSelectedItemId(projectIdInfo.nextItemUUID);
-            }
-          } else if (event.code === "ArrowUp") {
-            event.preventDefault();
-            if (projectIdInfo.previousItemUUID) {
-              setSelectedItemId(projectIdInfo.previousItemUUID);
-            }
-          } else if (event.key === "Escape") {
-            setSelectedItemId("");
+      /** active editing item shortcuts **/
+
+      if (
+        selectedItemId &&
+        currentProjects.find(({ id }) => id === selectedItemId)
+      ) {
+        const projectIdInfo = getItemIdInfoForArrowSelection(
+          currentProjects,
+          selectedItemId
+        );
+        const project = currentProjects.find(
+          ({ id }) => id === selectedItemId
+        ) as Project;
+
+        const isNoneProject = project.title.toLowerCase() === "none";
+        if (event.key === "a") {
+          if (isNoneProject) {
+            addToast(`Cannot archive 'none' project`);
+          } else {
+            archiveProjectWithToast(project);
           }
+        } else if (event.key === "d") {
+          if (isNoneProject) {
+            addToast(`Cannot delete 'none' project`);
+          } else {
+            const canDelete = canDeleteProject(project, todos, templates);
+            if (canDelete) {
+              deleteProjectWithToast(project);
+            } else {
+              addToast(`Delete linked todos & templates first`);
+            }
+          }
+        } else if (event.key === "e") {
+          setEditingItemId(project.id);
+          event.preventDefault();
         } else if (event.code === "ArrowDown") {
-          const [firstItem] = currentProjects;
-          setSelectedItemId(firstItem?.id);
+          event.preventDefault();
+          if (projectIdInfo.nextItemUUID) {
+            setSelectedItemId(projectIdInfo.nextItemUUID);
+          }
+        } else if (event.code === "ArrowUp") {
+          event.preventDefault();
+          if (projectIdInfo.previousItemUUID) {
+            setSelectedItemId(projectIdInfo.previousItemUUID);
+          }
+        } else if (event.key === "Escape") {
+          setSelectedItemId("");
         }
+      } else if (event.code === "ArrowDown") {
+        const [firstItem] = currentProjects;
+        setSelectedItemId(firstItem?.id);
       }
     };
     window.addEventListener("keydown", listenForKeyboardShortcuts);

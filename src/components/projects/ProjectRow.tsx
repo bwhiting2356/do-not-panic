@@ -63,14 +63,6 @@ export function ProjectRow({ project }: Props) {
     );
   };
 
-  const onToggleEditingTodoId = () => {
-    if (isEditing) {
-      setEditingItemId("");
-    } else {
-      setEditingItemId(project.id);
-    }
-  };
-
   const onRowClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
@@ -80,7 +72,7 @@ export function ProjectRow({ project }: Props) {
     }
   };
 
-  const onToggleEditingProjectId = () => {
+  const onToggleEditingId = () => {
     if (isEditing) {
       setEditingItemId("");
     } else {
@@ -100,7 +92,7 @@ export function ProjectRow({ project }: Props) {
           editing={isNoneProject ? false : isEditing}
           text={title}
           onEditText={onEditTitle}
-          onSubmit={onToggleEditingTodoId}
+          onSubmit={onToggleEditingId}
         />
       </td>
       <td className="description vertical-align">
@@ -109,7 +101,7 @@ export function ProjectRow({ project }: Props) {
           editing={isEditing}
           text={description}
           onEditText={onEditDescription}
-          onSubmit={onToggleEditingTodoId}
+          onSubmit={onToggleEditingId}
         />
       </td>
       <td className="actions vertical-align">
@@ -122,7 +114,7 @@ export function ProjectRow({ project }: Props) {
           onRemoveProjectFromArchive={() =>
             removeProjectFromArchiveWithToast(project)
           }
-          onToggleEditing={onToggleEditingProjectId}
+          onToggleEditing={onToggleEditingId}
         />
       </td>
     </tr>
