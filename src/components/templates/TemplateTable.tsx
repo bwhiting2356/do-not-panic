@@ -23,6 +23,7 @@ export function TemplateTable({ templates }: Props) {
       <tbody>
         {templates.map((template, i) => (
           <TemplateRow
+            key={template.id}
             template={template}
             arrayIdx={i}
             canMoveDown={i !== templates.length - 1}

@@ -58,6 +58,7 @@ export function TemplateButtons() {
             <Dropdown.Menu>
               {customTemplates.map((template) => (
                 <Dropdown.Item
+                  key={template.id}
                   eventKey="1"
                   onClick={(e) => addFromTemplate(e, template.id)}
                 >
