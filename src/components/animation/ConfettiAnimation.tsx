@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie";
-import { useAppContext } from "../../context/context";
 import { generateRandomConfetti } from "./helpers";
+import { useAppContext } from "../../context/context";
+import { MILLISECONDS_PER_SECOND } from "../../shared/constants";
 
 export function ConfettiAnimation() {
   const { showAnimation, setShowAnimation } = useAppContext();
@@ -14,16 +14,17 @@ export function ConfettiAnimation() {
     if (showAnimation) {
       timeout = setTimeout(() => {
         setShowAnimation(false);
-      }, 1500);
+      }, MILLISECONDS_PER_SECOND);
     }
     setConfetti(generateRandomConfetti());
     return () => clearTimeout(timeout);
   }, [showAnimation, setConfetti, setShowAnimation]);
 
   const defaultOptions = {
-    loop: false,
-    autoplay: true,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     animationData: (confetti as any).default,
+    autoplay: true,
+    loop: false,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -33,14 +34,14 @@ export function ConfettiAnimation() {
     return (
       <div
         style={{
-          position: "absolute",
-          pointerEvents: "none",
-          margin: "auto",
-          display: "flex",
           alignItems: "center",
+          display: "flex",
           justifyContent: "center",
-          top: 0,
           left: 0,
+          margin: "auto",
+          pointerEvents: "none",
+          position: "absolute",
+          top: 0,
         }}
       >
         <div>

@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
+import React, { useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useReduxActionsWithContext } from "../../context/context";
 import {
@@ -8,7 +9,6 @@ import {
 } from "../../features/templates/selectors";
 import { AddIconButton } from "../icon-buttons/AddIconButton";
 
-import { Dropdown } from "react-bootstrap";
 import { ID } from "../../shared/id.type";
 
 export function TemplateButtons() {
@@ -23,7 +23,10 @@ export function TemplateButtons() {
     setShowDropdown(false);
   };
 
-  const addFromTemplate = (e: any, templateId: ID) => {
+  const addFromTemplate = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    templateId: ID
+  ) => {
     e.stopPropagation();
     e.preventDefault();
     setTimeout(() => {
@@ -55,6 +58,7 @@ export function TemplateButtons() {
             <Dropdown.Menu>
               {customTemplates.map((template) => (
                 <Dropdown.Item
+                  key={template.id}
                   eventKey="1"
                   onClick={(e) => addFromTemplate(e, template.id)}
                 >

@@ -1,5 +1,7 @@
-import { createContext, useContext, useState } from "react";
+/* eslint-disable sort-keys */
+/* eslint-disable no-empty-function */
 import { v4 as uuidv4 } from "uuid";
+import { createContext, useContext, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addNewProject,
@@ -17,19 +19,19 @@ import {
   undoTemplates,
 } from "../features/templates/templateSlice";
 import {
-  undoTodos,
-  redoTodos,
-  archiveAllCompletedTodos,
-  resortTodos,
-  editTodo,
-  deleteTodo,
   addNewTodo,
+  archiveAllCompletedTodos,
+  deleteTodo,
+  editTodo,
+  redoTodos,
+  resortTodos,
+  undoTodos,
 } from "../features/todos/todoSlice";
 import { Due } from "../shared/due.type";
 
 import { ID } from "../shared/id.type";
 import { Project } from "../shared/project";
-import { buildTodoFromTemplate, Template } from "../shared/template";
+import { Template, buildTodoFromTemplate } from "../shared/template";
 import { Todo } from "../shared/todo";
 
 interface ToastData {

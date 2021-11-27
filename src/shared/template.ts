@@ -15,7 +15,6 @@ export class Template extends Todo {
   }
 }
 
-// TODO: use OOP
 export const buildTodoFromTemplate = (template: Template) => {
   return new Todo(
     template.poms,

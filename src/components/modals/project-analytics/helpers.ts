@@ -1,5 +1,5 @@
-import { ChartData } from "chart.js";
 import moment from "moment";
+import { ChartData } from "chart.js";
 import { ID } from "../../../shared/id.type";
 import { Project } from "../../../shared/project";
 import { Todo } from "../../../shared/todo";
@@ -62,13 +62,13 @@ export const aggregateChartData = (
   );
 
   return {
-    labels: Object.keys(todoPomsByProject).map(mapProjectIdToTitle(projects)),
     datasets: [
       {
-        data: Object.values(todoPomsByProject),
         backgroundColor: ["red", "blue", "pink", "orange", "green", "purple"],
+        data: Object.values(todoPomsByProject),
       },
     ],
+    labels: Object.keys(todoPomsByProject).map(mapProjectIdToTitle(projects)),
   };
 };
 
@@ -133,11 +133,11 @@ const groupTodosByTimeBucket = (
 };
 
 export const groupTodosByTimeDisplayBuckets = (todos: Todo[]): GroupedTodos => {
-  const weeklyBuckets = groupTodosByTimeBucket(todos, weekDisplay);
   const monthlyBuckets = groupTodosByTimeBucket(todos, monthDisplay);
+  const weeklyBuckets = groupTodosByTimeBucket(todos, weekDisplay);
 
   return {
-    weekly: mapBucketObjToList(weeklyBuckets).sort(sortBucketsByDate),
     monthly: mapBucketObjToList(monthlyBuckets).sort(sortBucketsByDate),
+    weekly: mapBucketObjToList(weeklyBuckets).sort(sortBucketsByDate),
   };
 };

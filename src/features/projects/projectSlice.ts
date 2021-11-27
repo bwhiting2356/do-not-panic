@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  StateWithHistory,
   addNewStateGoingForward,
   redo,
   undo,
-  StateWithHistory,
 } from "../shared";
 import { Project } from "../../shared/project";
 import { ID } from "../../shared/id.type";
@@ -12,42 +12,22 @@ interface ProjectState {
   projects: Project[];
 }
 
-export interface ProjectStateWithHistory
-  extends StateWithHistory<ProjectState> {}
+export type ProjectStateWithHistory = StateWithHistory<ProjectState>;
 
 const initialCurrentState: ProjectState = {
   projects: [],
 };
 
 const initialState: ProjectStateWithHistory = {
-  pastState: [],
   currentState: initialCurrentState,
   futureState: [],
+  pastState: [],
 };
 
 export const projectSlice = createSlice({
-  name: "projects",
   initialState,
+  name: "projects",
   reducers: {
-    editProject: (
-      state,
-      action: PayloadAction<{ id: ID; newProject: Project }>
-    ) => {
-      const { projects } = state.currentState;
-      const { id, newProject } = action.payload;
-      const newProjects = projects.slice().map((project) => {
-        if (project.id === id) {
-          return { ...project, ...newProject };
-        } else {
-          return project;
-        }
-      });
-
-      return addNewStateGoingForward(state, {
-        ...state.currentState,
-        projects: newProjects,
-      });
-    },
     addNewProject: (state, action: PayloadAction<Project>) => {
       const newProjects = [
         { ...action.payload },
@@ -67,8 +47,28 @@ export const projectSlice = createSlice({
         projects: newProjects,
       });
     },
-    undoProjects: undo,
+    editProject: (
+      state,
+      action: PayloadAction<{ id: ID; newProject: Project }>
+    ) => {
+      const { projects } = state.currentState;
+      const { id, newProject } = action.payload;
+      const newProjects = projects.slice().map((project) => {
+        if (project.id === id) {
+          return { ...project, ...newProject };
+        } else {
+          return project;
+        }
+      });
+
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        projects: newProjects,
+      });
+    },
+
     redoProjects: redo,
+    undoProjects: undo,
   },
 });
 

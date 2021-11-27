@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { Template } from "../../shared/template";
 import { TemplateRow } from "./TemplateRow";
+import { Template } from "../../shared/template";
 
 interface Props {
   templates: Template[];
@@ -21,8 +21,14 @@ export function TemplateTable({ templates }: Props) {
         </tr>
       </thead>
       <tbody>
-        {templates.map((template) => (
-          <TemplateRow template={template} />
+        {templates.map((template, i) => (
+          <TemplateRow
+            key={template.id}
+            template={template}
+            arrayIdx={i}
+            canMoveDown={i !== templates.length - 1}
+            canMoveUp={i !== 0}
+          />
         ))}
       </tbody>
     </Table>

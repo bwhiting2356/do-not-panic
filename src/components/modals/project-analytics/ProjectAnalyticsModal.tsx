@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Modal, Tab, Tabs } from "react-bootstrap";
 import { Pie } from "react-chartjs-2";
+import { ArrowButtons } from "./ArrowButtons";
+import {
+  ProjectModalState,
+  TimeBucketType,
+  aggregateChartData,
+  calculateDisabledArrows,
+  groupTodosByTimeDisplayBuckets,
+} from "./helpers";
 import { useAppSelector } from "../../../app/hooks";
 import { useAppContext } from "../../../context/context";
 import { selectProjects } from "../../../features/projects/selectors";
 import { selectArchivedTodos } from "../../../features/todos/selectors";
-import { ArrowButtons } from "./ArrowButtons";
-import {
-  calculateDisabledArrows,
-  aggregateChartData,
-  ProjectModalState,
-  TimeBucketType,
-  groupTodosByTimeDisplayBuckets,
-} from "./helpers";
 
 export function ProjectAnalyticsModal() {
   const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
@@ -24,9 +24,9 @@ export function ProjectAnalyticsModal() {
   const totalMonths = todosByTimeBucket.monthly.length;
 
   const [state, setState] = useState<ProjectModalState>({
-    key: "weekly",
-    currentWeekIndex: totalWeeks - 1,
     currentMonthIndex: totalMonths - 1,
+    currentWeekIndex: totalWeeks - 1,
+    key: "weekly",
   });
   const { key, currentWeekIndex, currentMonthIndex } = state;
 
@@ -72,10 +72,10 @@ export function ProjectAnalyticsModal() {
     }
   };
 
-  const onSetKey = (key: string | null) => {
-    setState((state) => ({
-      ...state,
-      key: (key as TimeBucketType) || "weekly",
+  const onSetKey = (newKey: string | null) => {
+    setState((prevState) => ({
+      ...prevState,
+      key: (newKey as TimeBucketType) || "weekly",
     }));
   };
 

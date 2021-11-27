@@ -13,15 +13,15 @@ export const undo = <T>(state: StateWithHistory<T>) => {
 
   if (prevState) {
     return {
-      pastState: newPastState,
       currentState: prevState,
       futureState: [currentState, ...futureState],
+      pastState: newPastState,
     };
   } else {
     return {
-      pastState,
       currentState,
       futureState,
+      pastState,
     };
   }
 };
@@ -31,9 +31,9 @@ export const redo = <T>(state: StateWithHistory<T>) => {
   const nextState = futureState[0] || currentState;
   const newFutureState = futureState.slice(1) || [];
   return {
-    pastState: [...pastState, currentState],
     currentState: nextState,
     futureState: newFutureState,
+    pastState: [...pastState, currentState],
   };
 };
 
@@ -46,8 +46,8 @@ export const addNewStateGoingForward = <T>(
     prevState.currentState,
   ].slice(MAX_TODO_HISTORY * -1);
   return {
-    pastState: newPastState,
     currentState: newState,
     futureState: [],
+    pastState: newPastState,
   };
 };

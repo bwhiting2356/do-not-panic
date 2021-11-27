@@ -1,9 +1,8 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Container } from "react-bootstrap";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import Todos from "./components/todos/Todos";
 import Projects from "./components/projects/Projects";
 import { NavTabs } from "./components/header/NavTabs";

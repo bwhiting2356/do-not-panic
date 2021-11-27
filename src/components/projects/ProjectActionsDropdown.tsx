@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Archive, Pencil, Trash } from "react-bootstrap-icons";
-import { Project } from "../../shared/project";
 import { DisabledDropdownItemWithTooltip } from "./DisableWithTooltip";
+import { Project } from "../../shared/project";
 
 type Props = {
   project: Project;
@@ -85,19 +85,19 @@ export function ProjectActionsDropdown({
       ></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {!Boolean(project.archivedDate) ? (
-          <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
-            <span style={{ marginRight: "10px" }}>
-              <Archive />
-            </span>
-            Archive
-          </Dropdown.Item>
-        ) : (
+        {project.archivedDate ? (
           <Dropdown.Item eventKey="1" onClick={onRemoveProjectFromArchive}>
             <span style={{ marginRight: "10px" }}>
               <Archive />
             </span>
             Remove from Archive
+          </Dropdown.Item>
+        ) : (
+          <Dropdown.Item eventKey="1" onClick={onArchiveProject}>
+            <span style={{ marginRight: "10px" }}>
+              <Archive />
+            </span>
+            Archive
           </Dropdown.Item>
         )}
         <Dropdown.Item

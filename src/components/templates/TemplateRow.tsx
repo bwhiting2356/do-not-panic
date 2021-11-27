@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
 import cn from "classnames";
+import React, { useRef } from "react";
+import { Form } from "react-bootstrap";
+import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
 import { useAppDispatch } from "../../app/hooks";
 import {
   useAppContext,
@@ -7,18 +9,28 @@ import {
 } from "../../context/context";
 import { TextField } from "../TextField";
 import { Template } from "../../shared/template";
-import { editTemplate } from "../../features/templates/templateSlice";
+import {
+  editTemplate,
+  moveTemplateDown,
+  moveTemplateUp,
+} from "../../features/templates/templateSlice";
 import { ProjectDropdown } from "../ProjectDropdown";
 import { ID } from "../../shared/id.type";
 import { LinkWithRef } from "../Link";
-import { TemplateActionsDropdown } from "./TemplateActionsDropdown";
-import { Form } from "react-bootstrap";
 
 type Props = {
   template: Template;
+  arrayIdx: number;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
 };
 
-export function TemplateRow({ template }: Props) {
+export function TemplateRow({
+  template,
+  arrayIdx,
+  canMoveDown,
+  canMoveUp,
+}: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
@@ -107,6 +119,11 @@ export function TemplateRow({ template }: Props) {
     );
   };
 
+  const onMoveTemplateUp = () => dispatch(moveTemplateUp({ index: arrayIdx }));
+
+  const onMoveTemplateDown = () =>
+    dispatch(moveTemplateDown({ index: arrayIdx }));
+
   const onToggleEditingTemplateId = () => {
     if (isEditing) {
       setEditingItemId("");
@@ -115,8 +132,8 @@ export function TemplateRow({ template }: Props) {
     }
   };
 
-  const onRowClick = (e: any) => {
-    const { tagName } = e.target;
+  const onRowClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
     setSelectedItemId(template.id);
     if (editingItemId !== template.id) {
@@ -150,7 +167,9 @@ export function TemplateRow({ template }: Props) {
           className="toggle"
           type="checkbox"
           checked={autofocus}
-          onChange={(e: any) => onEditAutofocus(e.target.checked)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onEditAutofocus(e.target.checked)
+          }
         />
       </td>
       <td className="name vertical-align">
@@ -181,13 +200,13 @@ export function TemplateRow({ template }: Props) {
       </td>
       <td className="links vertical-align">
         <div>
-          {links.map(({ id, url }) => (
+          {links.map((link) => (
             <LinkWithRef
               ref={linkRef}
-              key={id}
-              url={url}
+              key={link.id}
+              url={link.url}
               editing={isEditing}
-              onEditLink={(newUrl) => onEditLink(id, newUrl)}
+              onEditLink={(newUrl) => onEditLink(link.id, newUrl)}
               onSubmit={onToggleEditingTemplateId}
             />
           ))}
@@ -199,6 +218,10 @@ export function TemplateRow({ template }: Props) {
           isEditing={isEditing}
           template={template}
           onToggleEditing={onToggleEditingTemplateId}
+          onMoveUp={onMoveTemplateUp}
+          onMoveDown={onMoveTemplateDown}
+          canMoveDown={canMoveDown}
+          canMoveUp={canMoveUp}
         />
       </td>
     </tr>

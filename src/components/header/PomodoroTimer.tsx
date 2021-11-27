@@ -1,11 +1,11 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
+import { TimerStatus, usePomodoroLogic } from "./usePomodoroLogic";
 import {
   POMODORO_BREAK_TIME,
   POMODORO_WORK_TIME,
 } from "../../shared/constants";
-import { TimerStatus, usePomodoroLogic } from "./usePomodoroLogic";
 export function PomodoroTimer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const {
@@ -34,18 +34,18 @@ export function PomodoroTimer() {
   return (
     <div
       style={{
+        alignItems: "center",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ alignItems: "center", display: "flex" }}>
         <div style={{ marginRight: "12px" }}>
           <h3
             style={{
-              display: "flex",
               alignItems: "center",
+              display: "flex",
               margin: 0,
               padding: 0,
             }}

@@ -41,47 +41,47 @@ export const useTemplatesKeyboardShortcuts = () => {
         setEditingItemId("");
       }
 
-      if (!Boolean(editingItemId)) {
-        if (
-          Boolean(
-            selectedItemId && templates.find(({ id }) => id === selectedItemId)
-          )
-        ) {
-          const projectIdInfo = getItemIdInfoForArrowSelection(
-            templates,
-            selectedItemId
-          );
-          const template = templates.find(
-            ({ id }) => id === selectedItemId
-          ) as Template;
+      if (editingItemId) return;
 
-          const isDefaultTemplate =
-            template.templateTitle.toLowerCase() === "default";
+      /** active editing item shortcuts **/
 
-          if (event.key === "d") {
-            if (isDefaultTemplate) {
-              addToast(`Cannot delete default template`);
-            } else {
-              deleteTemplateWithToast(template);
-            }
-          } else if (event.key === "e") {
-            setEditingItemId(template.id);
-            event.preventDefault();
-          } else if (event.code === "ArrowDown") {
-            event.preventDefault();
-            projectIdInfo.nextItemUUID &&
-              setSelectedItemId(projectIdInfo.nextItemUUID);
-          } else if (event.code === "ArrowUp") {
-            event.preventDefault();
-            projectIdInfo.previousItemUUID &&
-              setSelectedItemId(projectIdInfo.previousItemUUID);
-          } else if (event.key === "Escape") {
-            setSelectedItemId("");
+      if (selectedItemId && templates.find(({ id }) => id === selectedItemId)) {
+        const projectIdInfo = getItemIdInfoForArrowSelection(
+          templates,
+          selectedItemId
+        );
+        const template = templates.find(
+          ({ id }) => id === selectedItemId
+        ) as Template;
+
+        const isDefaultTemplate =
+          template.templateTitle.toLowerCase() === "default";
+
+        if (event.key === "d") {
+          if (isDefaultTemplate) {
+            addToast(`Cannot delete default template`);
+          } else {
+            deleteTemplateWithToast(template);
           }
+        } else if (event.key === "e") {
+          setEditingItemId(template.id);
+          event.preventDefault();
         } else if (event.code === "ArrowDown") {
-          const firstItem = templates[0];
-          setSelectedItemId(firstItem?.id);
+          event.preventDefault();
+          if (projectIdInfo.nextItemUUID) {
+            setSelectedItemId(projectIdInfo.nextItemUUID);
+          }
+        } else if (event.code === "ArrowUp") {
+          event.preventDefault();
+          if (projectIdInfo.previousItemUUID) {
+            setSelectedItemId(projectIdInfo.previousItemUUID);
+          }
+        } else if (event.key === "Escape") {
+          setSelectedItemId("");
         }
+      } else if (event.code === "ArrowDown") {
+        const [firstItem] = templates;
+        setSelectedItemId(firstItem?.id);
       }
     };
     window.addEventListener("keydown", listenForKeyboardShortcuts);

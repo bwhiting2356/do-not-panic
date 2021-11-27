@@ -3,6 +3,7 @@ import { ID } from "./id.type";
 
 export abstract class Item {
   id: ID;
+
   constructor() {
     this.id = uuidv4();
   }

@@ -1,5 +1,5 @@
-import React from "react";
 import { Table } from "react-bootstrap";
+import React from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectTodosDueToday } from "../../features/todos/selectors";
 import { POMODORO_TOTAL_MINUTES } from "../../shared/constants";
@@ -18,10 +18,10 @@ export function TodalToday() {
   return (
     <Table
       style={{
+        marginTop: "10px",
+        minWidth: "300px",
         textAlign: "right",
         width: "300px",
-        minWidth: "300px",
-        marginTop: "10px",
       }}
       striped
       bordered

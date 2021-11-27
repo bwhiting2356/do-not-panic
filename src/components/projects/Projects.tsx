@@ -1,6 +1,8 @@
-import React from "react";
-import { ButtonGroup } from "react-bootstrap";
 import { PieChart } from "react-bootstrap-icons";
+import { ButtonGroup } from "react-bootstrap";
+import React from "react";
+import { ProjectTable } from "./ProjectTable";
+import { useProjectsKeyboardShortcuts } from "./useProjectsKeyboardShortcuts";
 import { useAppSelector } from "../../app/hooks";
 import {
   useAppContext,
@@ -13,8 +15,6 @@ import {
 import { ArchiveToggleButton } from "../ArchiveToggleButton";
 import { AddIconButton } from "../icon-buttons/AddIconButton";
 import { IconButton } from "../icon-buttons/IconButton";
-import { ProjectTable } from "./ProjectTable";
-import { useProjectsKeyboardShortcuts } from "./useProjectsKeyboardShortcuts";
 
 function Projects() {
   const currentProjects = useAppSelector(selectCurrentProjects);

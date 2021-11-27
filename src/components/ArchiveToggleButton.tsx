@@ -16,7 +16,7 @@ export function ArchiveToggleButton() {
       <Button
         variant="light"
         onClick={toggleShowArchive}
-        style={{ marginLeft: "10px", marginBottom: "10px" }}
+        style={{ marginBottom: "10px", marginLeft: "10px" }}
       >
         {showArchive ? <ChevronUp /> : <ChevronDown />}
       </Button>

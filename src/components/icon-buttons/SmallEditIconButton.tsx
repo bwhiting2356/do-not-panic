@@ -2,7 +2,7 @@ import React from "react";
 import { Pencil } from "react-bootstrap-icons";
 
 interface Props {
-  onClick?: (e?: any) => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 export function SmallEditIconButton(props: Props) {
   return (

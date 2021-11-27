@@ -1,6 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import { ArchiveFill, Filter } from "react-bootstrap-icons";
 import { ButtonGroup } from "react-bootstrap";
+import React, { useEffect, useRef } from "react";
 import { TodoTable } from "./TodoTable";
+import { useTodosKeyboardShortcuts } from "./useTodosKeyboardShortcuts";
+import { TemplateButtons } from "./TemplateButtons";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectArchivedTodos,
@@ -8,16 +11,13 @@ import {
   selectTodosDueToday,
 } from "../../features/todos/selectors";
 import { Due } from "../../shared/due.type";
-import { ArchiveFill, Filter } from "react-bootstrap-icons";
 import {
-  useReduxActionsWithContext,
   useAppContext,
+  useReduxActionsWithContext,
 } from "../../context/context";
-import { useTodosKeyboardShortcuts } from "./useTodosKeyboardShortcuts";
 import { Todo } from "../../shared/todo";
 import { IconButton } from "../icon-buttons/IconButton";
 import { ArchiveToggleButton } from "../ArchiveToggleButton";
-import { TemplateButtons } from "./TemplateButtons";
 
 function Todos() {
   const todayTodos = useAppSelector(selectTodosDueToday);

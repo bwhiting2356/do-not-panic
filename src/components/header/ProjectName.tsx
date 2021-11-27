@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectDomainName } from "../../features/todos/selectors";
 import { setProjectName } from "../../features/todos/todoSlice";

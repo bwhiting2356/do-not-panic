@@ -10,7 +10,7 @@ export const selectProjects = createSelector(
 
 export const selectCurrentProjects = createSelector(
   selectProjects,
-  (projects) => projects.filter((project) => !Boolean(project.archivedDate))
+  (projects) => projects.filter((project) => !project.archivedDate)
 );
 
 export const selectArchivedProjects = createSelector(
