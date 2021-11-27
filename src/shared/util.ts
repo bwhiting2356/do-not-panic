@@ -112,3 +112,15 @@ export const canDeleteProject = (
     !templates.some(({ projectId }) => projectId === project.id)
   );
 };
+
+export const arrayMove = <T>(
+  arr: T[],
+  fromIndex: number,
+  toIndex: number
+): T[] => {
+  const arrayCopy = arr.slice();
+  const element = arrayCopy[fromIndex];
+  arrayCopy.splice(fromIndex, 1);
+  arrayCopy.splice(toIndex, 0, element);
+  return arrayCopy;
+};

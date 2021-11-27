@@ -21,8 +21,13 @@ export function TemplateTable({ templates }: Props) {
         </tr>
       </thead>
       <tbody>
-        {templates.map((template) => (
-          <TemplateRow template={template} />
+        {templates.map((template, i) => (
+          <TemplateRow
+            template={template}
+            arrayIdx={i}
+            canMoveDown={i !== templates.length - 1}
+            canMoveUp={i !== 0}
+          />
         ))}
       </tbody>
     </Table>

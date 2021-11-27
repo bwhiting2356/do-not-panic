@@ -9,16 +9,28 @@ import {
 } from "../../context/context";
 import { TextField } from "../TextField";
 import { Template } from "../../shared/template";
-import { editTemplate } from "../../features/templates/templateSlice";
+import {
+  editTemplate,
+  moveTemplateDown,
+  moveTemplateUp,
+} from "../../features/templates/templateSlice";
 import { ProjectDropdown } from "../ProjectDropdown";
 import { ID } from "../../shared/id.type";
 import { LinkWithRef } from "../Link";
 
 type Props = {
   template: Template;
+  arrayIdx: number;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
 };
 
-export function TemplateRow({ template }: Props) {
+export function TemplateRow({
+  template,
+  arrayIdx,
+  canMoveDown,
+  canMoveUp,
+}: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
@@ -106,6 +118,11 @@ export function TemplateRow({ template }: Props) {
       })
     );
   };
+
+  const onMoveTemplateUp = () => dispatch(moveTemplateUp({ index: arrayIdx }));
+
+  const onMoveTemplateDown = () =>
+    dispatch(moveTemplateDown({ index: arrayIdx }));
 
   const onToggleEditingTemplateId = () => {
     if (isEditing) {
@@ -201,6 +218,10 @@ export function TemplateRow({ template }: Props) {
           isEditing={isEditing}
           template={template}
           onToggleEditing={onToggleEditingTemplateId}
+          onMoveUp={onMoveTemplateUp}
+          onMoveDown={onMoveTemplateDown}
+          canMoveDown={canMoveDown}
+          canMoveUp={canMoveUp}
         />
       </td>
     </tr>

@@ -7,6 +7,7 @@ import {
 } from "../shared";
 import { Template } from "../../shared/template";
 import { ID } from "../../shared/id.type";
+import { arrayMove } from "../../shared/util";
 
 interface TemplateState {
   templates: Template[];
@@ -67,6 +68,24 @@ export const templateSlice = createSlice({
         templates: newTemplates,
       });
     },
+    moveTemplateUp: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      const { templates } = state.currentState;
+      const newTemplates = arrayMove(templates, index, index - 1);
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        templates: newTemplates,
+      });
+    },
+    moveTemplateDown: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      const { templates } = state.currentState;
+      const newTemplates = arrayMove(templates, index, index + 1);
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        templates: newTemplates,
+      });
+    },
     redoTemplates: redo,
     undoTemplates: undo,
   },
@@ -76,6 +95,8 @@ export const {
   addNewTemplate,
   editTemplate,
   deleteTemplate,
+  moveTemplateUp,
+  moveTemplateDown,
   undoTemplates,
   redoTemplates,
 } = templateSlice.actions;

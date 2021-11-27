@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { Pencil, Trash } from "react-bootstrap-icons";
+import { ChevronDown, ChevronUp, Pencil, Trash } from "react-bootstrap-icons";
 import { DisabledDropdownItemWithTooltip } from "../projects/DisableWithTooltip";
 import { Template } from "../../shared/template";
 
@@ -9,6 +9,10 @@ type Props = {
   isEditing: boolean;
   onDeleteTemplate: () => void;
   onToggleEditing: () => void;
+  canMoveUp: boolean;
+  onMoveUp: () => void;
+  canMoveDown: boolean;
+  onMoveDown: () => void;
 };
 
 export function TemplateActionsDropdown({
@@ -16,9 +20,56 @@ export function TemplateActionsDropdown({
   isEditing,
   onDeleteTemplate,
   onToggleEditing,
+  canMoveUp,
+  onMoveUp,
+  canMoveDown,
+  onMoveDown,
 }: Props) {
   const [show, setShow] = useState(false);
   const isDefaultTemplate = template.templateTitle.toLowerCase() === "default";
+
+  const commonItems = (
+    <>
+      <Dropdown.Item
+        disabled={!canMoveUp}
+        eventKey="1"
+        onClick={() => {
+          onMoveUp();
+          setShow(false);
+        }}
+      >
+        <span style={{ marginRight: "10px" }}>
+          <ChevronUp />
+        </span>
+        Move up
+      </Dropdown.Item>
+      <Dropdown.Item
+        disabled={!canMoveDown}
+        eventKey="1"
+        onClick={() => {
+          onMoveDown();
+          setShow(false);
+        }}
+      >
+        <span style={{ marginRight: "10px" }}>
+          <ChevronDown />
+        </span>
+        Move down
+      </Dropdown.Item>
+      <Dropdown.Item
+        eventKey="1"
+        onClick={() => {
+          onToggleEditing();
+          setShow(false);
+        }}
+      >
+        <span style={{ marginRight: "10px" }}>
+          <Pencil />
+        </span>
+        {isEditing ? "Stop editing" : "Edit"}
+      </Dropdown.Item>
+    </>
+  );
 
   if (isDefaultTemplate) {
     return (
@@ -34,18 +85,7 @@ export function TemplateActionsDropdown({
         ></Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item
-            eventKey="1"
-            onClick={() => {
-              onToggleEditing();
-              setShow(false);
-            }}
-          >
-            <span style={{ marginRight: "10px" }}>
-              <Pencil />
-            </span>
-            {isEditing ? "Stop editing" : "Edit"}
-          </Dropdown.Item>
+          {commonItems}
           <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'Default' project">
             {() => (
               <div>
@@ -73,18 +113,7 @@ export function TemplateActionsDropdown({
       ></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item
-          eventKey="1"
-          onClick={() => {
-            onToggleEditing();
-            setShow(false);
-          }}
-        >
-          <span style={{ marginRight: "10px" }}>
-            <Pencil />
-          </span>
-          {isEditing ? "Stop editing" : "Edit"}
-        </Dropdown.Item>
+        {commonItems}
         <Dropdown.Item eventKey="1" onClick={onDeleteTemplate}>
           <span style={{ marginRight: "10px" }}>
             <Trash />
