@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-function */
 import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
 import React, { useRef, useState } from "react";
@@ -10,12 +11,19 @@ import {
 import { AddIconButton } from "../icon-buttons/AddIconButton";
 
 import { ID } from "../../shared/id.type";
+import { groupTemplatesByGroupName } from "../../shared/util";
 
 export function TemplateButtons() {
   const dropdownRef = useRef<HTMLButtonElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const defaultTemplate = useAppSelector(selectDefaultTemplate);
   const customTemplates = useAppSelector(selectCustomTemplates);
+  const groupedTemplates = groupTemplatesByGroupName(customTemplates);
+  const groupedTemplateKeys = Object.keys(groupedTemplates).filter(
+    (key) => key !== ""
+  );
+  // eslint-disable-next-line no-console
+  console.log(groupedTemplates);
   const { addTodoFromTemplateWithToast } = useReduxActionsWithContext();
 
   const addFromTemlate = (id: ID) => {
@@ -40,7 +48,7 @@ export function TemplateButtons() {
         <AddIconButton
           onClick={() => addFromTemlate(defaultTemplate?.id || "")}
         />
-        {customTemplates && (
+        {groupedTemplates && (
           <Dropdown
             as={ButtonGroup}
             show={showDropdown}
@@ -56,13 +64,18 @@ export function TemplateButtons() {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              {customTemplates.map((template) => (
+              {groupedTemplates[""].map((template) => (
                 <Dropdown.Item
                   key={template.id}
                   eventKey="1"
                   onClick={(e) => addFromTemplate(e, template.id)}
                 >
                   {template.templateTitle}
+                </Dropdown.Item>
+              ))}
+              {groupedTemplateKeys.map((groupName) => (
+                <Dropdown.Item key={groupName} eventKey="1" onClick={() => {}}>
+                  {groupName}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>

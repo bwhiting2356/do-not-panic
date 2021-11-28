@@ -9,7 +9,8 @@ export class Template extends Todo {
     public name: string = "",
     public poms: string = "",
     public links: Link[] = [new Link("")],
-    public autofocus: boolean = false
+    public autofocus: boolean = false,
+    public group: string = ""
   ) {
     super();
   }
