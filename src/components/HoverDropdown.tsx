@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 
 interface Props {
