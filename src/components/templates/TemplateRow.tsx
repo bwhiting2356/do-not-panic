@@ -36,7 +36,7 @@ export function TemplateRow({
   const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
     useAppContext();
   const { deleteTemplateWithToast } = useReduxActionsWithContext();
-  const { id, templateTitle, autofocus, name, poms, projectId, links } =
+  const { id, templateTitle, autofocus, name, poms, projectId, group, links } =
     template;
   const isSelected = id === selectedItemId;
   const isEditing = id === editingItemId;
@@ -114,6 +114,18 @@ export function TemplateRow({
             }
             return link;
           }),
+        },
+      })
+    );
+  };
+
+  const onEditGroup = (newGroup: string) => {
+    dispatch(
+      editTemplate({
+        id,
+        newTemplate: {
+          ...template,
+          group: newGroup,
         },
       })
     );
@@ -211,6 +223,14 @@ export function TemplateRow({
             />
           ))}
         </div>
+      </td>
+      <td className="group vertical-align">
+        <TextField
+          editing={isEditing}
+          text={group}
+          onEditText={onEditGroup}
+          onSubmit={onToggleEditingTemplateId}
+        />
       </td>
       <td className="actions vertical-align">
         <TemplateActionsDropdown

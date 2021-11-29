@@ -17,6 +17,7 @@ export function TemplateTable({ templates }: Props) {
           <th className="poms">Poms</th>
           <th className="project">Project</th>
           <th className="links">Link</th>
+          <th className="group">Group</th>
           <th className="actions">Actions</th>
         </tr>
       </thead>
