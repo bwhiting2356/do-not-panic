@@ -3,7 +3,7 @@ import { ButtonGroup } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
 import { TodoTable } from "./TodoTable";
 import { useTodosKeyboardShortcuts } from "./useTodosKeyboardShortcuts";
-import { TemplateButtons } from "./TemplateButtons";
+import { TemplateButtons } from "./todo-template-dropdown/TemplateButtons";
 import { useAppSelector } from "../../app/hooks";
 import {
   selectArchivedTodos,
