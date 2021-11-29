@@ -1,6 +1,3 @@
-/* eslint-disable sort-keys */
-/* eslint-disable no-empty-function */
-import { v4 as uuidv4 } from "uuid";
 import { createContext, useContext, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
@@ -33,11 +30,8 @@ import { ID } from "../shared/id.type";
 import { Project } from "../shared/project";
 import { Template, buildTodoFromTemplate } from "../shared/template";
 import { Todo } from "../shared/todo";
-
-interface ToastData {
-  id: ID;
-  text: string;
-}
+import { noOp } from "../shared/util";
+import { ToastData } from "../shared/toastData";
 
 export interface AppContextInterface {
   editingItemId: ID;
@@ -59,18 +53,18 @@ export interface AppContextInterface {
 const AppCtx = createContext<AppContextInterface>({
   editingItemId: "",
   selectedItemId: "",
-  setEditingItemId: () => {},
-  setSelectedItemId: () => {},
+  setEditingItemId: noOp,
+  setSelectedItemId: noOp,
   showArchive: false,
-  setShowArchive: () => {},
+  setShowArchive: noOp,
   showProjectAnalytics: false,
-  setShowProjectAnalytics: () => {},
+  setShowProjectAnalytics: noOp,
   showKeyboardShortcuts: false,
-  setShowKeyboardShortcuts: () => {},
+  setShowKeyboardShortcuts: noOp,
   toasts: [],
-  addToast: () => {},
+  addToast: noOp,
   showAnimation: false,
-  setShowAnimation: () => {},
+  setShowAnimation: noOp,
 });
 
 export const useAppContextState = (): AppContextInterface => {
@@ -83,7 +77,7 @@ export const useAppContextState = (): AppContextInterface => {
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
   const addToast = (text: string) => {
-    setToasts((prev) => [...prev, { id: uuidv4(), text }]);
+    setToasts((prev) => [...prev, new ToastData(text)]);
   };
 
   return {

@@ -3,6 +3,7 @@ import { Dropdown } from "react-bootstrap";
 import { ChevronDown, ChevronUp, Pencil, Trash } from "react-bootstrap-icons";
 import { DisabledDropdownItemWithTooltip } from "../projects/DisableWithTooltip";
 import { Template } from "../../shared/template";
+import { HoverDropdown } from "../HoverDropdown";
 
 type Props = {
   template: Template;
@@ -73,54 +74,31 @@ export function TemplateActionsDropdown({
 
   if (isDefaultTemplate) {
     return (
-      <Dropdown
-        show={show}
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-      >
-        <Dropdown.Toggle
-          variant="outline-primary"
-          id="dropdown-basic"
-          size="sm"
-        ></Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          {commonItems}
-          <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'Default' project">
-            {() => (
-              <div>
-                <span style={{ marginRight: "10px" }}>
-                  <Trash />
-                </span>
-                Delete
-              </div>
-            )}
-          </DisabledDropdownItemWithTooltip>
-        </Dropdown.Menu>
-      </Dropdown>
+      <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
+        {commonItems}
+        <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'Default' project">
+          {() => (
+            <div>
+              <span style={{ marginRight: "10px" }}>
+                <Trash />
+              </span>
+              Delete
+            </div>
+          )}
+        </DisabledDropdownItemWithTooltip>
+      </HoverDropdown>
     );
   }
-  return (
-    <Dropdown
-      show={show}
-      onMouseEnter={() => setShow(true)}
-      onMouseLeave={() => setShow(false)}
-    >
-      <Dropdown.Toggle
-        variant="outline-primary"
-        id="dropdown-basic"
-        size="sm"
-      ></Dropdown.Toggle>
 
-      <Dropdown.Menu>
-        {commonItems}
-        <Dropdown.Item eventKey="1" onClick={onDeleteTemplate}>
-          <span style={{ marginRight: "10px" }}>
-            <Trash />
-          </span>
-          Delete
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+  return (
+    <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
+      {commonItems}
+      <Dropdown.Item eventKey="1" onClick={onDeleteTemplate}>
+        <span style={{ marginRight: "10px" }}>
+          <Trash />
+        </span>
+        Delete
+      </Dropdown.Item>
+    </HoverDropdown>
   );
 }

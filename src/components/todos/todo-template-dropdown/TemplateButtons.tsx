@@ -1,7 +1,6 @@
-/* eslint-disable no-empty-function */
 import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
-import React, { useState } from "react";
+import { useState } from "react";
 import { GroupedSubmenu } from "./GroupSubmenu";
 import { TemplateItem } from "./TemplateItem";
 import { groupTemplatesByGroupName } from "./helpers";
@@ -14,6 +13,7 @@ import {
 import { AddIconButton } from "../../icon-buttons/AddIconButton";
 
 import { ID } from "../../../shared/id.type";
+import { HoverDropdown } from "../../HoverDropdown";
 
 export function TemplateButtons() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -37,33 +37,26 @@ export function TemplateButtons() {
           onClick={() => addFromTemlate(defaultTemplate?.id || "")}
         />
         {groupedTemplates && (
-          <Dropdown
-            as={ButtonGroup}
+          <HoverDropdown
+            toggleText="From template"
             show={showDropdown}
-            onMouseEnter={() => setShowDropdown(true)}
-            onMouseLeave={() => setShowDropdown(false)}
+            setShow={setShowDropdown}
           >
-            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
-              From template
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {groupedTemplates[""].map((template) => (
-                <TemplateItem
-                  template={template}
-                  addFromTemlate={addFromTemlate}
+            {groupedTemplates[""].map((template) => (
+              <TemplateItem
+                template={template}
+                addFromTemlate={addFromTemlate}
+              />
+            ))}
+            {groupedTemplateKeys.map((groupName) => (
+              <Dropdown.Item key={groupName} eventKey="1">
+                <GroupedSubmenu
+                  groupName={groupName}
+                  templates={groupedTemplates[groupName]}
                 />
-              ))}
-              {groupedTemplateKeys.map((groupName) => (
-                <Dropdown.Item key={groupName} eventKey="1" onClick={() => {}}>
-                  <GroupedSubmenu
-                    groupName={groupName}
-                    templates={groupedTemplates[groupName]}
-                  />
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+              </Dropdown.Item>
+            ))}
+          </HoverDropdown>
         )}
       </ButtonGroup>
     </div>
