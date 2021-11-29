@@ -1,4 +1,4 @@
-import { ButtonGroup, Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 
 interface Props {
   toggleText: string;
@@ -19,7 +19,6 @@ export const HoverDropdown: React.FC<Props> = ({
       show={show}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
-      as={ButtonGroup}
     >
       <Dropdown.Toggle
         variant="outline-primary"
