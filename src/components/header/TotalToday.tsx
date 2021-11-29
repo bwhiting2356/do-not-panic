@@ -5,7 +5,7 @@ import { selectTodosDueToday } from "../../features/todos/selectors";
 import { POMODORO_TOTAL_MINUTES } from "../../shared/constants";
 import { convertMinutesToHours, sumTodoPomodoros } from "../../shared/util";
 
-export function TodalToday() {
+export function TotalToday() {
   const todayTodos = useAppSelector(selectTodosDueToday);
 
   const completeTodos = todayTodos.filter((todo) => todo.done);

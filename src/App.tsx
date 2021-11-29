@@ -12,7 +12,7 @@ import { ConfettiAnimation } from "./components/animation/ConfettiAnimation";
 import { EventToastContainer } from "./components/EventToastContainer";
 import Templates from "./components/templates/Templates";
 import { PomodoroTimer } from "./components/header/PomodoroTimer";
-import { TodalToday } from "./components/header/TotalToday";
+import { TotalToday } from "./components/header/TotalToday";
 
 export function App() {
   return (
@@ -26,7 +26,7 @@ export function App() {
         >
           <NavTabs />
           <PomodoroTimer />
-          <TodalToday />
+          <TotalToday />
         </div>
         <div style={{ paddingTop: "20px" }}>
           <Routes>
