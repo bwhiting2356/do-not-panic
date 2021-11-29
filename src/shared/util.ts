@@ -28,14 +28,14 @@ export const truncateUrl = (str: string, length = URL_TRUNCATE_LENGTH) => {
   return `${removeHttp.substring(length, 0)}...`;
 };
 
-const oneHalfOptions = [".5", "0.5", "1/2"];
+const oneHalfOptions = new Set([".5", "0.5", "1/2"]);
 
 export const prettifyPoms = (poms: string) => {
-  return oneHalfOptions.includes(poms) ? "½" : poms;
+  return oneHalfOptions.has(poms) ? "½" : poms;
 };
 
 export const convertStringPoms = (poms: string) => {
-  if (oneHalfOptions.includes(poms)) return 0.5;
+  if (oneHalfOptions.has(poms)) return 0.5;
   return parseFloat(poms) || 0;
 };
 
