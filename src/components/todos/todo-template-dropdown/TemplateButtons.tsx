@@ -1,7 +1,6 @@
-/* eslint-disable no-empty-function */
 import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
-import React, { useState } from "react";
+import { useState } from "react";
 import { GroupedSubmenu } from "./GroupSubmenu";
 import { TemplateItem } from "./TemplateItem";
 import { groupTemplatesByGroupName } from "./helpers";
@@ -14,6 +13,7 @@ import {
 import { AddIconButton } from "../../icon-buttons/AddIconButton";
 
 import { ID } from "../../../shared/id.type";
+import { HoverDropdown } from "../../HoverDropdown";
 
 export function TemplateButtons() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -37,6 +37,24 @@ export function TemplateButtons() {
           onClick={() => addFromTemlate(defaultTemplate?.id || "")}
         />
         {groupedTemplates && (
+          <HoverDropdown toggleText="From template">
+            {groupedTemplates[""].map((template) => (
+              <TemplateItem
+                template={template}
+                addFromTemlate={addFromTemlate}
+              />
+            ))}
+            {groupedTemplateKeys.map((groupName) => (
+              <Dropdown.Item key={groupName} eventKey="1">
+                <GroupedSubmenu
+                  groupName={groupName}
+                  templates={groupedTemplates[groupName]}
+                />
+              </Dropdown.Item>
+            ))}
+          </HoverDropdown>
+        )}
+        {/* {groupedTemplates && (
           <Dropdown
             as={ButtonGroup}
             show={showDropdown}
@@ -55,7 +73,7 @@ export function TemplateButtons() {
                 />
               ))}
               {groupedTemplateKeys.map((groupName) => (
-                <Dropdown.Item key={groupName} eventKey="1" onClick={() => {}}>
+                <Dropdown.Item key={groupName} eventKey="1">
                   <GroupedSubmenu
                     groupName={groupName}
                     templates={groupedTemplates[groupName]}
@@ -64,7 +82,7 @@ export function TemplateButtons() {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-        )}
+        )} */}
       </ButtonGroup>
     </div>
   );

@@ -8,9 +8,9 @@ export function NavTabs() {
   const key = pathname === "/" ? "/todos" : pathname;
 
   const keyHeaderMap: Record<string, string> = {
+    "/todos": "Todos",
     "/projects": "Projects",
     "/templates": "Templates",
-    "/todos": "Todos",
   };
 
   return (

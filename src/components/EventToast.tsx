@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { Toast } from "react-bootstrap";
+import { Toast as ToastRB } from "react-bootstrap";
 import logo from "../images/favicon.png";
 
 type Props = {
   text: string;
 };
+
 export function EventToast({ text }: Props) {
   const [show, setShow] = useState(true);
   return (
-    <Toast
+    <ToastRB
       bg="light"
       onClose={() => setShow(false)}
       show={show}
       delay={2000}
       autohide
     >
-      <Toast.Header>
+      <ToastRB.Header>
         <img
           src={logo}
           className="rounded me-2"
@@ -24,7 +25,7 @@ export function EventToast({ text }: Props) {
         />
 
         <strong className="me-auto">{text}</strong>
-      </Toast.Header>
-    </Toast>
+      </ToastRB.Header>
+    </ToastRB>
   );
 }

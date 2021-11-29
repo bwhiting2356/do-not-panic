@@ -124,3 +124,6 @@ export const arrayMove = <T>(
   arrayCopy.splice(toIndex, 0, element);
   return arrayCopy;
 };
+
+// eslint-disable-next-line no-empty-function
+export const noOp = () => {};
