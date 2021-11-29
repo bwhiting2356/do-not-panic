@@ -4,6 +4,7 @@ import { ButtonGroup } from "react-bootstrap";
 import React, { useState } from "react";
 import { GroupedSubmenu } from "./GroupSubmenu";
 import { TemplateItem } from "./TemplateItem";
+import { groupTemplatesByGroupName } from "./helpers";
 import { useAppSelector } from "../../../app/hooks";
 import { useReduxActionsWithContext } from "../../../context/context";
 import {
@@ -13,7 +14,6 @@ import {
 import { AddIconButton } from "../../icon-buttons/AddIconButton";
 
 import { ID } from "../../../shared/id.type";
-import { groupTemplatesByGroupName } from "../../../shared/util";
 
 export function TemplateButtons() {
   const [showDropdown, setShowDropdown] = useState(false);

@@ -124,19 +124,3 @@ export const arrayMove = <T>(
   arrayCopy.splice(toIndex, 0, element);
   return arrayCopy;
 };
-
-export const groupTemplatesByGroupName = (
-  templates: Template[]
-): Record<string, Template[]> => {
-  return templates.reduce((acc, curr) => {
-    let { group } = curr;
-    group = group ?? "";
-    if (acc[group]) {
-      acc[group].push(curr);
-    } else {
-      acc[group] = [curr];
-    }
-
-    return acc;
-  }, {} as Record<string, Template[]>);
-};
