@@ -25,7 +25,7 @@ export function TodoActionsDropdown({
   const [show, setShow] = useState(false);
 
   return (
-    <HoverDropdown toggleText="" size="sm" show={show}>
+    <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
       {todo.due !== Due.Today && (
         <Dropdown.Item eventKey="1" onClick={() => onEditTodoDue(Due.Today)}>
           <span style={{ marginRight: "10px" }}>

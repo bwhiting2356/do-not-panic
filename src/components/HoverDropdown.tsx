@@ -4,25 +4,22 @@ import { Dropdown } from "react-bootstrap";
 interface Props {
   toggleText: string;
   size?: "sm" | "lg" | undefined;
-  show?: boolean;
+  show: boolean;
+  setShow: (show: boolean) => void;
 }
 
 export const HoverDropdown: React.FC<Props> = ({
   toggleText,
   children,
   size,
-  show = false,
+  show,
+  setShow,
 }) => {
-  const [showDropdown, setShowDropdown] = useState(show);
-  useEffect(() => {
-    setShowDropdown(show);
-  }, [show, setShowDropdown]);
-
   return (
     <Dropdown
-      show={showDropdown}
-      onMouseEnter={() => setShowDropdown(true)}
-      onMouseLeave={() => setShowDropdown(false)}
+      show={show}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
     >
       <Dropdown.Toggle
         variant="outline-primary"

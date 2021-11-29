@@ -37,7 +37,11 @@ export function TemplateButtons() {
           onClick={() => addFromTemlate(defaultTemplate?.id || "")}
         />
         {groupedTemplates && (
-          <HoverDropdown toggleText="From template">
+          <HoverDropdown
+            toggleText="From template"
+            show={showDropdown}
+            setShow={setShowDropdown}
+          >
             {groupedTemplates[""].map((template) => (
               <TemplateItem
                 template={template}
@@ -54,35 +58,6 @@ export function TemplateButtons() {
             ))}
           </HoverDropdown>
         )}
-        {/* {groupedTemplates && (
-          <Dropdown
-            as={ButtonGroup}
-            show={showDropdown}
-            onMouseEnter={() => setShowDropdown(true)}
-            onMouseLeave={() => setShowDropdown(false)}
-          >
-            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
-              From template
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {groupedTemplates[""].map((template) => (
-                <TemplateItem
-                  template={template}
-                  addFromTemlate={addFromTemlate}
-                />
-              ))}
-              {groupedTemplateKeys.map((groupName) => (
-                <Dropdown.Item key={groupName} eventKey="1">
-                  <GroupedSubmenu
-                    groupName={groupName}
-                    templates={groupedTemplates[groupName]}
-                  />
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        )} */}
       </ButtonGroup>
     </div>
   );

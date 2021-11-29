@@ -29,7 +29,7 @@ export function ProjectActionsDropdown({
 
   if (isNoneProject) {
     return (
-      <HoverDropdown show={show} toggleText="" size="sm">
+      <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
         <Dropdown.Item
           eventKey="1"
           onClick={() => {
@@ -63,7 +63,7 @@ export function ProjectActionsDropdown({
   }
 
   return (
-    <HoverDropdown show={show} toggleText="" size="sm">
+    <HoverDropdown show={show} toggleText="" size="sm" setShow={setShow}>
       {project.archivedDate ? (
         <Dropdown.Item eventKey="1" onClick={onRemoveProjectFromArchive}>
           <span style={{ marginRight: "10px" }}>

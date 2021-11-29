@@ -74,7 +74,7 @@ export function TemplateActionsDropdown({
 
   if (isDefaultTemplate) {
     return (
-      <HoverDropdown toggleText="" size="sm" show={show}>
+      <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
         {commonItems}
         <DisabledDropdownItemWithTooltip tooltipText="Cannot delete 'Default' project">
           {() => (
@@ -91,7 +91,7 @@ export function TemplateActionsDropdown({
   }
 
   return (
-    <HoverDropdown toggleText="" size="sm" show={show}>
+    <HoverDropdown toggleText="" size="sm" show={show} setShow={setShow}>
       {commonItems}
       <Dropdown.Item eventKey="1" onClick={onDeleteTemplate}>
         <span style={{ marginRight: "10px" }}>
