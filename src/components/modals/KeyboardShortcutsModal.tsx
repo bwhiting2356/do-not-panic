@@ -76,8 +76,8 @@ const KeyboardShortcutsTable = () => (
         </tr>
         <tr>
           <td>Space</td>
-          <td>While todo row is selected</td>
-          <td>Toggle todo done</td>
+          <td>Anywhere</td>
+          <td>Play/pause pomodoro timer</td>
         </tr>
         <tr>
           <td>s</td>
