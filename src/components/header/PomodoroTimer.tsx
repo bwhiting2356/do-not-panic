@@ -9,8 +9,7 @@ import {
 export function PomodoroTimer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const {
-    minutesDisplay,
-    secondsDisplay,
+    timeDisplay,
     timerStatus,
     onPlay,
     onPause,
@@ -50,9 +49,7 @@ export function PomodoroTimer() {
               padding: 0,
             }}
           >
-            <Badge bg={badgeBackground}>
-              {minutesDisplay}:{secondsDisplay}
-            </Badge>
+            <Badge bg={badgeBackground}>{timeDisplay}</Badge>
           </h3>
         </div>
 

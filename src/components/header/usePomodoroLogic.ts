@@ -1,4 +1,9 @@
+/* eslint-disable no-console */
 import { useCallback, useEffect, useState } from "react";
+import BlueCircle from "../../images/blue-circle.svg";
+import GreyCircle from "../../images/grey-circle.svg";
+import RedCircle from "../../images/red-circle.svg";
+
 import {
   MILLISECONDS_PER_SECOND,
   POMODORO_BREAK_TIME,
@@ -56,6 +61,24 @@ export function usePomodoroPersistentState(): [
   return [state, setState];
 }
 
+export const createTimeDisplay = (secondsRemaining: number): string => {
+  const minutesDisplay = padZeros(
+    Math.floor(secondsRemaining / SECONDS_PER_MINUTE)
+  );
+  const secondsDisplay = padZeros(secondsRemaining % SECONDS_PER_MINUTE);
+  return `${minutesDisplay}:${secondsDisplay}`;
+};
+
+export const getIcon = (targetMinutes: number, timerStatus: TimerStatus) => {
+  if (timerStatus === TimerStatus.Stopped) {
+    return GreyCircle;
+  } else if (targetMinutes === POMODORO_WORK_TIME) {
+    return RedCircle;
+  } else {
+    return BlueCircle;
+  }
+};
+
 export const computeSecondsRemaining = (
   segments: TimerSegment[],
   targetMinutes: number
@@ -80,10 +103,6 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   const [secondsRemaining, setSecondsRemaining] = useState(
     computeSecondsRemaining(segments, targetMinutes)
   );
-  const minutesDisplay = padZeros(
-    Math.floor(secondsRemaining / SECONDS_PER_MINUTE)
-  );
-  const secondsDisplay = padZeros(secondsRemaining % SECONDS_PER_MINUTE);
 
   const playSound = useCallback(() => audioRef?.current?.play(), [audioRef]);
 
@@ -94,7 +113,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     }
   };
 
-  const recomputeTimeRemaining = useCallback(() => {
+  const recomputeTimeRemaining = () => {
     const newSecondsRemaining = computeSecondsRemaining(
       segments,
       targetMinutes
@@ -122,14 +141,18 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
       }, MILLISECONDS_PER_SECOND * 2);
     }
     setSecondsRemaining(newSecondsRemaining);
-  }, [
-    segments,
-    setState,
-    setSecondsRemaining,
-    targetMinutes,
-    timerStatus,
-    playSound,
-  ]);
+    document.title = createTimeDisplay(newSecondsRemaining);
+  };
+
+  useEffect(() => {
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    link.href = getIcon(targetMinutes, timerStatus);
+  }, [targetMinutes, timerStatus]);
 
   useEffect(() => {
     recomputeTimeRemaining();
@@ -195,14 +218,29 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     });
   };
 
+  useEffect(() => {
+    const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        if (timerStatus !== TimerStatus.Playing) {
+          onPlay();
+        } else if (timerStatus === TimerStatus.Playing) {
+          onPause();
+        }
+      }
+    };
+    window.addEventListener("keydown", listenForKeyboardShortcuts);
+    return () =>
+      window.removeEventListener("keydown", listenForKeyboardShortcuts);
+  });
+
   return {
-    minutesDisplay,
+    timeDisplay: createTimeDisplay(secondsRemaining),
     onPause,
     onPlay,
     onSetTargetToBreak,
     onSetTargetToWork,
     onStop,
-    secondsDisplay,
     targetMinutes,
     timerStatus,
   };
