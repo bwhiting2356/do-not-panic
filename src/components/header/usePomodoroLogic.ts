@@ -195,6 +195,22 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     });
   };
 
+  useEffect(() => {
+    const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        if (timerStatus !== TimerStatus.Playing) {
+          onPlay();
+        } else if (timerStatus === TimerStatus.Playing) {
+          onPause();
+        }
+      }
+    };
+    window.addEventListener("keydown", listenForKeyboardShortcuts);
+    return () =>
+      window.removeEventListener("keydown", listenForKeyboardShortcuts);
+  });
+
   return {
     minutesDisplay,
     onPause,

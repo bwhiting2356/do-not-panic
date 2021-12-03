@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import {
   useAppContext,
   useReduxActionsWithContext,
@@ -9,7 +9,6 @@ import {
   selectTodosDueLater,
   selectTodosDueToday,
 } from "../../features/todos/selectors";
-import { editTodo } from "../../features/todos/todoSlice";
 import { URL_PREFIX } from "../../shared/constants";
 import { Due } from "../../shared/due.type";
 import { Todo } from "../../shared/todo";
@@ -21,7 +20,6 @@ export const useTodosKeyboardShortcuts = () => {
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
   const defaultTemplate = useAppSelector(selectDefaultTemplate);
-  const dispatch = useAppDispatch();
   const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
     useAppContext();
   const {
@@ -98,11 +96,6 @@ export const useTodosKeyboardShortcuts = () => {
           if (todoIdInfo.previousItemUUID) {
             setSelectedItemId(todoIdInfo.previousItemUUID);
           }
-        } else if (event.code === "Space") {
-          dispatch(
-            editTodo({ id: todo.id, newTodo: { ...todo, done: !todo.done } })
-          );
-          event.preventDefault();
         } else if (event.key === "Escape") {
           setSelectedItemId("");
         } else if (event.key === "Enter") {
