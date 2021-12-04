@@ -7,3 +7,5 @@ export const POMODORO_TOTAL_MINUTES = POMODORO_WORK_TIME + POMODORO_BREAK_TIME;
 export const POMODORO_TOTAL_SECONDS = POMODORO_WORK_TIME * SECONDS_PER_MINUTE;
 export const URL_PREFIX = "http://";
 export const URL_TRUNCATE_LENGTH = 40;
+export const TWILLIO_URL =
+  "http://todo-ron-ron-5347-dev.twil.io/functions/hello-world";

@@ -13,6 +13,7 @@ import { EventToastContainer } from "./components/EventToastContainer";
 import Templates from "./components/templates/Templates";
 import { PomodoroTimer } from "./components/header/PomodoroTimer";
 import { TotalToday } from "./components/header/TotalToday";
+import Settings from "./components/settings/Settings";
 
 export function App() {
   return (
@@ -33,6 +34,7 @@ export function App() {
             <Route path="/todos" element={<Todos />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/templates" element={<Templates />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/" element={<Todos />} />
           </Routes>
         </div>

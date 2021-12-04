@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 import { useCallback, useEffect, useState } from "react";
+import { useAppSelector } from "../../app/hooks";
+import { selectPhoneNumber } from "../../features/settings/selectors";
 import BlueCircle from "../../images/blue-circle.svg";
 import GreyCircle from "../../images/grey-circle.svg";
 import RedCircle from "../../images/red-circle.svg";
@@ -9,6 +11,7 @@ import {
   POMODORO_BREAK_TIME,
   POMODORO_WORK_TIME,
   SECONDS_PER_MINUTE,
+  TWILLIO_URL,
 } from "../../shared/constants";
 import { padZeros } from "../../shared/util";
 
@@ -96,7 +99,24 @@ export const computeSecondsRemaining = (
   return secondsRemaining;
 };
 
+const sendSMSNotification = (phoneNumber: string) => {
+  try {
+    fetch(TWILLIO_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phoneNumber,
+      }),
+    });
+  } catch (err) {
+    // ignore
+  }
+};
+
 export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
+  const phoneNumber = useAppSelector(selectPhoneNumber);
   const [{ timerStatus, segments, targetMinutes }, setState] =
     usePomodoroPersistentState();
   const [interval, setInterval] = useState<number>(0);
@@ -124,6 +144,9 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
         timerStatus: TimerStatus.Alarm,
       }));
       playSound();
+      if (targetMinutes === POMODORO_BREAK_TIME && phoneNumber) {
+        sendSMSNotification(phoneNumber);
+      }
 
       setTimeout(() => {
         setState((prev) => {

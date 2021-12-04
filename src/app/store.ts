@@ -12,6 +12,7 @@ import {
 import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
 import templatesReducer from "../features/templates/templateSlice";
+import settingsReducer from "../features/settings/settingsSlice";
 import { Template } from "../shared/template";
 import { Project } from "../shared/project";
 import { Link } from "../shared/link";
@@ -96,6 +97,7 @@ const rootReducer = combineReducers({
   projects: projectsReducer,
   templates: templatesReducer,
   todos: todosReducer,
+  settings: settingsReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
