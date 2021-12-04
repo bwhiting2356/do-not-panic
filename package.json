@@ -42,8 +42,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write src/**/*.ts{,x}",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
+    "prettier": "prettier --write src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "format:watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}} && eslint {{changed}} --fix "
+    
   },
   "eslintConfig": {
     "extends": [
@@ -166,6 +168,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "onchange": "^7.1.0",
     "prettier": "^2.4.1"
   }
 }
