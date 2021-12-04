@@ -13,7 +13,7 @@ import {
   SECONDS_PER_MINUTE,
   TWILLIO_URL,
 } from "../../shared/constants";
-import { padZeros } from "../../shared/util";
+import { noOp, padZeros } from "../../shared/util";
 
 export enum TimerStatus {
   Playing,
@@ -100,18 +100,29 @@ export const computeSecondsRemaining = (
 };
 
 const sendSMSNotification = (phoneNumber: string) => {
-  try {
-    fetch(TWILLIO_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phoneNumber,
-      }),
-    });
-  } catch (err) {
-    // ignore
+  fetch(TWILLIO_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      phoneNumber,
+    }),
+  }).catch(noOp);
+};
+
+export const getBadgeBackgroundClass = (
+  timerStatus: TimerStatus,
+  targetMinutes: number
+) => {
+  if (timerStatus === TimerStatus.Playing) {
+    if (targetMinutes === POMODORO_WORK_TIME) {
+      return "pomodoro-badge";
+    } else {
+      return "break-badge";
+    }
+  } else {
+    return "stopped-badge";
   }
 };
 

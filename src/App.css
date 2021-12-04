@@ -104,3 +104,15 @@
   height: 20px;
   width: 100%;
 }
+
+.break-badge {
+  background-color: #428ab8 !important;
+}
+
+.pomodoro-badge {
+  background-color: tomato !important;;
+}
+
+.stopped-badge {
+  background-color: #777F81 !important;;
+}

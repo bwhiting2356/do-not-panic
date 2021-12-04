@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
-import { TimerStatus, usePomodoroLogic } from "./usePomodoroLogic";
+import {
+  getBadgeBackgroundClass,
+  TimerStatus,
+  usePomodoroLogic,
+} from "./usePomodoroLogic";
 import {
   POMODORO_BREAK_TIME,
   POMODORO_WORK_TIME,
@@ -18,17 +22,6 @@ export function PomodoroTimer() {
     onSetTargetToBreak,
     targetMinutes,
   } = usePomodoroLogic(audioRef);
-
-  let badgeBackground = "";
-  if (timerStatus === TimerStatus.Playing) {
-    if (targetMinutes === POMODORO_WORK_TIME) {
-      badgeBackground = "primary";
-    } else {
-      badgeBackground = "success";
-    }
-  } else {
-    badgeBackground = "secondary";
-  }
 
   return (
     <div
@@ -49,7 +42,11 @@ export function PomodoroTimer() {
               padding: 0,
             }}
           >
-            <Badge bg={badgeBackground}>{timeDisplay}</Badge>
+            <Badge
+              className={getBadgeBackgroundClass(timerStatus, targetMinutes)}
+            >
+              {timeDisplay}
+            </Badge>
           </h3>
         </div>
 
