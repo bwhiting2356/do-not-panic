@@ -11,6 +11,7 @@ type Props = {
   autoFocus?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type?: ElementType<any>;
+  placeholder?: string;
 };
 
 export function TextField({
@@ -21,6 +22,7 @@ export function TextField({
   onBlur,
   autoFocus = false,
   type,
+  placeholder = "",
 }: Props) {
   const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ export function TextField({
           value={text}
           onChange={(e) => onEditText(e.target.value)}
           onBlur={onBlur}
+          placeholder={placeholder}
         />
       </Form>
     );
@@ -55,6 +58,7 @@ export function TextField({
         value={text}
         onChange={(e) => onEditText(e.target.value)}
         onBlur={onBlur}
+        placeholder={placeholder}
       />
     </Form>
   );

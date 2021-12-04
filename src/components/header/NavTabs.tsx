@@ -11,6 +11,7 @@ export function NavTabs() {
     "/todos": "Todos",
     "/projects": "Projects",
     "/templates": "Templates",
+    "/settings": "Settings",
   };
 
   return (
