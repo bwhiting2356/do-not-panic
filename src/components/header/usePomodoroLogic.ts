@@ -13,7 +13,7 @@ import {
   SECONDS_PER_MINUTE,
   TWILLIO_URL,
 } from "../../shared/constants";
-import { noOp, padZeros } from "../../shared/util";
+import { padZeros } from "../../shared/util";
 
 export enum TimerStatus {
   Playing,
