@@ -108,7 +108,7 @@ const sendSMSNotification = (phoneNumber: string) => {
     body: JSON.stringify({
       phoneNumber,
     }),
-  }).catch(noOp);
+  }).catch(console.log);
 };
 
 export const getBadgeBackgroundClass = (
