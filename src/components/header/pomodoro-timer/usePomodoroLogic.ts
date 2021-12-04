@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../app/hooks";
-import { selectPhoneNumber } from "../../features/settings/selectors";
+import {
+  computeSecondsRemaining,
+  createTimeDisplay,
+  sendSMSNotification,
+  updateTabIcon,
+} from "./helpers";
+import { useAppSelector } from "../../../app/hooks";
 import {
   selectSegments,
   selectTargetMinutes,
   selectTimerStatus,
-} from "../../features/timer/selectors";
+} from "../../../features/timer/selectors";
 import {
   clearSegments,
   editTargetMinutes,
@@ -14,99 +19,23 @@ import {
   onPauseTimer,
   onPlayTimer,
   onStopTimer,
-  TimerSegment,
   TimerStatus,
-} from "../../features/timer/timerSlice";
-import BlueCircle from "../../images/blue-circle.svg";
-import GreyCircle from "../../images/grey-circle.svg";
-import RedCircle from "../../images/red-circle.svg";
+} from "../../../features/timer/timerSlice";
 
+import { MILLISECONDS_PER_SECOND } from "../../../shared/constants";
+import { selectActiveTodo } from "../../../features/todos/selectors";
+import { editTodo } from "../../../features/todos/todoSlice";
 import {
-  MILLISECONDS_PER_SECOND,
-  POMODORO_BREAK_TIME,
-  POMODORO_WORK_TIME,
-  SECONDS_PER_MINUTE,
-  TWILLIO_URL,
-} from "../../shared/constants";
-import { padZeros } from "../../shared/util";
-
-export const computeSecondsRemaining = (
-  segments: TimerSegment[],
-  targetMinutes: number
-) => {
-  const milliseconds = segments.reduce((acc, curr) => {
-    const startTime = new Date(curr.startTime);
-    const endTime = curr.endTime ? new Date(curr.endTime) : new Date();
-    const difference = endTime.getTime() - startTime.getTime();
-    return acc + difference;
-  }, 0);
-
-  const totalSeconds = targetMinutes * SECONDS_PER_MINUTE;
-  const secondsRemaining =
-    totalSeconds - Math.floor(milliseconds / MILLISECONDS_PER_SECOND);
-  if (secondsRemaining <= 0) return 0;
-  return secondsRemaining;
-};
-
-export const createTimeDisplay = (secondsRemaining: number): string => {
-  const minutesDisplay = padZeros(
-    Math.floor(secondsRemaining / SECONDS_PER_MINUTE)
-  );
-  const secondsDisplay = padZeros(secondsRemaining % SECONDS_PER_MINUTE);
-  return `${minutesDisplay}:${secondsDisplay}`;
-};
-
-export const getIcon = (targetMinutes: number, timerStatus: TimerStatus) => {
-  if (timerStatus === TimerStatus.Stopped) {
-    return GreyCircle;
-  } else if (targetMinutes === POMODORO_WORK_TIME) {
-    return RedCircle;
-  } else {
-    return BlueCircle;
-  }
-};
-
-const updateTabIcon = (targetMinutes: number, timerStatus: TimerStatus) => {
-  let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-  if (!link) {
-    link = document.createElement("link");
-    link.rel = "icon";
-    document.getElementsByTagName("head")[0].appendChild(link);
-  }
-  link.href = getIcon(targetMinutes, timerStatus);
-};
-
-export const sendSMSNotification = (phoneNumber: string) => {
-  fetch(TWILLIO_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      phoneNumber,
-    }),
-    // eslint-disable-next-line no-console
-  }).catch(console.log);
-};
-
-export const getBadgeBackgroundClass = (
-  timerStatus: TimerStatus,
-  targetMinutes: number
-) => {
-  if (timerStatus === TimerStatus.Playing) {
-    if (targetMinutes === POMODORO_WORK_TIME) {
-      return "pomodoro-badge";
-    } else {
-      return "break-badge";
-    }
-  } else {
-    return "stopped-badge";
-  }
-};
+  selectPhoneNumber,
+  selectPomodoroBreakTime,
+  selectPomodoroWorkTime,
+} from "../../../features/settings/selectors";
 
 export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   const dispatch = useDispatch();
+  const activeTodo = useAppSelector(selectActiveTodo);
+  const pomodoroWorkMinutes = useAppSelector(selectPomodoroWorkTime);
+  const pomodoroBreakMinutes = useAppSelector(selectPomodoroBreakTime);
   const phoneNumber = useAppSelector(selectPhoneNumber);
   const timerStatus = useAppSelector(selectTimerStatus);
   const segments = useAppSelector(selectSegments);
@@ -147,26 +76,40 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   };
 
   useEffect(() => {
-    updateTabIcon(targetMinutes, timerStatus);
-  }, [targetMinutes, timerStatus]);
+    updateTabIcon(targetMinutes, timerStatus, pomodoroWorkMinutes);
+  }, [targetMinutes, timerStatus, pomodoroWorkMinutes]);
 
   useEffect(() => {
     document.title = createTimeDisplay(secondsRemaining);
+
+    // when the timer hits 0
     if (secondsRemaining === 0 && timerStatus !== TimerStatus.Alarm) {
       setTimerStatus(TimerStatus.Alarm);
       playSound();
-      if (targetMinutes === POMODORO_BREAK_TIME && phoneNumber) {
+      if (targetMinutes === pomodoroBreakMinutes && phoneNumber) {
         sendSMSNotification(phoneNumber);
+      }
+      if (targetMinutes === pomodoroWorkMinutes && activeTodo) {
+        const newCompletedPoms = parseInt(activeTodo.completedPoms || "0") + 1;
+        dispatch(
+          editTodo({
+            id: activeTodo.id,
+            newTodo: {
+              ...activeTodo,
+              completedPoms: newCompletedPoms.toString(),
+            },
+          })
+        );
       }
 
       setTimeout(() => {
         setTimerStatus(TimerStatus.Stopped);
         const newTarget =
-          targetMinutes === POMODORO_WORK_TIME
-            ? POMODORO_BREAK_TIME
-            : POMODORO_WORK_TIME;
+          targetMinutes === pomodoroWorkMinutes
+            ? pomodoroBreakMinutes
+            : pomodoroWorkMinutes;
         setTargetMinutes(newTarget);
-        dispatch(clearSegments);
+        dispatch(clearSegments());
         // eslint-disable-next-line no-magic-numbers
       }, MILLISECONDS_PER_SECOND * 2);
     }
@@ -179,6 +122,9 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     timerStatus,
     targetMinutes,
     phoneNumber,
+    activeTodo,
+    pomodoroBreakMinutes,
+    pomodoroWorkMinutes,
   ]);
 
   useEffect(() => {
@@ -204,12 +150,12 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   };
 
   const onSetTargetToWork = () => {
-    setTargetMinutes(POMODORO_WORK_TIME);
+    setTargetMinutes(pomodoroWorkMinutes);
     dispatch(onStopTimer());
   };
 
   const onSetTargetToBreak = () => {
-    setTargetMinutes(POMODORO_BREAK_TIME);
+    setTargetMinutes(pomodoroBreakMinutes);
     dispatch(onStopTimer());
   };
 

@@ -5,8 +5,8 @@ import { IconButton } from "./IconButton";
 type Props = {
   onClick?: (e?: React.MouseEvent) => void;
   tabIndex?: number;
-  className?: string;
+  variant: string;
 };
 export function StartIconButton(props: Props) {
-  return <IconButton {...props} variant="outline-primary" Icon={Lightning} />;
+  return <IconButton {...props} Icon={Lightning} />;
 }

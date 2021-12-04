@@ -1,13 +1,22 @@
 import { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
-import { getBadgeBackgroundClass, usePomodoroLogic } from "./usePomodoroLogic";
+import { usePomodoroLogic } from "./usePomodoroLogic";
+import { getBadgeBackgroundClass } from "./helpers";
+
+import { TimerStatus } from "../../../features/timer/timerSlice";
+import { useAppSelector } from "../../../app/hooks";
 import {
-  POMODORO_BREAK_TIME,
-  POMODORO_WORK_TIME,
-} from "../../shared/constants";
-import { TimerStatus } from "../../features/timer/timerSlice";
-export function PomodoroTimer() {
+  selectPomodoroBreakTime,
+  selectPomodoroWorkTime,
+} from "../../../features/settings/selectors";
+
+interface Props {
+  showMinuteOptions?: boolean;
+}
+export function PomodoroTimer({ showMinuteOptions = true }: Props) {
+  const pomodoroWorkMinutes = useAppSelector(selectPomodoroWorkTime);
+  const pomodoroBreakMinutes = useAppSelector(selectPomodoroBreakTime);
   const audioRef = useRef<HTMLAudioElement>(null);
   const {
     timeDisplay,
@@ -40,21 +49,27 @@ export function PomodoroTimer() {
             }}
           >
             <Badge
-              className={getBadgeBackgroundClass(timerStatus, targetMinutes)}
+              className={getBadgeBackgroundClass(
+                timerStatus,
+                targetMinutes,
+                pomodoroWorkMinutes
+              )}
             >
               {timeDisplay}
             </Badge>
           </h3>
         </div>
+        {showMinuteOptions && (
+          <ButtonGroup style={{ marginRight: "5px" }}>
+            <Button variant="outline-secondary" onClick={onSetTargetToWork}>
+              {pomodoroWorkMinutes}
+            </Button>
+            <Button variant="outline-secondary" onClick={onSetTargetToBreak}>
+              {pomodoroBreakMinutes}
+            </Button>
+          </ButtonGroup>
+        )}
 
-        <ButtonGroup style={{ marginRight: "5px" }}>
-          <Button variant="outline-secondary" onClick={onSetTargetToWork}>
-            {POMODORO_WORK_TIME}
-          </Button>
-          <Button variant="outline-secondary" onClick={onSetTargetToBreak}>
-            {POMODORO_BREAK_TIME}
-          </Button>
-        </ButtonGroup>
         <ButtonGroup>
           <Button
             variant="outline-secondary"

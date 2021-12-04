@@ -6,11 +6,14 @@ import { selectProjects } from "../../features/projects/selectors";
 import { selectActiveTodo } from "../../features/todos/selectors";
 import { Project } from "../../shared/project";
 import { truncateUrl } from "../../shared/util";
-import { PomodoroTimer } from "../header/PomodoroTimer";
+import { PomodoroTimer } from "../header/pomodoro-timer/PomodoroTimer";
 
 export function ActiveTodoModal() {
   const activeTodo = useAppSelector(selectActiveTodo);
   const projects = useAppSelector(selectProjects);
+  const { setActiveModal } = useAppContext();
+
+  if (!activeTodo) return null;
   const {
     id,
     done,
@@ -27,18 +30,17 @@ export function ActiveTodoModal() {
   const projectName =
     projects.find((project) => project.id === projectId)?.title || "";
 
-  const { showActiveTodo, setShowActiveTodo } = useAppContext();
   return (
     <Modal
-      show={showActiveTodo}
-      onHide={() => setShowActiveTodo(!showActiveTodo)}
+      show={true}
+      onHide={() => setActiveModal("")}
       style={{ textAlign: "center" }}
     >
       <Modal.Header closeButton>
         <Modal.Title>Active Todo</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <PomodoroTimer />
+        <PomodoroTimer showMinuteOptions={false} />
         <ListGroup>
           <ListGroup.Item>Work on {name}</ListGroup.Item>
           <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>

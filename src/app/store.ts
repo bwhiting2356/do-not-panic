@@ -15,77 +15,25 @@ import templatesReducer from "../features/templates/templateSlice";
 import settingsReducer from "../features/settings/settingsSlice";
 import timerReducer from "../features/timer/timerSlice";
 
-import { Template } from "../shared/template";
-import { Project } from "../shared/project";
-import { Link } from "../shared/link";
+import { initialSettingsState } from "../features/settings/settingsSlice";
 
 const migrations = {
-  1: (state: any) => {
-    if (!state.currentState.projects) {
-      return {
-        currentState: {
-          ...state.currentState,
-          domainName: state.currentState.projectName,
-        },
-        futureState: [],
-        pastState: [],
-      };
-    }
-    return state;
-  },
-  2: (state: any) => {
-    if (!state.todos) {
-      return { todos: state };
-    }
-    return state;
-  },
-  5: (state: any) => {
-    if (!state.templates) {
-      let noneProject = state.projects.currentState.projects.find(
-        (project: Project) => project.title.toLowerCase() === "none"
-      );
-
-      let adminProject = state.projects.currentState.projects.find(
-        (project: Project) => project.title.toLowerCase() === "admin"
-      );
-
-      let newProjects = state.projects.currentState.projects;
-
-      if (!noneProject) {
-        noneProject = new Project("None");
-        newProjects = [...newProjects, noneProject];
-      }
-      if (!adminProject) {
-        adminProject = new Project("Admin");
-        newProjects = [...newProjects, adminProject];
-      }
-
+  6: (state: any) => {
+    if (!state.settings.pomodoroWorkTime) {
       return {
         ...state,
-        projects: {
+        settings: {
           currentState: {
-            projects: newProjects,
+            phoneNumber: state.settings.currentState.phoneNumber,
+            pomodoroWorkTime:
+              initialSettingsState.currentState.pomodoroWorkTime,
+            pomodoroBreakTime:
+              initialSettingsState.currentState.pomodoroBreakTime,
           },
-          futureState: [],
-          pastState: [],
-        },
-        templates: {
-          currentState: {
-            templates: [
-              new Template("Default", noneProject.id),
-              new Template("Start Day", adminProject.id, "Start Day", "0.5", [
-                new Link("http://go/pwaivers:daily"),
-              ]),
-              new Template("Start Week", adminProject.id, "Start Week", "1", [
-                new Link("http://go/pwaivers:weekly"),
-              ]),
-            ],
-          },
-          futureState: [],
-          pastState: [],
         },
       };
     }
+    return state;
   },
 };
 
@@ -93,7 +41,7 @@ const persistConfig = {
   key: "root",
   migrate: createMigrate(migrations, { debug: false }),
   storage,
-  version: 5,
+  version: 6,
 };
 const rootReducer = combineReducers({
   projects: projectsReducer,

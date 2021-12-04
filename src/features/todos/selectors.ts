@@ -35,7 +35,6 @@ export const selectActiveTodoId = createSelector(
   (state) => state.activeTodoId
 );
 
-export const selectActiveTodo = createSelector(
-  selectCurrentState,
-  (state) => state.todos.find((todo) => todo.id === state.activeTodoId) as Todo
+export const selectActiveTodo = createSelector(selectCurrentState, (state) =>
+  state.todos.find((todo) => todo.id === state.activeTodoId)
 );

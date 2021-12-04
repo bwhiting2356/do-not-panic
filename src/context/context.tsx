@@ -32,6 +32,7 @@ import { Template, buildTodoFromTemplate } from "../shared/template";
 import { Todo } from "../shared/todo";
 import { noOp } from "../shared/util";
 import { ToastData } from "../shared/toastData";
+import { ModalKeys } from "../components/modals/modalMap";
 
 export interface AppContextInterface {
   editingItemId: ID;
@@ -40,12 +41,9 @@ export interface AppContextInterface {
   setSelectedItemId: (id: ID) => void;
   showArchive: boolean;
   setShowArchive: (show: boolean) => void;
-  showProjectAnalytics: boolean;
-  setShowProjectAnalytics: (show: boolean) => void;
-  showKeyboardShortcuts: boolean;
-  setShowKeyboardShortcuts: (show: boolean) => void;
-  showActiveTodo: boolean;
-  setShowActiveTodo: (show: boolean) => void;
+  activeModal: ModalKeys;
+  setActiveModal: (modal: ModalKeys) => void;
+
   toasts: ToastData[];
   addToast: (newToast: string) => void;
   showAnimation: boolean;
@@ -59,12 +57,8 @@ const AppCtx = createContext<AppContextInterface>({
   setSelectedItemId: noOp,
   showArchive: false,
   setShowArchive: noOp,
-  showProjectAnalytics: false,
-  setShowProjectAnalytics: noOp,
-  showKeyboardShortcuts: false,
-  setShowKeyboardShortcuts: noOp,
-  showActiveTodo: false,
-  setShowActiveTodo: noOp,
+  activeModal: "",
+  setActiveModal: noOp,
   toasts: [],
   addToast: noOp,
   showAnimation: false,
@@ -75,9 +69,9 @@ export const useAppContextState = (): AppContextInterface => {
   const [editingItemId, setEditingItemId] = useState("");
   const [selectedItemId, setSelectedItemId] = useState("");
   const [showArchive, setShowArchive] = useState(false);
-  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
-  const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
-  const [showActiveTodo, setShowActiveTodo] = useState(false);
+
+  const [activeModal, setActiveModal] = useState<ModalKeys>("");
+
   const [showAnimation, setShowAnimation] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
@@ -92,12 +86,8 @@ export const useAppContextState = (): AppContextInterface => {
     setSelectedItemId,
     showArchive,
     setShowArchive,
-    showKeyboardShortcuts,
-    setShowKeyboardShortcuts,
-    showActiveTodo,
-    setShowActiveTodo,
-    showProjectAnalytics,
-    setShowProjectAnalytics,
+    activeModal,
+    setActiveModal,
     showAnimation,
     setShowAnimation,
     toasts,

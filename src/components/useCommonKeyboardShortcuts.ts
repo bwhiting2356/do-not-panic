@@ -5,19 +5,17 @@ import { useAppContext } from "../context/context";
 import { createCSVContents, download } from "../shared/util";
 
 export const useCommonKeyboardShortcuts = () => {
-  const {
-    showKeyboardShortcuts,
-    setShowKeyboardShortcuts,
-    setShowProjectAnalytics,
-  } = useAppContext();
+  const { activeModal, setActiveModal } = useAppContext();
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
       // show keyboard shortcuts modal
       if (event.shiftKey && event.code === "Slash") {
-        setShowKeyboardShortcuts(!showKeyboardShortcuts);
-        // hide all other modals
-        setShowProjectAnalytics(false);
+        if (activeModal === "keyboard-shortcuts") {
+          setActiveModal("");
+        } else {
+          setActiveModal("keyboard-shortcuts");
+        }
       }
 
       // download backups

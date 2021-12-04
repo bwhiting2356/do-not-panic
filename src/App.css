@@ -1,3 +1,7 @@
+:root {
+  --bs-danger: tomato;
+}
+
 .done {
   width: 100px;
   text-align: center;

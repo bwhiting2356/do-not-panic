@@ -16,7 +16,7 @@ type Props = {
 
 export function TodoTable({ todos, due }: Props) {
   const navigate = useNavigate();
-  const { setShowProjectAnalytics } = useAppContext();
+  const { setActiveModal } = useAppContext();
   const navigateToProjects = () => navigate("/projects");
   return (
     <div
@@ -34,7 +34,7 @@ export function TodoTable({ todos, due }: Props) {
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
                 <SmallPieChartIconButton
-                  onClick={() => setShowProjectAnalytics(true)}
+                  onClick={() => setActiveModal("project-analytics")}
                 />
               ) : (
                 <SmallEditIconButton onClick={navigateToProjects} />

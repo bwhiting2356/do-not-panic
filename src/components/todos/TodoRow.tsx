@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 import cn from "classnames";
-import React, { ChangeEventHandler, MouseEventHandler, useRef } from "react";
+import { ChangeEventHandler, MouseEventHandler, useRef } from "react";
 import { TodoActionsDropdown } from "./TodoActionsDropdown";
 import { ID } from "../../shared/id.type";
 import { Todo } from "../../shared/todo";
@@ -14,9 +14,13 @@ import {
   useAppContext,
   useReduxActionsWithContext,
 } from "../../context/context";
-import { AddIconButton } from "../icon-buttons/AddIconButton";
 import { StartIconButton } from "../icon-buttons/StartIconButton";
 import { selectActiveTodoId } from "../../features/todos/selectors";
+import {
+  editTargetMinutes,
+  onPlayTimer,
+} from "../../features/timer/timerSlice";
+import { selectPomodoroWorkTime } from "../../features/settings/selectors";
 
 type Props = {
   todo: Todo;
@@ -24,13 +28,14 @@ type Props = {
 
 export function TodoRow({ todo }: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
+  const pomodoroWorkTime = useAppSelector(selectPomodoroWorkTime);
   const dispatch = useAppDispatch();
   const {
     editingItemId,
     setEditingItemId,
     selectedItemId,
     setSelectedItemId,
-    setShowActiveTodo,
+    setActiveModal,
   } = useAppContext();
   const activeTodoId = useAppSelector(selectActiveTodoId);
 
@@ -142,7 +147,9 @@ export function TodoRow({ todo }: Props) {
 
   const onSetActiveTodo = () => {
     dispatch(changeActiveTodoId(todo.id));
-    setShowActiveTodo(true);
+    dispatch(onPlayTimer());
+    dispatch(editTargetMinutes(pomodoroWorkTime));
+    setActiveModal("active-todo");
   };
 
   const onRowClick: MouseEventHandler<HTMLTableRowElement> = (e) => {
@@ -185,10 +192,12 @@ export function TodoRow({ todo }: Props) {
               onChange={onToggleSwitch}
             />
           )}
-          <StartIconButton
-            onClick={onSetActiveTodo}
-            className={cn({ "pomodoro-badge": isActive })}
-          />
+          {due === Due.Today && (
+            <StartIconButton
+              onClick={onSetActiveTodo}
+              variant={isActive ? "danger" : "outline-primary"}
+            />
+          )}
         </div>
       </td>
       <td className="name vertical-align">

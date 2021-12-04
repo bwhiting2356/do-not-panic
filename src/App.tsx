@@ -6,17 +6,17 @@ import { Container } from "react-bootstrap";
 import Todos from "./components/todos/Todos";
 import Projects from "./components/projects/Projects";
 import { NavTabs } from "./components/header/NavTabs";
-import { KeyboardShortcutsModal } from "./components/modals/KeyboardShortcutsModal";
-import { ProjectAnalyticsModal } from "./components/modals/project-analytics/ProjectAnalyticsModal";
 import { ConfettiAnimation } from "./components/animation/ConfettiAnimation";
 import { EventToastContainer } from "./components/EventToastContainer";
 import Templates from "./components/templates/Templates";
-import { PomodoroTimer } from "./components/header/PomodoroTimer";
+import { PomodoroTimer } from "./components/header/pomodoro-timer/PomodoroTimer";
 import { TotalToday } from "./components/header/TotalToday";
 import Settings from "./components/settings/Settings";
-import { ActiveTodoModal } from "./components/modals/ActiveTodoModal";
+import { modalMap } from "./components/modals/modalMap";
+import { useAppContext } from "./context/context";
 
 export function App() {
+  const { activeModal } = useAppContext();
   return (
     <Router>
       <Container>
@@ -41,9 +41,8 @@ export function App() {
         </div>
       </Container>
 
-      <KeyboardShortcutsModal />
-      <ProjectAnalyticsModal />
-      <ActiveTodoModal />
+      {modalMap[activeModal]}
+
       <ConfettiAnimation />
       <EventToastContainer />
     </Router>

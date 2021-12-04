@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  POMODORO_BREAK_TIME,
+  POMODORO_WORK_TIME,
+} from "../../shared/constants";
+import {
   StateWithHistory,
   addNewStateGoingForward,
   redo,
@@ -8,22 +12,26 @@ import {
 
 interface SettingsState {
   phoneNumber: string;
+  pomodoroWorkTime: string;
+  pomodoroBreakTime: string;
 }
 
-export type TemplateStateWithHistory = StateWithHistory<SettingsState>;
+export type SettingsStateWithHistory = StateWithHistory<SettingsState>;
 
 const initialCurrentState: SettingsState = {
   phoneNumber: "",
+  pomodoroWorkTime: POMODORO_WORK_TIME.toString(),
+  pomodoroBreakTime: POMODORO_BREAK_TIME.toString(),
 };
 
-const initialState: TemplateStateWithHistory = {
+export const initialSettingsState: SettingsStateWithHistory = {
   currentState: initialCurrentState,
   futureState: [],
   pastState: [],
 };
 
 export const settingsSlice = createSlice({
-  initialState,
+  initialState: initialSettingsState,
   name: "settings",
 
   reducers: {
@@ -33,12 +41,29 @@ export const settingsSlice = createSlice({
         phoneNumber: action.payload,
       });
     },
+    editPomodoroWorkTime: (state, action: PayloadAction<string>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        pomodoroWorkTime: action.payload,
+      });
+    },
+    editPomodoroBreakTime: (state, action: PayloadAction<string>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        pomodoroBreakTime: action.payload,
+      });
+    },
     redoSettings: redo,
     undoSettings: undo,
   },
 });
 
-export const { editPhoneNumber, redoSettings, undoSettings } =
-  settingsSlice.actions;
+export const {
+  editPhoneNumber,
+  editPomodoroWorkTime,
+  editPomodoroBreakTime,
+  redoSettings,
+  undoSettings,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;
