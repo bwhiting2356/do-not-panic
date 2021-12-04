@@ -146,7 +146,7 @@ export const useReduxActionsWithContext = () => {
         setEditingItemId(newTodo.id);
       }
     } else {
-      addToast(`No template found`);
+      addToast("No template found");
     }
   };
 

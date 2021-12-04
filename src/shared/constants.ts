@@ -1,4 +1,4 @@
-export const MAX_TODO_HISTORY = 100;
+export const MAX_TODO_HISTORY = 10;
 export const POMODORO_WORK_TIME = 25;
 export const POMODORO_BREAK_TIME = 5;
 export const SECONDS_PER_MINUTE = 60;
