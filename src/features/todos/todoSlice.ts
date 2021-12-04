@@ -13,6 +13,7 @@ import {
 interface TodoState {
   todos: Todo[];
   domainName: string;
+  activeTodoId: ID;
 }
 
 export type TodoStateWithHistory = StateWithHistory<TodoState>;
@@ -20,6 +21,7 @@ export type TodoStateWithHistory = StateWithHistory<TodoState>;
 const initialCurrentState: TodoState = {
   domainName: "work",
   todos: [],
+  activeTodoId: "",
 };
 
 const initialState: TodoStateWithHistory = {
@@ -76,7 +78,6 @@ export const todoSlice = createSlice({
         todos: newTodos,
       });
     },
-    redoTodos: redo,
     resortTodos: (state) => {
       const sortedTodos = state.currentState.todos.slice().sort(sortTodos);
       return addNewStateGoingForward(state, {
@@ -90,12 +91,19 @@ export const todoSlice = createSlice({
         domainName: action.payload,
       });
     },
-
+    changeActiveTodoId: (state, action: PayloadAction<ID>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        activeTodoId: action.payload,
+      });
+    },
     undoTodos: undo,
+    redoTodos: redo,
   },
 });
 
 export const {
+  changeActiveTodoId,
   setProjectName,
   resortTodos,
   editTodo,

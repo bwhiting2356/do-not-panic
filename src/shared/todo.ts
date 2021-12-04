@@ -10,6 +10,8 @@ export class Todo extends Item {
 
   archivedDate?: Date;
 
+  completedPoms?: string;
+
   constructor(
     public poms: string = "",
     public name: string = "",

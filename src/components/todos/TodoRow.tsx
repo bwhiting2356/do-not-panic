@@ -8,12 +8,15 @@ import { LinkWithRef } from "../Link";
 import { TextField } from "../TextField";
 import { Due } from "../../shared/due.type";
 import { ProjectDropdown } from "../ProjectDropdown";
-import { useAppDispatch } from "../../app/hooks";
-import { editTodo } from "../../features/todos/todoSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { changeActiveTodoId, editTodo } from "../../features/todos/todoSlice";
 import {
   useAppContext,
   useReduxActionsWithContext,
 } from "../../context/context";
+import { AddIconButton } from "../icon-buttons/AddIconButton";
+import { StartIconButton } from "../icon-buttons/StartIconButton";
+import { selectActiveTodoId } from "../../features/todos/selectors";
 
 type Props = {
   todo: Todo;
@@ -22,12 +25,31 @@ type Props = {
 export function TodoRow({ todo }: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
-  const { editingItemId, setEditingItemId, selectedItemId, setSelectedItemId } =
-    useAppContext();
+  const {
+    editingItemId,
+    setEditingItemId,
+    selectedItemId,
+    setSelectedItemId,
+    setShowActiveTodo,
+  } = useAppContext();
+  const activeTodoId = useAppSelector(selectActiveTodoId);
+
   const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
     useReduxActionsWithContext();
-  const { id, done, name, poms, links, projectId, archivedDate, due } = todo;
+
+  const {
+    id,
+    done,
+    name,
+    poms,
+    completedPoms,
+    links,
+    projectId,
+    archivedDate,
+    due,
+  } = todo;
   const isSelected = id === selectedItemId;
+  const isActive = id === activeTodoId;
 
   const onEditDone = (newDone: boolean) => {
     dispatch(editTodo({ id, newTodo: { ...todo, done: newDone } }));
@@ -76,6 +98,18 @@ export function TodoRow({ todo }: Props) {
     );
   };
 
+  const onEditCompletedPoms = (newPoms: string) => {
+    dispatch(
+      editTodo({
+        id,
+        newTodo: {
+          ...todo,
+          completedPoms: newPoms,
+        },
+      })
+    );
+  };
+
   const focusLink = () => linkRef?.current?.focus();
 
   const onEditProject = (newProjectId: ID) => {
@@ -106,6 +140,11 @@ export function TodoRow({ todo }: Props) {
     }
   };
 
+  const onSetActiveTodo = () => {
+    dispatch(changeActiveTodoId(todo.id));
+    setShowActiveTodo(true);
+  };
+
   const onRowClick: MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
@@ -133,16 +172,24 @@ export function TodoRow({ todo }: Props) {
       onClick={onRowClick}
     >
       <td className="done vertical-align">
-        {due === Due.Archived ? (
-          <div>{new Date(archivedDate || "")?.toLocaleDateString("en-US")}</div>
-        ) : (
-          <Form.Check
-            className="toggle"
-            type="switch"
-            checked={!done}
-            onChange={onToggleSwitch}
+        <div style={{ display: "flex" }}>
+          {due === Due.Archived ? (
+            <div>
+              {new Date(archivedDate || "")?.toLocaleDateString("en-US")}
+            </div>
+          ) : (
+            <Form.Check
+              className="toggle"
+              type="switch"
+              checked={!done}
+              onChange={onToggleSwitch}
+            />
+          )}
+          <StartIconButton
+            onClick={onSetActiveTodo}
+            className={cn({ "pomodoro-badge": isActive })}
           />
-        )}
+        </div>
       </td>
       <td className="name vertical-align">
         <TextField
@@ -158,6 +205,14 @@ export function TodoRow({ todo }: Props) {
           editing={isEditing}
           text={poms}
           onEditText={onEditPoms}
+          onSubmit={onToggleEditingTodoId}
+        />
+      </td>
+      <td className="poms vertical-align">
+        <TextField
+          editing={isEditing}
+          text={completedPoms || ""}
+          onEditText={onEditCompletedPoms}
           onSubmit={onToggleEditingTodoId}
         />
       </td>

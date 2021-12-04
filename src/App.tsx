@@ -14,6 +14,7 @@ import Templates from "./components/templates/Templates";
 import { PomodoroTimer } from "./components/header/PomodoroTimer";
 import { TotalToday } from "./components/header/TotalToday";
 import Settings from "./components/settings/Settings";
+import { ActiveTodoModal } from "./components/modals/ActiveTodoModal";
 
 export function App() {
   return (
@@ -42,6 +43,7 @@ export function App() {
 
       <KeyboardShortcutsModal />
       <ProjectAnalyticsModal />
+      <ActiveTodoModal />
       <ConfettiAnimation />
       <EventToastContainer />
     </Router>

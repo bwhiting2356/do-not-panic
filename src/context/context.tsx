@@ -44,6 +44,8 @@ export interface AppContextInterface {
   setShowProjectAnalytics: (show: boolean) => void;
   showKeyboardShortcuts: boolean;
   setShowKeyboardShortcuts: (show: boolean) => void;
+  showActiveTodo: boolean;
+  setShowActiveTodo: (show: boolean) => void;
   toasts: ToastData[];
   addToast: (newToast: string) => void;
   showAnimation: boolean;
@@ -61,6 +63,8 @@ const AppCtx = createContext<AppContextInterface>({
   setShowProjectAnalytics: noOp,
   showKeyboardShortcuts: false,
   setShowKeyboardShortcuts: noOp,
+  showActiveTodo: false,
+  setShowActiveTodo: noOp,
   toasts: [],
   addToast: noOp,
   showAnimation: false,
@@ -73,6 +77,7 @@ export const useAppContextState = (): AppContextInterface => {
   const [showArchive, setShowArchive] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showProjectAnalytics, setShowProjectAnalytics] = useState(false);
+  const [showActiveTodo, setShowActiveTodo] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
@@ -89,6 +94,8 @@ export const useAppContextState = (): AppContextInterface => {
     setShowArchive,
     showKeyboardShortcuts,
     setShowKeyboardShortcuts,
+    showActiveTodo,
+    setShowActiveTodo,
     showProjectAnalytics,
     setShowProjectAnalytics,
     showAnimation,

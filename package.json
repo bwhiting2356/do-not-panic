@@ -45,7 +45,6 @@
     "prettier": "prettier --write src/**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "format:watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}} && eslint {{changed}} --fix "
-    
   },
   "eslintConfig": {
     "extends": [
@@ -88,10 +87,6 @@
       "camelcase": "error",
       "no-empty-function": "error",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "multiline-comment-style": [
-        "error",
-        "starred-block"
-      ],
       "no-extra-boolean-cast": "error",
       "no-implicit-globals": "error",
       "no-magic-numbers": [

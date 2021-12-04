@@ -13,6 +13,8 @@ import todosReducer from "../features/todos/todoSlice";
 import projectsReducer from "../features/projects/projectSlice";
 import templatesReducer from "../features/templates/templateSlice";
 import settingsReducer from "../features/settings/settingsSlice";
+import timerReducer from "../features/timer/timerSlice";
+
 import { Template } from "../shared/template";
 import { Project } from "../shared/project";
 import { Link } from "../shared/link";
@@ -98,7 +100,9 @@ const rootReducer = combineReducers({
   templates: templatesReducer,
   todos: todosReducer,
   settings: settingsReducer,
+  timer: timerReducer,
 });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(persistedReducer, composeWithDevTools());
