@@ -102,6 +102,7 @@ export const computeSecondsRemaining = (
 const sendSMSNotification = (phoneNumber: string) => {
   fetch(TWILLIO_URL, {
     method: "POST",
+    mode: "no-cors", 
     headers: {
       "Content-Type": "application/json",
     },
