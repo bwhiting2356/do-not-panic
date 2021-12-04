@@ -99,6 +99,22 @@ export const computeSecondsRemaining = (
   return secondsRemaining;
 };
 
+const sendSMSNotification = (phoneNumber: string) => {
+  try {
+    fetch(TWILLIO_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phoneNumber,
+      }),
+    });
+  } catch (err) {
+    // ignore
+  }
+};
+
 export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   const phoneNumber = useAppSelector(selectPhoneNumber);
   const [{ timerStatus, segments, targetMinutes }, setState] =
@@ -129,19 +145,7 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
       }));
       playSound();
       if (targetMinutes === POMODORO_BREAK_TIME && phoneNumber) {
-        try {
-          fetch(TWILLIO_URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              phoneNumber,
-            }),
-          });
-        } catch (err) {
-          // ignore
-        }
+        sendSMSNotification(phoneNumber);
       }
 
       setTimeout(() => {
