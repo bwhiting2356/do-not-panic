@@ -1,19 +1,21 @@
 import { Table } from "react-bootstrap";
-import React from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectTodosDueToday } from "../../features/todos/selectors";
 import { convertMinutesToHours, sumTodoPomodoros } from "../../shared/util";
-import { selectPomodoroWorkTime } from "../../features/settings/selectors";
+import {
+  POMODORO_BREAK_TIME,
+  POMODORO_WORK_TIME,
+} from "../../shared/constants";
 
 export function TotalToday() {
   const todayTodos = useAppSelector(selectTodosDueToday);
-  const pomodoroWorkTime = useAppSelector(selectPomodoroWorkTime);
   const completeTodos = todayTodos.filter((todo) => todo.done);
   const totalCompletePoms = completeTodos.reduce(sumTodoPomodoros, 0);
-  const totalCompleteTime = totalCompletePoms * pomodoroWorkTime;
+  const pomodoroTotalTime = POMODORO_WORK_TIME + POMODORO_BREAK_TIME;
+  const totalCompleteTime = totalCompletePoms * pomodoroTotalTime;
   const notCompleteTodos = todayTodos.filter((todo) => !todo.done);
   const totalNotCompletePoms = notCompleteTodos.reduce(sumTodoPomodoros, 0);
-  const totalNotCompleteTime = totalNotCompletePoms * pomodoroWorkTime;
+  const totalNotCompleteTime = totalNotCompletePoms * pomodoroTotalTime;
 
   return (
     <Table

@@ -50,7 +50,7 @@ export function usePomodoroLogic(
   const timerStatus = useAppSelector(selectTimerStatus);
   const targetMinutes = useAppSelector(selectTargetMinutes);
   const secondsRemaining = useAppSelector(selectSecondsRemaining);
-  const [interval, setInterval] = useState<number>(0);
+  const [timerInterval, setTimerInterval] = useState<number>(0);
 
   const setTimerStatus = useCallback(
     (newTimerStatus: TimerStatus) => {
@@ -100,7 +100,7 @@ export function usePomodoroLogic(
         sendSMSNotification(phoneNumber);
       }
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         if (
           targetMinutes === pomodoroWorkMinutes &&
           activeTodo &&
@@ -149,10 +149,10 @@ export function usePomodoroLogic(
       const newInterval = window.setInterval(() => {
         dispatch(updateSecondsRemaining());
       }, MILLISECONDS_PER_SECOND);
-      setInterval(() => newInterval);
+      setTimerInterval(newInterval);
     }
 
-    return window.clearInterval(interval);
+    return window.clearInterval(timerInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timerStatus, targetMinutes]);
 
@@ -165,10 +165,10 @@ export function usePomodoroLogic(
   };
 
   const onSetTargetToWork = () => {
-    // make into a combined action
     setTargetMinutes(pomodoroWorkMinutes);
     dispatch(onStopTimer());
     dispatch(updateSecondsRemaining());
+    dispatch(onPlayTimer());
   };
 
   const onSetTargetToBreak = () => {
@@ -176,6 +176,7 @@ export function usePomodoroLogic(
     setTargetMinutes(pomodoroBreakMinutes);
     dispatch(onStopTimer());
     dispatch(updateSecondsRemaining());
+    dispatch(onPlayTimer());
   };
 
   return {

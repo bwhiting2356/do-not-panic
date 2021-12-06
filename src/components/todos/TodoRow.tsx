@@ -19,8 +19,13 @@ import { selectActiveTodoId } from "../../features/todos/selectors";
 import {
   editTargetMinutes,
   onPlayTimer,
+  TimerStatus,
 } from "../../features/timer/timerSlice";
 import { selectPomodoroWorkTime } from "../../features/settings/selectors";
+import {
+  selectTargetMinutes,
+  selectTimerStatus,
+} from "../../features/timer/selectors";
 
 type Props = {
   todo: Todo;
@@ -29,6 +34,8 @@ type Props = {
 export function TodoRow({ todo }: Props) {
   const linkRef = useRef<HTMLInputElement>(null);
   const pomodoroWorkTime = useAppSelector(selectPomodoroWorkTime);
+  const targetMinutes = useAppSelector(selectTargetMinutes);
+  const timerStatus = useAppSelector(selectTimerStatus);
   const dispatch = useAppDispatch();
   const {
     editingItemId,
@@ -58,6 +65,9 @@ export function TodoRow({ todo }: Props) {
 
   const onEditDone = (newDone: boolean) => {
     dispatch(editTodo({ id, newTodo: { ...todo, done: newDone } }));
+    if (newDone === true && activeTodoId === id) {
+      dispatch(changeActiveTodoId(""));
+    }
   };
 
   const onEditDue = (newDue: Due) => moveTodoWithToast(todo, newDue);
@@ -147,8 +157,13 @@ export function TodoRow({ todo }: Props) {
 
   const onSetActiveTodo = () => {
     dispatch(changeActiveTodoId(todo.id));
-    dispatch(onPlayTimer());
-    dispatch(editTargetMinutes(pomodoroWorkTime));
+    if (targetMinutes !== pomodoroWorkTime) {
+      dispatch(editTargetMinutes(pomodoroWorkTime));
+    }
+    if (timerStatus !== TimerStatus.Playing) {
+      dispatch(onPlayTimer());
+    }
+
     setActiveModal("active-todo");
   };
 
