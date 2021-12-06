@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   TWILLIO_URL,
   SECONDS_PER_MINUTE,
@@ -20,8 +21,9 @@ export const sendSMSNotification = (phoneNumber: string) => {
     body: JSON.stringify({
       phoneNumber,
     }),
-    // eslint-disable-next-line no-console
-  }).catch(console.log);
+  })
+    .then(console.log)
+    .catch(console.log);
 };
 
 export const getBadgeBackgroundClass = (
