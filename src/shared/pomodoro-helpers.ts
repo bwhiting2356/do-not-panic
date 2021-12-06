@@ -10,7 +10,6 @@ import RedCircle from "../images/red-circle.svg";
 export const sendSMSNotification = (phoneNumber: string) => {
   fetch("/.netlify/functions/smsNotification", {
     method: "POST",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/json",
     },
