@@ -8,7 +8,7 @@ import GreyCircle from "../images/grey-circle.svg";
 import RedCircle from "../images/red-circle.svg";
 
 export const sendSMSNotification = (phoneNumber: string) => {
-  fetch("/smsNotification", {
+  fetch("/.netlify/functions/smsNotification", {
     method: "POST",
     mode: "no-cors",
     headers: {

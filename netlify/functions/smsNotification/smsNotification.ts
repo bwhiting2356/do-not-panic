@@ -6,7 +6,6 @@ import { Handler } from '@netlify/functions'
   "https://todo-ron-ron-5347-dev.twil.io/functions/hello-world";
 
 export const handler: Handler = async (event, context) => {
-  const { name = 'stranger' } = event.queryStringParameters
 
   const { phoneNumber } = querystring.parse(event.body);
 
