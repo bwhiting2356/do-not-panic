@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
@@ -70,11 +69,11 @@ export function usePomodoroLogic(
   const playSound = useCallback(async () => {
     try {
       if (audioRef?.current) {
-        audioRef.current.muted = true;
         await audioRef.current.play();
       }
     } catch (err) {
       // eslint-disable-next-line no-console
+      console.log(err);
     }
   }, [audioRef]);
 
@@ -90,8 +89,6 @@ export function usePomodoroLogic(
   }, [targetMinutes, timerStatus, pomodoroWorkMinutes]);
 
   useEffect(() => {
-    console.log("calling use effect line 92");
-    console.log("seconds remaining", secondsRemaining);
     document.title = createTimeDisplay(secondsRemaining);
 
     // when the timer hits 0
