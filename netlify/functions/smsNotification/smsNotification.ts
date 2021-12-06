@@ -9,8 +9,6 @@ export const handler: Handler = async (event, context) => {
 
   const { phoneNumber } = JSON.parse(event.body);
 
-  console.log('phoneNumber', phoneNumber);
-
   return fetch(TWILIO_URL, {
     method: "POST",
     headers: {
