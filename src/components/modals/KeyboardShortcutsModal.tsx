@@ -94,6 +94,16 @@ const KeyboardShortcutsTable = () => (
           <td>Anywhere</td>
           <td>Generate backup files</td>
         </tr>
+        <tr>
+          <td>[</td>
+          <td>While template is selected</td>
+          <td>Move down</td>
+        </tr>
+        <tr>
+          <td>]</td>
+          <td>While template is selected</td>
+          <td>Move up</td>
+        </tr>
       </tbody>
     </Table>
   </div>

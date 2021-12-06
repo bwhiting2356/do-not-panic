@@ -3,10 +3,10 @@ import { POMODORO_WORK_TIME, SECONDS_PER_MINUTE } from "../../shared/constants";
 import { computeSecondsRemaining } from "../../shared/pomodoro-helpers";
 
 export enum TimerStatus {
-  Playing,
-  Paused,
-  Stopped,
-  Alarm,
+  Playing = "Playing",
+  Paused = "Paused",
+  Stopped = "Stopped",
+  Alarm = "Alarm",
 }
 
 export interface TimerSegment {

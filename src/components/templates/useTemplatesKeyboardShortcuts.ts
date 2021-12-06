@@ -1,15 +1,21 @@
+/* eslint-disable no-console */
 import { useEffect } from "react";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   useAppContext,
   useReduxActionsWithContext,
 } from "../../context/context";
 import { selectTemplates } from "../../features/templates/selectors";
+import {
+  moveTemplateDown,
+  moveTemplateUp,
+} from "../../features/templates/templateSlice";
 import { Template } from "../../shared/template";
 import { getItemIdInfoForArrowSelection } from "../../shared/util";
 import { useCommonKeyboardShortcuts } from "../useCommonKeyboardShortcuts";
 
 export const useTemplatesKeyboardShortcuts = () => {
+  const dispatch = useAppDispatch();
   useCommonKeyboardShortcuts();
   const templates = useAppSelector(selectTemplates);
   const { selectedItemId, setSelectedItemId, editingItemId, setEditingItemId } =
@@ -21,6 +27,18 @@ export const useTemplatesKeyboardShortcuts = () => {
     deleteTemplateWithToast,
     addToast,
   } = useReduxActionsWithContext();
+
+  const onMoveTemplateUp = (arrayIdx: number) => {
+    if (arrayIdx !== 0) {
+      dispatch(moveTemplateUp({ index: arrayIdx }));
+    }
+  };
+
+  const onMoveTemplateDown = (arrayIdx: number) => {
+    if (arrayIdx !== templates.length - 1) {
+      dispatch(moveTemplateDown({ index: arrayIdx }));
+    }
+  };
 
   useEffect(() => {
     const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
@@ -53,6 +71,7 @@ export const useTemplatesKeyboardShortcuts = () => {
         const template = templates.find(
           ({ id }) => id === selectedItemId
         ) as Template;
+        const arrayIdx = templates.indexOf(template);
 
         const isDefaultTemplate =
           template.templateTitle.toLowerCase() === "default";
@@ -66,6 +85,10 @@ export const useTemplatesKeyboardShortcuts = () => {
         } else if (event.key === "e") {
           setEditingItemId(template.id);
           event.preventDefault();
+        } else if (event.key === "]") {
+          onMoveTemplateUp(arrayIdx);
+        } else if (event.key === "[") {
+          onMoveTemplateDown(arrayIdx);
         } else if (event.code === "ArrowDown") {
           event.preventDefault();
           if (projectIdInfo.nextItemUUID) {

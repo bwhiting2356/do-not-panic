@@ -1,23 +1,37 @@
 import React from "react";
-import { Card, Modal } from "react-bootstrap";
-import { useAppSelector } from "../../app/hooks";
+import { Button, ButtonGroup, Card, Modal } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useAppContext } from "../../context/context";
 import { selectProjects } from "../../features/projects/selectors";
 import { selectActiveTodo } from "../../features/todos/selectors";
+import { changeActiveTodoId, editTodo } from "../../features/todos/todoSlice";
 import { truncateUrl } from "../../shared/util";
 import { PomodoroDisplay } from "../PomodoroDisplay";
 
 export function ActiveTodoModal() {
+  const dispatch = useAppDispatch();
   const activeTodo = useAppSelector(selectActiveTodo);
   const projects = useAppSelector(selectProjects);
   const { setActiveModal } = useAppContext();
 
   if (!activeTodo) return null;
-  const { name, poms, completedPoms, links, projectId } = activeTodo;
+
+  const { id, name, poms, completedPoms, links, projectId } = activeTodo;
   const [link] = links;
+
+  const onComplete = () => {
+    dispatch(editTodo({ id, newTodo: { ...activeTodo, done: true } }));
+    dispatch(changeActiveTodoId(""));
+  };
+
+  const onCancel = () => {
+    dispatch(changeActiveTodoId(""));
+  };
 
   const projectName =
     projects.find((project) => project.id === projectId)?.title || "";
+
+  const urlLength = 30;
 
   return (
     <Modal
@@ -45,7 +59,19 @@ export function ActiveTodoModal() {
             <Card.Text>
               {completedPoms || 0}/{poms || 0} poms complete
             </Card.Text>
-            <Card.Link href={link.url}>{truncateUrl(link.url)}</Card.Link>
+            <Card.Link href={link.url} target="_blank">
+              {truncateUrl(link.url, urlLength)}
+            </Card.Link>
+            <div style={{ marginTop: "20px" }}>
+              <ButtonGroup>
+                <Button variant="primary" onClick={onComplete}>
+                  Complete
+                </Button>
+                <Button variant="outline-danger" onClick={onCancel}>
+                  Cancel
+                </Button>
+              </ButtonGroup>
+            </div>
           </Card.Body>
         </Card>
       </Modal.Body>
