@@ -8,10 +8,19 @@ type Props = {
   Icon: RBIcon;
   variant: string;
   text?: string;
+  className?: string;
 };
-export function IconButton({ onClick, tabIndex, Icon, variant, text }: Props) {
+export function IconButton({
+  onClick,
+  tabIndex,
+  Icon,
+  variant,
+  text,
+  className,
+}: Props) {
   return (
     <Button
+      className={className}
       tabIndex={tabIndex}
       onClick={onClick}
       variant={variant}

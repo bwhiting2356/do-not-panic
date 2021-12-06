@@ -1,5 +1,9 @@
+:root {
+  --bs-danger: tomato;
+}
+
 .done {
-  width: 60px;
+  width: 100px;
   text-align: center;
 }
 
@@ -110,9 +114,9 @@
 }
 
 .pomodoro-badge {
-  background-color: tomato !important;;
+  background-color: tomato !important;
 }
 
 .stopped-badge {
-  background-color: #777F81 !important;;
+  background-color: #777f81 !important;
 }

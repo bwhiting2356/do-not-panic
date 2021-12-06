@@ -9,13 +9,13 @@ import { App } from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppCtxProvider>
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <AppCtxProvider>
         <PersistGate loading={null} persistor={persistor}>
           <App />
         </PersistGate>
-      </ReduxProvider>
-    </AppCtxProvider>
+      </AppCtxProvider>
+    </ReduxProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

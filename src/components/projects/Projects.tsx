@@ -19,7 +19,7 @@ import { IconButton } from "../icon-buttons/IconButton";
 function Projects() {
   const currentProjects = useAppSelector(selectCurrentProjects);
   const archivedProjects = useAppSelector(selectArchivedProjects);
-  const { showArchive, setShowProjectAnalytics } = useAppContext();
+  const { setActiveModal, showArchive } = useAppContext();
 
   const { addNewProjectAndStartEditing } = useReduxActionsWithContext();
 
@@ -32,7 +32,7 @@ function Projects() {
         <ButtonGroup>
           <AddIconButton onClick={addNewProjectAndStartEditing} />
           <IconButton
-            onClick={() => setShowProjectAnalytics(true)}
+            onClick={() => setActiveModal("project-analytics")}
             variant="outline-primary"
             Icon={PieChart}
           />

@@ -100,14 +100,10 @@ const KeyboardShortcutsTable = () => (
 );
 
 export function KeyboardShortcutsModal() {
-  const { showKeyboardShortcuts, setShowKeyboardShortcuts } = useAppContext();
-  const handleClose = () => setShowKeyboardShortcuts(!showKeyboardShortcuts);
+  const { setActiveModal } = useAppContext();
+  const handleClose = () => setActiveModal("");
   return (
-    <Modal
-      show={showKeyboardShortcuts}
-      onHide={handleClose}
-      dialogClassName="wide-modal"
-    >
+    <Modal show={true} onHide={handleClose} dialogClassName="wide-modal">
       <Modal.Dialog>
         <Modal.Header closeButton>
           <Modal.Title>Keyboard Shortcuts</Modal.Title>

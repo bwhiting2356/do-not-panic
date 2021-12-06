@@ -44,6 +44,7 @@ export function TemplateButtons() {
           >
             {groupedTemplates[""].map((template) => (
               <TemplateItem
+                key={template.id}
                 template={template}
                 addFromTemlate={addFromTemlate}
               />

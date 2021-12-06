@@ -1,28 +1,32 @@
-import { useRef } from "react";
 import { Badge, Button, ButtonGroup } from "react-bootstrap";
 import { Pause, Play, Stop } from "react-bootstrap-icons";
+import { useAppSelector } from "../app/hooks";
 import {
+  selectPomodoroBreakTime,
+  selectPomodoroWorkTime,
+} from "../features/settings/selectors";
+import {
+  selectSecondsRemaining,
+  selectTargetMinutes,
+  selectTimerStatus,
+} from "../features/timer/selectors";
+import { TimerStatus } from "../features/timer/timerSlice";
+import { useAppContext } from "../context/context";
+import {
+  createTimeDisplay,
   getBadgeBackgroundClass,
-  TimerStatus,
-  usePomodoroLogic,
-} from "./usePomodoroLogic";
-import {
-  POMODORO_BREAK_TIME,
-  POMODORO_WORK_TIME,
-} from "../../shared/constants";
-export function PomodoroTimer() {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const {
-    timeDisplay,
-    timerStatus,
-    onPlay,
-    onPause,
-    onStop,
-    onSetTargetToWork,
-    onSetTargetToBreak,
-    targetMinutes,
-  } = usePomodoroLogic(audioRef);
+} from "../shared/pomodoro-helpers";
 
+export function PomodoroDisplay() {
+  const pomodoroWorkMinutes = useAppSelector(selectPomodoroWorkTime);
+  const pomodoroBreakMinutes = useAppSelector(selectPomodoroBreakTime);
+  const timerStatus = useAppSelector(selectTimerStatus);
+  const targetMinutes = useAppSelector(selectTargetMinutes);
+  const secondsRemaining = useAppSelector(selectSecondsRemaining);
+  const timeDisplay = createTimeDisplay(secondsRemaining);
+
+  const { onSetTargetToWork, onSetTargetToBreak, onPlay, onPause, onStop } =
+    useAppContext();
   return (
     <div
       style={{
@@ -43,21 +47,25 @@ export function PomodoroTimer() {
             }}
           >
             <Badge
-              className={getBadgeBackgroundClass(timerStatus, targetMinutes)}
+              className={getBadgeBackgroundClass(
+                timerStatus,
+                targetMinutes,
+                pomodoroWorkMinutes
+              )}
             >
               {timeDisplay}
             </Badge>
           </h3>
         </div>
-
         <ButtonGroup style={{ marginRight: "5px" }}>
           <Button variant="outline-secondary" onClick={onSetTargetToWork}>
-            {POMODORO_WORK_TIME}
+            {pomodoroWorkMinutes}
           </Button>
           <Button variant="outline-secondary" onClick={onSetTargetToBreak}>
-            {POMODORO_BREAK_TIME}
+            {pomodoroBreakMinutes}
           </Button>
         </ButtonGroup>
+
         <ButtonGroup>
           <Button
             variant="outline-secondary"
@@ -89,9 +97,6 @@ export function PomodoroTimer() {
           </Button>
         </ButtonGroup>
       </div>
-      <audio className="audio-element" ref={audioRef}>
-        <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
-      </audio>
     </div>
   );
 }

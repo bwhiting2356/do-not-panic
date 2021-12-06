@@ -36,7 +36,11 @@ export function GroupedSubmenu({ groupName, templates }: Props) {
 
       <Dropdown.Menu>
         {templates.map((template) => (
-          <TemplateItem template={template} addFromTemlate={addFromTemlate} />
+          <TemplateItem
+            key={template.id}
+            template={template}
+            addFromTemlate={addFromTemlate}
+          />
         ))}
       </Dropdown.Menu>
     </Dropdown>

@@ -15,7 +15,7 @@ import { selectProjects } from "../../../features/projects/selectors";
 import { selectArchivedTodos } from "../../../features/todos/selectors";
 
 export function ProjectAnalyticsModal() {
-  const { showProjectAnalytics, setShowProjectAnalytics } = useAppContext();
+  const { setActiveModal } = useAppContext();
   const archivedTodos = useAppSelector(selectArchivedTodos);
   const projects = useAppSelector(selectProjects);
 
@@ -81,8 +81,8 @@ export function ProjectAnalyticsModal() {
 
   return (
     <Modal
-      show={showProjectAnalytics}
-      onHide={() => setShowProjectAnalytics(!showProjectAnalytics)}
+      show={true}
+      onHide={() => setActiveModal("")}
       style={{ textAlign: "center" }}
     >
       <Modal.Header closeButton>
