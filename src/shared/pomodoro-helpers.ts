@@ -1,9 +1,5 @@
 /* eslint-disable no-console */
-import {
-  TWILLIO_URL,
-  SECONDS_PER_MINUTE,
-  MILLISECONDS_PER_SECOND,
-} from "./constants";
+import { SECONDS_PER_MINUTE, MILLISECONDS_PER_SECOND } from "./constants";
 import { padZeros } from "./util";
 import { TimerStatus, TimerSegment } from "../features/timer/timerSlice";
 
@@ -12,9 +8,8 @@ import GreyCircle from "../images/grey-circle.svg";
 import RedCircle from "../images/red-circle.svg";
 
 export const sendSMSNotification = (phoneNumber: string) => {
-  fetch(TWILLIO_URL, {
+  fetch("/.netlify/functions/smsNotification", {
     method: "POST",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/json",
     },

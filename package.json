@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@netlify/functions": "^0.10.0",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -20,6 +21,8 @@
     "eslint-plugin-import-order": "^2.1.4",
     "json2csv": "^5.0.6",
     "moment": "^2.29.1",
+    "node-fetch": "^3.1.0",
+    "querystring": "^0.2.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0",
     "react-bootstrap-icons": "^1.6.1",
