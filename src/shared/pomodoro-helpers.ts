@@ -1,14 +1,14 @@
-import { TimerSegment, TimerStatus } from "../../../features/timer/timerSlice";
 import {
-  MILLISECONDS_PER_SECOND,
-  SECONDS_PER_MINUTE,
   TWILLIO_URL,
-} from "../../../shared/constants";
-import { padZeros } from "../../../shared/util";
+  SECONDS_PER_MINUTE,
+  MILLISECONDS_PER_SECOND,
+} from "./constants";
+import { padZeros } from "./util";
+import { TimerStatus, TimerSegment } from "../features/timer/timerSlice";
 
-import BlueCircle from "../../../images/blue-circle.svg";
-import GreyCircle from "../../../images/grey-circle.svg";
-import RedCircle from "../../../images/red-circle.svg";
+import BlueCircle from "../images/blue-circle.svg";
+import GreyCircle from "../images/grey-circle.svg";
+import RedCircle from "../images/red-circle.svg";
 
 export const sendSMSNotification = (phoneNumber: string) => {
   fetch(TWILLIO_URL, {

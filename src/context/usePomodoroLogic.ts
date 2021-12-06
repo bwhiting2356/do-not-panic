@@ -1,17 +1,12 @@
+/* eslint-disable no-console */
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../app/hooks";
 import {
-  computeSecondsRemaining,
-  createTimeDisplay,
-  sendSMSNotification,
-  updateTabIcon,
-} from "./helpers";
-import { useAppSelector } from "../../../app/hooks";
-import {
-  selectSegments,
+  selectSecondsRemaining,
   selectTargetMinutes,
   selectTimerStatus,
-} from "../../../features/timer/selectors";
+} from "../features/timer/selectors";
 import {
   clearSegments,
   editTargetMinutes,
@@ -20,37 +15,43 @@ import {
   onPlayTimer,
   onStopTimer,
   TimerStatus,
-} from "../../../features/timer/timerSlice";
+  updateSecondsRemaining,
+} from "../features/timer/timerSlice";
 
-import { MILLISECONDS_PER_SECOND } from "../../../shared/constants";
-import { selectActiveTodo } from "../../../features/todos/selectors";
-import { editTodo } from "../../../features/todos/todoSlice";
+import { MILLISECONDS_PER_SECOND } from "../shared/constants";
+import { selectActiveTodo } from "../features/todos/selectors";
+import { editTodo } from "../features/todos/todoSlice";
 import {
   selectPhoneNumber,
   selectPomodoroBreakTime,
   selectPomodoroWorkTime,
-} from "../../../features/settings/selectors";
+} from "../features/settings/selectors";
+import {
+  createTimeDisplay,
+  sendSMSNotification,
+  updateTabIcon,
+} from "../shared/pomodoro-helpers";
 
-export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
+export interface PomodoroLogic {
+  onPlay: () => void;
+  onPause: () => void;
+  onStop: () => void;
+  onSetTargetToBreak: () => void;
+  onSetTargetToWork: () => void;
+}
+
+export function usePomodoroLogic(
+  audioRef: React.RefObject<HTMLAudioElement>
+): PomodoroLogic {
   const dispatch = useDispatch();
   const activeTodo = useAppSelector(selectActiveTodo);
   const pomodoroWorkMinutes = useAppSelector(selectPomodoroWorkTime);
   const pomodoroBreakMinutes = useAppSelector(selectPomodoroBreakTime);
   const phoneNumber = useAppSelector(selectPhoneNumber);
   const timerStatus = useAppSelector(selectTimerStatus);
-  const segments = useAppSelector(selectSegments);
   const targetMinutes = useAppSelector(selectTargetMinutes);
+  const secondsRemaining = useAppSelector(selectSecondsRemaining);
   const [interval, setInterval] = useState<number>(0);
-  const [secondsRemaining, setSecondsRemaining] = useState(
-    computeSecondsRemaining(segments, targetMinutes)
-  );
-  const recomputeSecondsRemaining = () => {
-    const newSecondsRemaining = computeSecondsRemaining(
-      segments,
-      targetMinutes
-    );
-    setSecondsRemaining(newSecondsRemaining);
-  };
 
   const setTimerStatus = useCallback(
     (newTimerStatus: TimerStatus) => {
@@ -66,7 +67,16 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
     [dispatch]
   );
 
-  const playSound = useCallback(() => audioRef?.current?.play(), [audioRef]);
+  const playSound = useCallback(async () => {
+    try {
+      if (audioRef?.current) {
+        audioRef.current.muted = true;
+        await audioRef.current.play();
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+    }
+  }, [audioRef]);
 
   const stopSound = () => {
     if (audioRef?.current) {
@@ -80,29 +90,36 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   }, [targetMinutes, timerStatus, pomodoroWorkMinutes]);
 
   useEffect(() => {
+    console.log("calling use effect line 92");
     document.title = createTimeDisplay(secondsRemaining);
 
     // when the timer hits 0
     if (secondsRemaining === 0 && timerStatus !== TimerStatus.Alarm) {
       setTimerStatus(TimerStatus.Alarm);
       playSound();
+
       if (targetMinutes === pomodoroBreakMinutes && phoneNumber) {
         sendSMSNotification(phoneNumber);
       }
-      if (targetMinutes === pomodoroWorkMinutes && activeTodo) {
-        const newCompletedPoms = parseInt(activeTodo.completedPoms || "0") + 1;
-        dispatch(
-          editTodo({
-            id: activeTodo.id,
-            newTodo: {
-              ...activeTodo,
-              completedPoms: newCompletedPoms.toString(),
-            },
-          })
-        );
-      }
 
       setTimeout(() => {
+        if (
+          targetMinutes === pomodoroWorkMinutes &&
+          activeTodo &&
+          timerStatus !== TimerStatus.Stopped
+        ) {
+          const newCompletedPoms =
+            parseInt(activeTodo.completedPoms || "0") + 1;
+          dispatch(
+            editTodo({
+              id: activeTodo.id,
+              newTodo: {
+                ...activeTodo,
+                completedPoms: newCompletedPoms.toString(),
+              },
+            })
+          );
+        }
         setTimerStatus(TimerStatus.Stopped);
         const newTarget =
           targetMinutes === pomodoroWorkMinutes
@@ -128,11 +145,11 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   ]);
 
   useEffect(() => {
-    recomputeSecondsRemaining();
+    dispatch(updateSecondsRemaining());
 
     if (timerStatus === TimerStatus.Playing) {
       const newInterval = window.setInterval(() => {
-        recomputeSecondsRemaining();
+        dispatch(updateSecondsRemaining());
       }, MILLISECONDS_PER_SECOND);
       setInterval(() => newInterval);
     }
@@ -150,39 +167,24 @@ export function usePomodoroLogic(audioRef: React.RefObject<HTMLAudioElement>) {
   };
 
   const onSetTargetToWork = () => {
+    // make into a combined action
     setTargetMinutes(pomodoroWorkMinutes);
     dispatch(onStopTimer());
+    dispatch(updateSecondsRemaining());
   };
 
   const onSetTargetToBreak = () => {
+    // make into a combined action
     setTargetMinutes(pomodoroBreakMinutes);
     dispatch(onStopTimer());
+    dispatch(updateSecondsRemaining());
   };
 
-  useEffect(() => {
-    const listenForKeyboardShortcuts = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
-        event.preventDefault();
-        if (timerStatus !== TimerStatus.Playing) {
-          dispatch(onPlayTimer());
-        } else if (timerStatus === TimerStatus.Playing) {
-          dispatch(onPauseTimer());
-        }
-      }
-    };
-    window.addEventListener("keydown", listenForKeyboardShortcuts);
-    return () =>
-      window.removeEventListener("keydown", listenForKeyboardShortcuts);
-  });
-
   return {
-    timeDisplay: createTimeDisplay(secondsRemaining),
     onPlay,
     onPause,
     onStop,
     onSetTargetToBreak,
     onSetTargetToWork,
-    targetMinutes,
-    timerStatus,
   };
 }

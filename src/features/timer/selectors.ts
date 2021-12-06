@@ -17,3 +17,8 @@ export const selectTargetMinutes = createSelector(
   selectTimerState,
   (state) => state.targetMinutes
 );
+
+export const selectSecondsRemaining = createSelector(
+  selectTimerState,
+  (state) => state.secondsRemaining
+);

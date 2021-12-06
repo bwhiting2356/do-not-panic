@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
+import { PomodoroLogic, usePomodoroLogic } from "./usePomodoroLogic";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addNewProject,
@@ -50,7 +51,9 @@ export interface AppContextInterface {
   setShowAnimation: (show: boolean) => void;
 }
 
-const AppCtx = createContext<AppContextInterface>({
+type CombinedContext = AppContextInterface & PomodoroLogic;
+
+const AppCtx = createContext<CombinedContext>({
   editingItemId: "",
   selectedItemId: "",
   setEditingItemId: noOp,
@@ -63,9 +66,16 @@ const AppCtx = createContext<AppContextInterface>({
   addToast: noOp,
   showAnimation: false,
   setShowAnimation: noOp,
+  onSetTargetToBreak: noOp,
+  onSetTargetToWork: noOp,
+  onPlay: noOp,
+  onPause: noOp,
+  onStop: noOp,
 });
 
-export const useAppContextState = (): AppContextInterface => {
+export const useAppContextState = (
+  audioRef: React.RefObject<HTMLAudioElement>
+): CombinedContext => {
   const [editingItemId, setEditingItemId] = useState("");
   const [selectedItemId, setSelectedItemId] = useState("");
   const [showArchive, setShowArchive] = useState(false);
@@ -78,6 +88,8 @@ export const useAppContextState = (): AppContextInterface => {
   const addToast = (text: string) => {
     setToasts((prev) => [...prev, new ToastData(text)]);
   };
+
+  const pomodoroLogic = usePomodoroLogic(audioRef);
 
   return {
     editingItemId,
@@ -92,18 +104,28 @@ export const useAppContextState = (): AppContextInterface => {
     setShowAnimation,
     toasts,
     addToast,
+    ...pomodoroLogic,
   };
 };
 
 export const useAppContext = () => useContext(AppCtx);
 
 export const AppCtxProvider: React.FC = ({ children }) => {
-  const context = useAppContextState();
-  return <AppCtx.Provider value={context}>{children}</AppCtx.Provider>;
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const context = useAppContextState(audioRef);
+  return (
+    <AppCtx.Provider value={context}>
+      <audio className="audio-element" ref={audioRef}>
+        <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
+      </audio>
+      {children}
+    </AppCtx.Provider>
+  );
 };
 
 export const useReduxActionsWithContext = () => {
-  const { addToast, setSelectedItemId, setEditingItemId } = useAppContext();
+  const { addToast, setSelectedItemId, setEditingItemId, ...pomodoroLogic } =
+    useAppContext();
   const dispatch = useAppDispatch();
   const projects = useAppSelector(selectCurrentProjects);
   const templates = useAppSelector(selectTemplates);
@@ -281,6 +303,7 @@ export const useReduxActionsWithContext = () => {
     addNewTemplateAndStartEditing,
     deleteTemplateWithToast,
     addToast,
+    ...pomodoroLogic,
   };
 };
 

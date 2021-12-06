@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { POMODORO_WORK_TIME } from "../../shared/constants";
+import { computeSecondsRemaining } from "../../shared/pomodoro-helpers";
 
 export enum TimerStatus {
   Playing,
@@ -17,12 +18,14 @@ interface TimerState {
   segments: TimerSegment[];
   targetMinutes: number;
   timerStatus: TimerStatus;
+  secondsRemaining: number;
 }
 
 const initialState: TimerState = {
   segments: [],
   targetMinutes: POMODORO_WORK_TIME,
   timerStatus: TimerStatus.Stopped,
+  secondsRemaining: 0,
 };
 
 export const timerSlice = createSlice({
@@ -44,6 +47,10 @@ export const timerSlice = createSlice({
         ...state,
         segments: newSegments,
         timerStatus: TimerStatus.Playing,
+        secondsRemaining: computeSecondsRemaining(
+          newSegments,
+          state.targetMinutes
+        ),
       };
     },
     onPauseTimer: (state) => {
@@ -57,17 +64,35 @@ export const timerSlice = createSlice({
         ...state,
         segments: segmentsCopy,
         timerStatus: TimerStatus.Paused,
+        secondsRemaining: computeSecondsRemaining(
+          segmentsCopy,
+          state.targetMinutes
+        ),
       };
     },
     onStopTimer: (state) => {
+      const newSegments: TimerSegment[] = [];
       return {
         ...state,
-        segments: [],
+        segments: newSegments,
         timerStatus: TimerStatus.Stopped,
+        secondsRemaining: computeSecondsRemaining(
+          newSegments,
+          state.targetMinutes
+        ),
       };
     },
     clearSegments: (state) => {
       return { ...state, segments: [] };
+    },
+    updateSecondsRemaining: (state) => {
+      return {
+        ...state,
+        secondsRemaining: computeSecondsRemaining(
+          state.segments,
+          state.targetMinutes
+        ),
+      };
     },
   },
 });
@@ -79,6 +104,7 @@ export const {
   onPauseTimer,
   onStopTimer,
   clearSegments,
+  updateSecondsRemaining,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;
