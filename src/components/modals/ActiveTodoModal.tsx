@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, ListGroup, Modal } from "react-bootstrap";
+import { Card, Modal } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import { useAppContext } from "../../context/context";
 import { selectProjects } from "../../features/projects/selectors";
@@ -13,15 +13,11 @@ export function ActiveTodoModal() {
   const { setActiveModal } = useAppContext();
 
   if (!activeTodo) return null;
-  const { id, done, name, poms, completedPoms, links, projectId } = activeTodo;
+  const { name, poms, completedPoms, links, projectId } = activeTodo;
   const [link] = links;
 
   const projectName =
     projects.find((project) => project.id === projectId)?.title || "";
-
-  const pluralize = (numPoms = "0") => {
-    return numPoms === "1" ? `1 pom` : `${numPoms} poms`;
-  };
 
   return (
     <Modal

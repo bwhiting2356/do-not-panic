@@ -1,7 +1,6 @@
 import { createSelector } from "reselect";
 import { RootState } from "../../app/store";
 import { Due } from "../../shared/due.type";
-import { Todo } from "../../shared/todo";
 
 const selectTodoState = (state: RootState) => state.todos;
 const selectCurrentState = createSelector(
