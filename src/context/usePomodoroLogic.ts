@@ -91,6 +91,7 @@ export function usePomodoroLogic(
 
   useEffect(() => {
     console.log("calling use effect line 92");
+    console.log("seconds remaining", secondsRemaining);
     document.title = createTimeDisplay(secondsRemaining);
 
     // when the timer hits 0

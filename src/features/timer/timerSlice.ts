@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { POMODORO_WORK_TIME } from "../../shared/constants";
+import { POMODORO_WORK_TIME, SECONDS_PER_MINUTE } from "../../shared/constants";
 import { computeSecondsRemaining } from "../../shared/pomodoro-helpers";
 
 export enum TimerStatus {
@@ -25,7 +25,7 @@ const initialState: TimerState = {
   segments: [],
   targetMinutes: POMODORO_WORK_TIME,
   timerStatus: TimerStatus.Stopped,
-  secondsRemaining: 0,
+  secondsRemaining: POMODORO_WORK_TIME * SECONDS_PER_MINUTE,
 };
 
 export const timerSlice = createSlice({
