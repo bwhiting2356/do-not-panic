@@ -8,6 +8,7 @@ export function RestoreBackupModal() {
   const { setActiveModal, addToast } = useAppContext();
   const handleClose = () => setActiveModal("");
   const [file, setFile] = useState<Blob>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChangeFile = (e: any) => {
     setFile(e.target.files[0]);
   };
@@ -23,6 +24,7 @@ export function RestoreBackupModal() {
           });
           handleClose();
           addToast("Restored from backup successfully");
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           addToast(`Error restoring from backup: ${err?.message}`);
         }
