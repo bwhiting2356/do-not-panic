@@ -43,13 +43,32 @@ const persistConfig = {
   storage,
   version: 6,
 };
-const rootReducer = combineReducers({
+
+const combinedReducer = combineReducers({
   projects: projectsReducer,
   templates: templatesReducer,
   todos: todosReducer,
   settings: settingsReducer,
   timer: timerReducer,
 });
+
+function backupReducer(state: any, action: any) {
+  switch (action.type) {
+    case "RESTORE_FROM_BACKUP": {
+      return {
+        ...action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+}
+
+function rootReducer(state: any, action: any) {
+  const intermediateState = backupReducer(state, action);
+  const finalState = combinedReducer(intermediateState, action);
+  return finalState;
+}
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

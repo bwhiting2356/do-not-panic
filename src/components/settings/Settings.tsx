@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Table } from "react-bootstrap";
+import { Button, ButtonGroup, Table } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { store } from "../../app/store";
+import { useAppContext } from "../../context/context";
 import {
   selectPhoneNumber,
   selectPomodoroBreakTime,
@@ -11,11 +13,13 @@ import {
   editPomodoroBreakTime,
   editPomodoroWorkTime,
 } from "../../features/settings/settingsSlice";
+import { downloadBackupFromState } from "../../shared/util";
 import { TextField } from "../TextField";
 
 function Settings() {
   const dispatch = useAppDispatch();
   const phoneNumber = useAppSelector(selectPhoneNumber);
+  const { setActiveModal } = useAppContext();
   const pomodoroWorkTime = useAppSelector(selectPomodoroWorkTime);
   const pomodoroBreakTime = useAppSelector(selectPomodoroBreakTime);
   const keepEditingIfNoPhoneNumber = () => {
@@ -33,6 +37,10 @@ function Settings() {
 
   const onEditBreakMinutes = (newMinutes: string) => {
     dispatch(editPomodoroBreakTime(newMinutes || "0"));
+  };
+
+  const downloadBackup = () => {
+    downloadBackupFromState(store.getState());
   };
 
   return (
@@ -84,6 +92,14 @@ function Settings() {
           </tr>
         </tbody>
       </Table>
+      <ButtonGroup>
+        <Button variant="info" onClick={() => downloadBackup()}>
+          Download Backup
+        </Button>
+        <Button onClick={() => setActiveModal("restore-backup")}>
+          Restore from backup
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }
