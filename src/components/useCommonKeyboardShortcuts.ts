@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import moment from "moment";
 import { useDispatch } from "react-redux";
 import { store } from "../app/store";
 import { useAppContext } from "../context/context";
-import { createCSVContents, download } from "../shared/util";
+import { downloadBackupFromState } from "../shared/util";
 import { useAppSelector } from "../app/hooks";
 import { selectTimerStatus } from "../features/timer/selectors";
 import {
@@ -30,13 +29,7 @@ export const useCommonKeyboardShortcuts = () => {
 
       // download backups
       if (event.metaKey && event.key === "x") {
-        const state = store.getState();
-        const time = moment().format("MMMM Do YYYY, h:mm:ss a");
-        download(`backup-${time}.json`, JSON.stringify(state));
-        download(
-          `todos-${time}.csv`,
-          createCSVContents(state.todos.currentState.todos)
-        );
+        downloadBackupFromState(store.getState());
       }
 
       if (event.code === "Space" && !editingItemId) {

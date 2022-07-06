@@ -1,4 +1,5 @@
 import json2csv from "json2csv";
+import moment from "moment";
 import {
   SECONDS_PER_MINUTE,
   URL_PREFIX,
@@ -10,6 +11,7 @@ import { Link } from "./link";
 import { Item } from "./item";
 import { Project } from "./project";
 import { Template } from "./template";
+import { RootState } from "../app/store";
 
 export const padUrlWithHttp = (url: string) => {
   if (url.startsWith("http")) return url;
@@ -127,3 +129,12 @@ export const arrayMove = <T>(
 
 // eslint-disable-next-line no-empty-function
 export const noOp = () => {};
+
+export const downloadBackupFromState = (state: RootState) => {
+  const time = moment().format("MMMM Do YYYY, h:mm:ss a");
+  download(`backup-${time}.json`, JSON.stringify(state));
+  const { todos } = state.todos.currentState;
+  if (todos.length) {
+    download(`todos-${time}.csv`, createCSVContents(todos));
+  }
+};
