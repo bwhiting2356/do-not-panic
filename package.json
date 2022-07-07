@@ -48,7 +48,7 @@
     "prettier": "prettier --write src/**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "format:watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}} && eslint {{changed}} --fix ",
-    "ci": "npm install && npm run build"
+    "ci": "yarn install && yarn run build"
   },
   "eslintConfig": {
     "extends": [
