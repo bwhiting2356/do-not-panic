@@ -159,7 +159,9 @@ export function Analytics() {
         </ButtonGroup>
       </ButtonToolbar>
 
-      <div style={{ margin: "auto", width: "600px" }}>{renderChart()}</div>
+      <div style={{ margin: "auto", width: "600px", marginTop: "20px" }}>
+        {renderChart()}
+      </div>
     </div>
   );
 }
