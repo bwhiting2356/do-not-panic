@@ -80,6 +80,7 @@
     "rules": {
       "linebreak-style": "off",
       "array-callback-return": "error",
+      "no-console": "error",
       "no-new": "error",
       "no-negated-condition": "error",
       "no-param-reassign": "error",
