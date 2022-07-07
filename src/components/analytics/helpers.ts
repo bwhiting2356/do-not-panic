@@ -1,26 +1,36 @@
+/* eslint-disable no-console */
 import moment from "moment";
 import { ChartData } from "chart.js";
-import { ID } from "../../../shared/id.type";
-import { Project } from "../../../shared/project";
-import { Todo } from "../../../shared/todo";
-import { convertStringPoms } from "../../../shared/util";
+import { Project } from "../../shared/project";
+import { ID } from "../../shared/id.type";
+import { Todo } from "../../shared/todo";
+import { convertStringPoms, getDay } from "../../shared/util";
 
-export type TimeBucketType = "weekly" | "monthly";
+export enum Period {
+  Weekly = "weekly",
+  Monthly = "monthly",
+}
 
-export interface ProjectModalState {
-  key: TimeBucketType;
+export enum ReportType {
+  PomsPerProject = "PomsPerProject",
+  PomsPerDay = "PomsPerDay",
+}
+
+export interface ProjectAnalyticsState {
+  period: Period;
   currentWeekIndex: number;
   currentMonthIndex: number;
+  report: ReportType;
 }
 
 export const calculateDisabledArrows = (
-  { key, currentMonthIndex, currentWeekIndex }: ProjectModalState,
+  { period, currentMonthIndex, currentWeekIndex }: ProjectAnalyticsState,
   totalWeeks: number,
   totalMonths: number
 ) => {
   let disabledLeft = true;
   let disabledRight = true;
-  if (key === "weekly") {
+  if (period === Period.Weekly) {
     if (currentWeekIndex !== 0) {
       disabledLeft = false;
     }
@@ -43,7 +53,7 @@ const mapProjectIdToTitle = (projects: Project[]) => (projectId: ID) => {
   return projects.find(({ id }) => id === projectId)?.title || "No Project";
 };
 
-export const aggregateChartData = (
+export const aggregatePomsByProjectChartData = (
   todos: Todo[],
   projects: Project[]
 ): ChartData<"pie", number[], string> => {
@@ -69,6 +79,31 @@ export const aggregateChartData = (
       },
     ],
     labels: Object.keys(todoPomsByProject).map(mapProjectIdToTitle(projects)),
+  };
+};
+
+export const aggregatePomsByDayChartData = (
+  todos: Todo[]
+): ChartData<"line", number[], string> => {
+  const todoPomsByDay = todos.reduce((acc, { archivedDate, poms }) => {
+    const day = getDay(archivedDate?.toString() || "") || "No Day";
+    if (acc[day]) {
+      acc[day] += convertStringPoms(poms);
+    } else {
+      acc[day] = convertStringPoms(poms);
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  return {
+    datasets: [
+      {
+        data: Object.values(todoPomsByDay),
+        label: "Poms per day",
+        borderColor: "tomato",
+      },
+    ],
+    labels: Object.keys(todoPomsByDay),
   };
 };
 

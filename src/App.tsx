@@ -14,6 +14,7 @@ import Settings from "./components/settings/Settings";
 import { modalMap } from "./components/modals/modalMap";
 import { useAppContext } from "./context/context";
 import { PomodoroDisplay } from "./components/PomodoroDisplay";
+import { Analytics } from "./components/analytics/Analytics";
 
 export function App() {
   const { activeModal } = useAppContext();
@@ -36,6 +37,7 @@ export function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/analytics" element={<Analytics />} />
             <Route path="/" element={<Todos />} />
           </Routes>
         </div>

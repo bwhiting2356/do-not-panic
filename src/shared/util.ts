@@ -127,6 +127,10 @@ export const arrayMove = <T>(
   return arrayCopy;
 };
 
+export const getDay = (date: string) => {
+  return moment(date).format("MMMM Do");
+};
+
 // eslint-disable-next-line no-empty-function
 export const noOp = () => {};
 
