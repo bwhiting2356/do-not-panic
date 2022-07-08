@@ -14,6 +14,7 @@ import projectsReducer from "../features/projects/projectSlice";
 import templatesReducer from "../features/templates/templateSlice";
 import settingsReducer from "../features/settings/settingsSlice";
 import timerReducer from "../features/timer/timerSlice";
+import analyticsReducer from "../features/analytics/analyticsSlice";
 
 import { initialSettingsState } from "../features/settings/settingsSlice";
 
@@ -50,6 +51,7 @@ const combinedReducer = combineReducers({
   todos: todosReducer,
   settings: settingsReducer,
   timer: timerReducer,
+  analytics: analyticsReducer,
 });
 
 function backupReducer(state: any, action: any) {

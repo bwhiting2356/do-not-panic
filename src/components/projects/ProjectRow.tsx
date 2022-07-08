@@ -1,6 +1,8 @@
 import cn from "classnames";
 import React, { useEffect, useState } from "react";
+import { ColorResult } from "react-color";
 import { ProjectActionsDropdown } from "./ProjectActionsDropdown";
+import { ColorPicker } from "./ColorPicker";
 import { Project } from "../../shared/project";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -63,6 +65,18 @@ export function ProjectRow({ project }: Props) {
     );
   };
 
+  const onEditColor = (newColor: ColorResult) => {
+    dispatch(
+      editProject({
+        id,
+        newProject: {
+          ...project,
+          color: newColor.hex,
+        },
+      })
+    );
+  };
+
   const onRowClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { tagName } = e.target as HTMLElement;
     if (["BUTTON", "A"].includes(tagName) || isEditing) return;
@@ -103,6 +117,9 @@ export function ProjectRow({ project }: Props) {
           onEditText={onEditDescription}
           onSubmit={onToggleEditingId}
         />
+      </td>
+      <td className="color vertical-align">
+        <ColorPicker color={project.color} onEditColor={onEditColor} />
       </td>
       <td className="actions vertical-align">
         <ProjectActionsDropdown

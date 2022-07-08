@@ -12,6 +12,7 @@ export function NavTabs() {
     "/projects": "Projects",
     "/templates": "Templates",
     "/settings": "Settings",
+    "/analytics": "Analytics",
   };
 
   return (

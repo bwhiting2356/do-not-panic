@@ -2,8 +2,8 @@ import React from "react";
 import cn from "classnames";
 import { useNavigate } from "react-router";
 import { Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { TodoRow } from "./TodoRow";
-import { useAppContext } from "../../context/context";
 import { Due } from "../../shared/due.type";
 import { Todo } from "../../shared/todo";
 import { SmallEditIconButton } from "../icon-buttons/SmallEditIconButton";
@@ -16,7 +16,6 @@ type Props = {
 
 export function TodoTable({ todos, due }: Props) {
   const navigate = useNavigate();
-  const { setActiveModal } = useAppContext();
   const navigateToProjects = () => navigate("/projects");
   return (
     <div
@@ -33,9 +32,9 @@ export function TodoTable({ todos, due }: Props) {
             <th className="project">
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                <SmallPieChartIconButton
-                  onClick={() => setActiveModal("project-analytics")}
-                />
+                <Link to="/analytics">
+                  <SmallPieChartIconButton />
+                </Link>
               ) : (
                 <SmallEditIconButton onClick={navigateToProjects} />
               )}

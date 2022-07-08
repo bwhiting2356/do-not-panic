@@ -1,4 +1,3 @@
-import { PieChart } from "react-bootstrap-icons";
 import { ButtonGroup } from "react-bootstrap";
 import React from "react";
 import { ProjectTable } from "./ProjectTable";
@@ -14,12 +13,11 @@ import {
 } from "../../features/projects/selectors";
 import { ArchiveToggleButton } from "../ArchiveToggleButton";
 import { AddIconButton } from "../icon-buttons/AddIconButton";
-import { IconButton } from "../icon-buttons/IconButton";
 
 function Projects() {
   const currentProjects = useAppSelector(selectCurrentProjects);
   const archivedProjects = useAppSelector(selectArchivedProjects);
-  const { setActiveModal, showArchive } = useAppContext();
+  const { showArchive } = useAppContext();
 
   const { addNewProjectAndStartEditing } = useReduxActionsWithContext();
 
@@ -31,11 +29,6 @@ function Projects() {
         <h3 style={{ marginRight: "10px" }}>Current Projects</h3>
         <ButtonGroup>
           <AddIconButton onClick={addNewProjectAndStartEditing} />
-          <IconButton
-            onClick={() => setActiveModal("project-analytics")}
-            variant="outline-primary"
-            Icon={PieChart}
-          />
         </ButtonGroup>
       </div>
       <ProjectTable projects={currentProjects} />
