@@ -4,9 +4,12 @@ import { Item } from "./item";
 export class Project extends Item {
   archivedDate?: Date;
 
+  color?: string;
+
   constructor(
     public title: string = "",
     public description: string = "",
+
     public link: Link = new Link()
   ) {
     super();

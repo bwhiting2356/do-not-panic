@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable no-magic-numbers */
 import json2csv from "json2csv";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import {
   SECONDS_PER_MINUTE,
   URL_PREFIX,
@@ -11,6 +13,7 @@ import { Link } from "./link";
 import { Item } from "./item";
 import { Project } from "./project";
 import { Template } from "./template";
+import { Period } from "./period";
 import { RootState } from "../app/store";
 
 export const padUrlWithHttp = (url: string) => {
@@ -127,15 +130,64 @@ export const arrayMove = <T>(
   return arrayCopy;
 };
 
-export const getDay = (date: string) => {
-  return moment(date).format("MMMM Do");
+const generateAllDaysForWeek = (date: string | Moment) => {
+  const dayOfWeek = moment(date).day();
+  const mondayOfWeek = moment(date).subtract(dayOfWeek - 1, "d");
+  const tuesdayOfWeek = moment(mondayOfWeek).add(1, "d");
+  const wednesdayOfWeek = moment(mondayOfWeek).add(2, "d");
+  const thursdayOfWeek = moment(mondayOfWeek).add(3, "d");
+  const fridayOfWeek = moment(mondayOfWeek).add(4, "d");
+  return [
+    mondayOfWeek,
+    tuesdayOfWeek,
+    wednesdayOfWeek,
+    thursdayOfWeek,
+    fridayOfWeek,
+  ];
+};
+export const MOMENT_FORMAT = "ddd MMMM Do, YY";
+export const formatMomentDay = (m: Moment | string) =>
+  moment(m).format(MOMENT_FORMAT);
+
+const filterOnlyDaysInMonth = (dateList: Moment[], month: number) => {
+  return dateList.filter((date) => {
+    return moment(date).month() === month;
+  });
+};
+
+const generateAllDaysForMonth = (date: string) => {
+  const dayOfMonth = moment(date).date();
+  const firstDayOfMonth = moment(date).subtract(dayOfMonth, "d");
+  const oneWeekAfter = moment(firstDayOfMonth).add(7, "d");
+  const twoWeeksAfter = moment(firstDayOfMonth).add(14, "d");
+  const threeWeeksAfter = moment(firstDayOfMonth).add(21, "d");
+  const fourWeeksAfter = moment(firstDayOfMonth).add(28, "d");
+
+  const allDays = [
+    ...generateAllDaysForWeek(firstDayOfMonth),
+    ...generateAllDaysForWeek(oneWeekAfter),
+    ...generateAllDaysForWeek(twoWeeksAfter),
+    ...generateAllDaysForWeek(threeWeeksAfter),
+    ...generateAllDaysForWeek(fourWeeksAfter),
+  ];
+  return filterOnlyDaysInMonth(allDays, moment(date).month());
+};
+
+export const generateAllDaysForPeriod = (date: string, period: Period) => {
+  if (period === Period.Weekly) {
+    return generateAllDaysForWeek(date).map(formatMomentDay);
+  } else if (period === Period.Monthly) {
+    return generateAllDaysForMonth(date).map(formatMomentDay);
+  } else {
+    return generateAllDaysForMonth(date).map(formatMomentDay);
+  }
 };
 
 // eslint-disable-next-line no-empty-function
 export const noOp = () => {};
 
 export const downloadBackupFromState = (state: RootState) => {
-  const time = moment().format("MMMM Do YYYY, h:mm:ss a");
+  const time = moment().format(`${MOMENT_FORMAT}, h:mm:ss a`);
   download(`backup-${time}.json`, JSON.stringify(state));
   const { todos } = state.todos.currentState;
   if (todos.length) {

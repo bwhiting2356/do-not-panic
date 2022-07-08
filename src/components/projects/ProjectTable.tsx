@@ -13,6 +13,7 @@ export function ProjectTable({ projects }: Props) {
         <tr>
           <th className="title">Title</th>
           <th className="description">Description</th>
+          <th className="color">Color</th>
           <th className="actions">Actions</th>
         </tr>
       </thead>

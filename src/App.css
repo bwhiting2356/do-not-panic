@@ -36,7 +36,12 @@
 }
 
 .description {
-  width: 70%;
+  width: 65%;
+}
+
+.color {
+  width: 5%;
+  text-align: center;
 }
 
 .actions {
