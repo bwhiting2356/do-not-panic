@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
+import { BarChart, PieChart } from "react-bootstrap-icons";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { editReport } from "../../features/analytics/analyticsSlice";
 import { selectReport } from "../../features/analytics/selectors";
@@ -20,6 +21,7 @@ export function ReportButtons() {
         }
         onClick={() => onSetReport(ReportType.PomsPerDay)}
       >
+        <BarChart style={{ marginRight: "10px" }} />
         Poms per day
       </Button>
       <Button
@@ -28,6 +30,7 @@ export function ReportButtons() {
         }
         onClick={() => onSetReport(ReportType.PomsPerProject)}
       >
+        <PieChart style={{ marginRight: "10px" }} />
         Poms per project
       </Button>
     </ButtonGroup>
