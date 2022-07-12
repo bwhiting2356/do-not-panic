@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-magic-numbers */
 import json2csv from "json2csv";
 import moment, { Moment } from "moment";

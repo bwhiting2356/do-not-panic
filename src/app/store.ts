@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import createMigrate from "redux-persist/es/createMigrate";

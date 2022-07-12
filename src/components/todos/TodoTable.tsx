@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-empty-function */
 import React from "react";
 import cn from "classnames";
 import { useNavigate } from "react-router";
