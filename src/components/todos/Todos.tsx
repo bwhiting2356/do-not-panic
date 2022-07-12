@@ -17,13 +17,11 @@ import {
 } from "../../context/context";
 import { Todo } from "../../shared/todo";
 import { IconButton } from "../icon-buttons/IconButton";
-import { ArchiveToggleButton } from "../ArchiveToggleButton";
 
 function Todos() {
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
-  const archivedTodos = useAppSelector(selectArchivedTodos);
-  const { showArchive, setShowAnimation } = useAppContext();
+  const { setShowAnimation } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast } =
     useReduxActionsWithContext();
 

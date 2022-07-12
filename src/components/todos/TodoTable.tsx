@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { Filter } from "react-bootstrap-icons";
 import { TodoRow } from "./TodoRow";
+import { NoTodosPlaceholder } from "./NoTodosPlaceholder";
 import { Due } from "../../shared/due.type";
 import { Todo } from "../../shared/todo";
 import { SmallEditIconButton } from "../icon-buttons/SmallEditIconButton";
@@ -144,6 +145,7 @@ export function TodoTable({ todos, due }: Props) {
           {todos.map((todo) => (
             <TodoRow key={todo.id} todo={todo} />
           ))}
+          {todos.length === 0 && <NoTodosPlaceholder />}
         </tbody>
       </Table>
     </div>
