@@ -66,7 +66,12 @@ export const projectSlice = createSlice({
         projects: newProjects,
       });
     },
-
+    editAllProjects: (state, action: PayloadAction<Project[]>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        projects: action.payload,
+      });
+    },
     redoProjects: redo,
     undoProjects: undo,
   },
@@ -74,6 +79,7 @@ export const projectSlice = createSlice({
 
 export const {
   editProject,
+  editAllProjects,
   undoProjects,
   redoProjects,
   addNewProject,

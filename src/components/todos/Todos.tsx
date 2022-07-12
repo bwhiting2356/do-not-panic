@@ -78,10 +78,6 @@ function Todos() {
       <TodoTable todos={todayTodos} due={Due.Today} />
       <h3>Later</h3>
       <TodoTable todos={laterTodos} due={Due.Later} />
-      <ArchiveToggleButton />
-      {showArchive ? (
-        <TodoTable todos={archivedTodos} due={Due.Archived} />
-      ) : null}
     </div>
   );
 }

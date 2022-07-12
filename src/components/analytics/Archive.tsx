@@ -10,8 +10,11 @@ import {
   selectPomsByProject,
   selectReport,
   selectTimePeriodDescription,
+  selectTodosFilteredInArchive,
 } from "../../features/analytics/selectors";
 import { ReportType } from "../../shared/report-type";
+import { TodoTable } from "../todos/TodoTable";
+import { Due } from "../../shared/due.type";
 
 const stackedChartOptions = {
   responsive: true,
@@ -25,11 +28,12 @@ const stackedChartOptions = {
   },
 };
 
-export function Analytics() {
+export function Archive() {
   const reportType = useAppSelector(selectReport);
   const stackedChartData = useAppSelector(selectPomsByDayChartDataStacked);
   const pieChartData = useAppSelector(selectPomsByProject);
   const timePeriodDescription = useAppSelector(selectTimePeriodDescription);
+  const todosss = useAppSelector(selectTodosFilteredInArchive);
 
   const renderChart = () => {
     if (reportType === ReportType.PomsPerDay) {
@@ -58,6 +62,7 @@ export function Analytics() {
       >
         {renderChart()}
       </div>
+      <TodoTable todos={todosss} due={Due.Archived} />
     </div>
   );
 }

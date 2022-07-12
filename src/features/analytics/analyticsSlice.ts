@@ -15,6 +15,7 @@ interface AnalyticsState {
   currentMonthIndex: number;
   currentQuarterIndex: number;
   report: ReportType;
+  filteredProjects: string[];
 }
 
 export type AnalyticsStateWithHistory = StateWithHistory<AnalyticsState>;
@@ -25,6 +26,7 @@ const initialCurrentState: AnalyticsState = {
   currentMonthIndex: 0,
   currentQuarterIndex: 0,
   report: ReportType.PomsPerProject,
+  filteredProjects: [],
 };
 
 const initialState: AnalyticsStateWithHistory = {
@@ -69,6 +71,12 @@ export const analyticsSlice = createSlice({
         currentQuarterIndex: action.payload,
       });
     },
+    editFilteredProjects: (state, action: PayloadAction<string[]>) => {
+      return addNewStateGoingForward(state, {
+        ...state.currentState,
+        filteredProjects: action.payload,
+      });
+    },
   },
 });
 
@@ -80,5 +88,6 @@ export const {
   editCurrentWeekIndex,
   editCurrentMonthIndex,
   editCurrentQuarterIndex,
+  editFilteredProjects,
 } = analyticsSlice.actions;
 export default analyticsSlice.reducer;
