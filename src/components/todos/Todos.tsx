@@ -6,7 +6,6 @@ import { useTodosKeyboardShortcuts } from "./useTodosKeyboardShortcuts";
 import { TemplateButtons } from "./todo-template-dropdown/TemplateButtons";
 import { useAppSelector } from "../../app/hooks";
 import {
-  selectArchivedTodos,
   selectTodosDueLater,
   selectTodosDueToday,
 } from "../../features/todos/selectors";
