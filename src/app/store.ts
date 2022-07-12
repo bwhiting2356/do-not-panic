@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import createMigrate from "redux-persist/es/createMigrate";
@@ -42,7 +43,7 @@ const persistConfig = {
   key: "root",
   migrate: createMigrate(migrations, { debug: false }),
   storage,
-  version: 6,
+  version: 7,
 };
 
 const combinedReducer = combineReducers({

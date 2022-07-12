@@ -497,13 +497,23 @@ export const selectPomsByProject = createSelector(
   }
 );
 
+const sortTodosByDateDescending = (a: Todo, b: Todo) => {
+  const aDate = new Date(a.archivedDate as Date);
+  const bDate = new Date(b.archivedDate as Date);
+  if (aDate === bDate) return 0;
+  if (aDate < bDate) return 1;
+  if (aDate > bDate) return -1;
+  return 0;
+};
+
 export const selectTodosFilteredInArchive = createSelector(
   [selectCurrentTodoBucket, selectProjectsFilteredInArchive],
   (currentTodoBucket, projectIds) => {
-    return (
+    const filteredArchivedTodos =
       currentTodoBucket?.todos.filter((todo) =>
         projectIds.includes(todo.projectId)
-      ) || []
-    );
+      ) || [];
+    filteredArchivedTodos.sort(sortTodosByDateDescending);
+    return filteredArchivedTodos;
   }
 );

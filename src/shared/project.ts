@@ -6,7 +6,7 @@ export class Project extends Item {
 
   color?: string;
 
-  includeInArchiveFilter?: boolean;
+  includeInArchiveFilter?: boolean = true;
 
   constructor(
     public title: string = "",

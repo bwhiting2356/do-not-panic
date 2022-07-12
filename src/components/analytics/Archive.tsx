@@ -33,7 +33,7 @@ export function Archive() {
   const stackedChartData = useAppSelector(selectPomsByDayChartDataStacked);
   const pieChartData = useAppSelector(selectPomsByProject);
   const timePeriodDescription = useAppSelector(selectTimePeriodDescription);
-  const todosss = useAppSelector(selectTodosFilteredInArchive);
+  const filteredArchivedTodos = useAppSelector(selectTodosFilteredInArchive);
 
   const renderChart = () => {
     if (reportType === ReportType.PomsPerDay) {
@@ -62,7 +62,7 @@ export function Archive() {
       >
         {renderChart()}
       </div>
-      <TodoTable todos={todosss} due={Due.Archived} />
+      <TodoTable todos={filteredArchivedTodos} due={Due.Archived} />
     </div>
   );
 }
