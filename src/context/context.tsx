@@ -40,8 +40,6 @@ export interface AppContextInterface {
   selectedItemId: ID;
   setEditingItemId: (id: ID) => void;
   setSelectedItemId: (id: ID) => void;
-  showArchive: boolean;
-  setShowArchive: (show: boolean) => void;
   activeModal: ModalKeys;
   setActiveModal: (modal: ModalKeys) => void;
 
@@ -58,8 +56,6 @@ const AppCtx = createContext<CombinedContext>({
   selectedItemId: "",
   setEditingItemId: noOp,
   setSelectedItemId: noOp,
-  showArchive: false,
-  setShowArchive: noOp,
   activeModal: "",
   setActiveModal: noOp,
   toasts: [],
@@ -78,7 +74,6 @@ export const useAppContextState = (
 ): CombinedContext => {
   const [editingItemId, setEditingItemId] = useState("");
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [showArchive, setShowArchive] = useState(false);
 
   const [activeModal, setActiveModal] = useState<ModalKeys>("");
 
@@ -96,8 +91,6 @@ export const useAppContextState = (
     setEditingItemId,
     selectedItemId,
     setSelectedItemId,
-    showArchive,
-    setShowArchive,
     activeModal,
     setActiveModal,
     showAnimation,

@@ -17,3 +17,12 @@ export const selectArchivedProjects = createSelector(
   selectProjects,
   (projects) => projects.filter((project) => Boolean(project.archivedDate))
 );
+
+export const selectProjectsFilteredInArchive = createSelector(
+  [selectProjects],
+  (projects) => {
+    return projects
+      .filter((project) => project.includeInArchiveFilter)
+      .map((project) => project.id);
+  }
+);

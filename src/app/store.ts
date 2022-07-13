@@ -42,7 +42,7 @@ const persistConfig = {
   key: "root",
   migrate: createMigrate(migrations, { debug: false }),
   storage,
-  version: 6,
+  version: 7,
 };
 
 const combinedReducer = combineReducers({

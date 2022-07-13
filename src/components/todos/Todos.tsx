@@ -6,7 +6,6 @@ import { useTodosKeyboardShortcuts } from "./useTodosKeyboardShortcuts";
 import { TemplateButtons } from "./todo-template-dropdown/TemplateButtons";
 import { useAppSelector } from "../../app/hooks";
 import {
-  selectArchivedTodos,
   selectTodosDueLater,
   selectTodosDueToday,
 } from "../../features/todos/selectors";
@@ -17,13 +16,11 @@ import {
 } from "../../context/context";
 import { Todo } from "../../shared/todo";
 import { IconButton } from "../icon-buttons/IconButton";
-import { ArchiveToggleButton } from "../ArchiveToggleButton";
 
 function Todos() {
   const todayTodos = useAppSelector(selectTodosDueToday);
   const laterTodos = useAppSelector(selectTodosDueLater);
-  const archivedTodos = useAppSelector(selectArchivedTodos);
-  const { showArchive, setShowAnimation } = useAppContext();
+  const { setShowAnimation } = useAppContext();
   const { sortTodosWithToast, onArchiveAllCompletedTodosWithToast } =
     useReduxActionsWithContext();
 
@@ -78,10 +75,6 @@ function Todos() {
       <TodoTable todos={todayTodos} due={Due.Today} />
       <h3>Later</h3>
       <TodoTable todos={laterTodos} due={Due.Later} />
-      <ArchiveToggleButton />
-      {showArchive ? (
-        <TodoTable todos={archivedTodos} due={Due.Archived} />
-      ) : null}
     </div>
   );
 }

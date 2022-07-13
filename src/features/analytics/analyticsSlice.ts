@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Period } from "../../shared/period";
 import { ReportType } from "../../shared/report-type";

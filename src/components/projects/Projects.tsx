@@ -3,21 +3,16 @@ import React from "react";
 import { ProjectTable } from "./ProjectTable";
 import { useProjectsKeyboardShortcuts } from "./useProjectsKeyboardShortcuts";
 import { useAppSelector } from "../../app/hooks";
-import {
-  useAppContext,
-  useReduxActionsWithContext,
-} from "../../context/context";
+import { useReduxActionsWithContext } from "../../context/context";
 import {
   selectArchivedProjects,
   selectCurrentProjects,
 } from "../../features/projects/selectors";
-import { ArchiveToggleButton } from "../ArchiveToggleButton";
 import { AddIconButton } from "../icon-buttons/AddIconButton";
 
 function Projects() {
   const currentProjects = useAppSelector(selectCurrentProjects);
   const archivedProjects = useAppSelector(selectArchivedProjects);
-  const { showArchive } = useAppContext();
 
   const { addNewProjectAndStartEditing } = useReduxActionsWithContext();
 
@@ -32,8 +27,8 @@ function Projects() {
         </ButtonGroup>
       </div>
       <ProjectTable projects={currentProjects} />
-      <ArchiveToggleButton />
-      {showArchive && <ProjectTable projects={archivedProjects} />}
+      <h3 style={{ marginRight: "10px" }}>Archived Projects</h3>
+      <ProjectTable projects={archivedProjects} />
     </div>
   );
 }

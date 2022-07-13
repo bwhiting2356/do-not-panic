@@ -1,13 +1,27 @@
 import React from "react";
 import cn from "classnames";
 import { useNavigate } from "react-router";
-import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  ButtonGroup,
+  Form,
+  OverlayTrigger,
+  Popover,
+  Table,
+} from "react-bootstrap";
+import { Filter } from "react-bootstrap-icons";
 import { TodoRow } from "./TodoRow";
+import { NoTodosPlaceholder } from "./NoTodosPlaceholder";
 import { Due } from "../../shared/due.type";
 import { Todo } from "../../shared/todo";
 import { SmallEditIconButton } from "../icon-buttons/SmallEditIconButton";
-import { SmallPieChartIconButton } from "../icon-buttons/SmallPieChartIconButton";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectProjects } from "../../features/projects/selectors";
+import {
+  editAllProjects,
+  editProject,
+} from "../../features/projects/projectSlice";
+import { Project } from "../../shared/project";
 
 type Props = {
   todos: Todo[];
@@ -15,8 +29,77 @@ type Props = {
 };
 
 export function TodoTable({ todos, due }: Props) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const navigateToProjects = () => navigate("/projects");
+  const projects = useAppSelector(selectProjects);
+
+  const onSelectAll = () => {
+    const newProjects = projects.map((project) => ({
+      ...project,
+      includeInArchiveFilter: true,
+    }));
+    dispatch(editAllProjects(newProjects));
+  };
+  const onSelectNone = () => {
+    const newProjects = projects.map((project) => ({
+      ...project,
+      includeInArchiveFilter: false,
+    }));
+    dispatch(editAllProjects(newProjects));
+  };
+
+  const onChangeProjectChecked = (projectId: string, checked: boolean) => {
+    const project = projects.find((p) => p.id === projectId) as Project;
+    dispatch(
+      editProject({
+        id: projectId,
+        newProject: {
+          ...project,
+          includeInArchiveFilter: checked,
+        },
+      })
+    );
+  };
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Filter by project</Popover.Header>
+
+      <Popover.Body>
+        <Form>
+          <ButtonGroup style={{ width: "100%", marginBottom: "10px" }}>
+            <Button
+              size="sm"
+              style={{ width: "50%" }}
+              variant="outline-primary"
+              onClick={onSelectAll}
+            >
+              Select All
+            </Button>
+            <Button
+              size="sm"
+              style={{ width: "50%" }}
+              variant="outline-primary"
+              onClick={onSelectNone}
+            >
+              Select None
+            </Button>
+          </ButtonGroup>
+          {projects.map(({ id, title, includeInArchiveFilter }) => (
+            <Form.Check
+              key={id}
+              type="checkbox"
+              id="custom-switch"
+              checked={includeInArchiveFilter}
+              label={title || "No Project"}
+              onChange={(e) => onChangeProjectChecked(id, e.target.checked)}
+            />
+          ))}
+        </Form>
+      </Popover.Body>
+    </Popover>
+  );
+
   return (
     <div
       className={cn({ "main-todos": due !== Due.Archived })}
@@ -29,12 +112,24 @@ export function TodoTable({ todos, due }: Props) {
             <th className="name">Name</th>
             <th className="poms">Exp.</th>
             <th className="poms">Cpl.</th>
-            <th className="project">
+            <th className="project" style={{ position: "relative" }}>
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (
-                <Link to="/analytics">
-                  <SmallPieChartIconButton />
-                </Link>
+                <div
+                  style={{ position: "absolute", right: "5px", top: "-2px" }}
+                >
+                  <ButtonGroup></ButtonGroup>
+                  <OverlayTrigger
+                    trigger="click"
+                    placement="top"
+                    overlay={popover}
+                    rootClose
+                  >
+                    <Button size="sm">
+                      <Filter />
+                    </Button>
+                  </OverlayTrigger>{" "}
+                </div>
               ) : (
                 <SmallEditIconButton onClick={navigateToProjects} />
               )}
@@ -47,6 +142,7 @@ export function TodoTable({ todos, due }: Props) {
           {todos.map((todo) => (
             <TodoRow key={todo.id} todo={todo} />
           ))}
+          {todos.length === 0 && <NoTodosPlaceholder />}
         </tbody>
       </Table>
     </div>

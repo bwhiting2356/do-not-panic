@@ -5,7 +5,10 @@ import { RootState } from "../../app/store";
 import { Period } from "../../shared/period";
 import { Todo } from "../../shared/todo";
 import { convertStringPoms, formatMomentDay } from "../../shared/util";
-import { selectProjects } from "../projects/selectors";
+import {
+  selectProjects,
+  selectProjectsFilteredInArchive,
+} from "../projects/selectors";
 import { selectArchivedTodos } from "../todos/selectors";
 
 const selectAnalyticsState = (state: RootState) => state.analytics.currentState;
@@ -491,5 +494,26 @@ export const selectPomsByProject = createSelector(
       ],
       labels,
     };
+  }
+);
+
+const sortTodosByDateDescending = (a: Todo, b: Todo) => {
+  const aDate = new Date(a.archivedDate as Date);
+  const bDate = new Date(b.archivedDate as Date);
+  if (aDate === bDate) return 0;
+  if (aDate < bDate) return 1;
+  if (aDate > bDate) return -1;
+  return 0;
+};
+
+export const selectTodosFilteredInArchive = createSelector(
+  [selectCurrentTodoBucket, selectProjectsFilteredInArchive],
+  (currentTodoBucket, projectIds) => {
+    const filteredArchivedTodos =
+      currentTodoBucket?.todos.filter((todo) =>
+        projectIds.includes(todo.projectId)
+      ) || [];
+    filteredArchivedTodos.sort(sortTodosByDateDescending);
+    return filteredArchivedTodos;
   }
 );
