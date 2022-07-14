@@ -110,8 +110,7 @@ export function TodoTable({ todos, due }: Props) {
           <tr>
             <th className="done">{due === Due.Archived ? "Date" : "Do"}</th>
             <th className="name">Name</th>
-            <th className="poms">Exp.</th>
-            <th className="poms">Cpl.</th>
+            <th className="poms">Poms</th>
             <th className="project" style={{ position: "relative" }}>
               <span style={{ marginRight: "10px" }}>Project</span>
               {due === Due.Archived ? (

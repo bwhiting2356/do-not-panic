@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import { Form } from "react-bootstrap";
-import { padUrlWithHttp, truncateUrl } from "../shared/util";
+import { cleanUrl, truncateUrl } from "../shared/util";
 
 type Props = {
   url: string;
@@ -33,8 +33,13 @@ export function Link({
 
   const submit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onEditLink(padUrlWithHttp(newUrl));
+    onEditLink(cleanUrl(newUrl));
     onSubmit();
+  };
+
+  const onBlur: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    onEditLink(cleanUrl(newUrl));
   };
 
   if (!editing) {
@@ -50,7 +55,7 @@ export function Link({
   }
 
   return (
-    <Form onSubmit={submit}>
+    <Form onSubmit={submit} onBlur={onBlur}>
       <Form.Control
         type="text"
         value={newUrl}

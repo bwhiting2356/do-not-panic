@@ -31,7 +31,7 @@ import { ID } from "../shared/id.type";
 import { Project } from "../shared/project";
 import { Template, buildTodoFromTemplate } from "../shared/template";
 import { Todo } from "../shared/todo";
-import { noOp } from "../shared/util";
+import { duplicateTodo, noOp } from "../shared/util";
 import { ToastData } from "../shared/toastData";
 import { ModalKeys } from "../components/modals/modalMap";
 
@@ -178,6 +178,21 @@ export const useReduxActionsWithContext = () => {
     setSelectedItemId("");
   };
 
+  const duplicateTodoWithToast = (todo: Todo) => {
+    const duplicatedTodo = duplicateTodo(todo);
+    dispatch(addNewTodo(duplicatedTodo));
+    addToast(`${todo.name} duplicated`);
+    setSelectedItemId(duplicatedTodo.id);
+    setEditingItemId(duplicatedTodo.id);
+
+    setTimeout(() => {
+      const field = document.getElementsByClassName(
+        "name-text-field"
+      )[0] as HTMLInputElement;
+      field?.focus();
+    }, 1);
+  };
+
   const moveTodoWithToast = (todo: Todo, newDue: Due) => {
     dispatch(
       editTodo({
@@ -278,6 +293,7 @@ export const useReduxActionsWithContext = () => {
     sortTodosWithToast,
     onArchiveAllCompletedTodosWithToast,
     deleteTodoWithToast,
+    duplicateTodoWithToast,
     archiveTodoWithToast,
     moveTodoWithToast,
     addTodoFromTemplateWithToast,
