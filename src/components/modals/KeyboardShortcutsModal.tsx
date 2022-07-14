@@ -55,6 +55,11 @@ const KeyboardShortcutsTable = () => (
           <td>Delete todo</td>
         </tr>
         <tr>
+          <td>u</td>
+          <td>While todo row is selected</td>
+          <td>Duplicate todo</td>
+        </tr>
+        <tr>
           <td>e</td>
           <td>While todo/project row is selected</td>
           <td>Edit todo</td>
