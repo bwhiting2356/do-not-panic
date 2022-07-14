@@ -29,6 +29,7 @@ export const useTodosKeyboardShortcuts = () => {
     moveTodoWithToast,
     archiveTodoWithToast,
     deleteTodoWithToast,
+    duplicateTodoWithToast,
     redoTodosWithToast,
     undoTodosWithToast,
   } = useReduxActionsWithContext();
@@ -83,6 +84,9 @@ export const useTodosKeyboardShortcuts = () => {
           archiveTodoWithToast(todo);
         } else if (event.key === "d") {
           deleteTodoWithToast(todo);
+        } else if (event.key === "u") {
+          duplicateTodoWithToast(todo);
+          event.preventDefault();
         } else if (event.key === "e") {
           setEditingItemId(todo.id);
           event.preventDefault();

@@ -107,18 +107,6 @@ export function TodoRow({ todo }: Props) {
     );
   };
 
-  const onEditCompletedPoms = (newPoms: string) => {
-    dispatch(
-      editTodo({
-        id,
-        newTodo: {
-          ...todo,
-          completedPoms: newPoms,
-        },
-      })
-    );
-  };
-
   const focusLink = () => linkRef?.current?.focus();
 
   const onEditProject = (newProjectId: ID) => {
