@@ -12,6 +12,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type?: ElementType<any>;
   placeholder?: string;
+  className?: string;
 };
 
 export function TextField({
@@ -23,6 +24,7 @@ export function TextField({
   autoFocus = false,
   type,
   placeholder = "",
+  className,
 }: Props) {
   const submit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ export function TextField({
     return (
       <Form onSubmit={submit}>
         <Form.Control
+          bsPrefix={`form-control ${className || ""}`}
           autoFocus={autoFocus}
           as={type}
           value={text}
@@ -54,6 +57,7 @@ export function TextField({
   return (
     <Form onSubmit={submit}>
       <Form.Control
+        bsPrefix={`form-control ${className}`}
         autoFocus={autoFocus}
         value={text}
         onChange={(e) => onEditText(e.target.value)}

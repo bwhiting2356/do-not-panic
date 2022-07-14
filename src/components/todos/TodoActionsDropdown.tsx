@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { Archive, Calendar, Pencil, Sun, Trash } from "react-bootstrap-icons";
+import {
+  Archive,
+  Calendar,
+  Pencil,
+  Sun,
+  Trash,
+  Clipboard,
+} from "react-bootstrap-icons";
 import { Todo } from "../../shared/todo";
 import { Due } from "../../shared/due.type";
 import { HoverDropdown } from "../HoverDropdown";
@@ -11,6 +18,7 @@ type Props = {
   onEditTodoDue: (due: Due) => void;
   onArchiveTodo: () => void;
   onDeleteTodo: () => void;
+  onDuplicateTodo: () => void;
   onToggleEditing: () => void;
 };
 
@@ -20,6 +28,7 @@ export function TodoActionsDropdown({
   onEditTodoDue,
   onArchiveTodo,
   onDeleteTodo,
+  onDuplicateTodo,
   onToggleEditing,
 }: Props) {
   const [show, setShow] = useState(false);
@@ -61,6 +70,18 @@ export function TodoActionsDropdown({
           <Pencil />
         </span>
         {isEditing ? "Stop editing" : "Edit"}
+      </Dropdown.Item>
+      <Dropdown.Item
+        eventKey="1"
+        onClick={() => {
+          onDuplicateTodo();
+          setShow(false);
+        }}
+      >
+        <span style={{ marginRight: "10px" }}>
+          <Clipboard />
+        </span>
+        Duplicate
       </Dropdown.Item>
       <Dropdown.Item eventKey="1" onClick={onDeleteTodo}>
         <span style={{ marginRight: "10px" }}>

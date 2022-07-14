@@ -15,9 +15,10 @@ import { Template } from "./template";
 import { Period } from "./period";
 import { RootState } from "../app/store";
 
-export const padUrlWithHttp = (url: string) => {
-  if (url.startsWith("http")) return url;
-  return `${URL_PREFIX}${url}`;
+export const cleanUrl = (url: string) => {
+  const trimmedUrl = url.trim();
+  if (url.startsWith("http")) return trimmedUrl;
+  return `${URL_PREFIX}${trimmedUrl}`;
 };
 
 export const padZeros = (str: string | number) => {
@@ -192,4 +193,8 @@ export const downloadBackupFromState = (state: RootState) => {
   if (todos.length) {
     download(`todos-${time}.csv`, createCSVContents(todos));
   }
+};
+
+export const duplicateTodo = (todo: Todo) => {
+  return new Todo(todo.poms, todo.name, todo.links, todo.projectId);
 };

@@ -46,20 +46,14 @@ export function TodoRow({ todo }: Props) {
   } = useAppContext();
   const activeTodoId = useAppSelector(selectActiveTodoId);
 
-  const { deleteTodoWithToast, archiveTodoWithToast, moveTodoWithToast } =
-    useReduxActionsWithContext();
-
   const {
-    id,
-    done,
-    name,
-    poms,
-    completedPoms,
-    links,
-    projectId,
-    archivedDate,
-    due,
-  } = todo;
+    deleteTodoWithToast,
+    duplicateTodoWithToast,
+    archiveTodoWithToast,
+    moveTodoWithToast,
+  } = useReduxActionsWithContext();
+
+  const { id, done, name, poms, links, projectId, archivedDate, due } = todo;
   const isSelected = id === selectedItemId;
   const isActive = id === activeTodoId;
 
@@ -144,6 +138,7 @@ export function TodoRow({ todo }: Props) {
 
   const onDeleteTodo = () => deleteTodoWithToast(todo);
   const onArchiveTodo = () => archiveTodoWithToast(todo);
+  const onDuplicateTodo = () => duplicateTodoWithToast(todo);
 
   const isEditing = editingItemId === id;
 
@@ -217,6 +212,7 @@ export function TodoRow({ todo }: Props) {
       </td>
       <td className="name vertical-align">
         <TextField
+          className="name-text-field"
           autoFocus={true}
           editing={isEditing}
           text={name}
@@ -229,14 +225,6 @@ export function TodoRow({ todo }: Props) {
           editing={isEditing}
           text={poms}
           onEditText={onEditPoms}
-          onSubmit={onToggleEditingTodoId}
-        />
-      </td>
-      <td className="poms vertical-align">
-        <TextField
-          editing={isEditing}
-          text={completedPoms || ""}
-          onEditText={onEditCompletedPoms}
           onSubmit={onToggleEditingTodoId}
         />
       </td>
@@ -272,6 +260,7 @@ export function TodoRow({ todo }: Props) {
           onDeleteTodo={onDeleteTodo}
           onArchiveTodo={onArchiveTodo}
           onToggleEditing={onToggleEditingTodoId}
+          onDuplicateTodo={onDuplicateTodo}
         />
       </td>
     </tr>
