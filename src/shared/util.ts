@@ -17,7 +17,7 @@ import { RootState } from "../app/store";
 
 export const cleanUrl = (url: string) => {
   const trimmedUrl = url.trim();
-  if (url.startsWith("http")) return trimmedUrl;
+  if (trimmedUrl.startsWith("http")) return trimmedUrl;
   return `${URL_PREFIX}${trimmedUrl}`;
 };
 
@@ -130,7 +130,7 @@ export const arrayMove = <T>(
   return arrayCopy;
 };
 
-const generateAllDaysForWeek = (date: string | Moment) => {
+export const generateAllDaysForWeek = (date: string | Moment) => {
   const dayOfWeek = moment(date).day();
   const mondayOfWeek = moment(date).subtract(dayOfWeek - 1, "d");
   const tuesdayOfWeek = moment(mondayOfWeek).add(1, "d");
