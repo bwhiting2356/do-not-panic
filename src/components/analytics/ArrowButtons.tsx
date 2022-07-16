@@ -8,7 +8,7 @@ import {
   editCurrentWeekIndex,
 } from "../../features/analytics/analyticsSlice";
 import {
-  selectCurrenQuarterIndex,
+  selectCurrentQuarterIndex,
   selectCurrentMonthIndex,
   selectCurrentWeekIndex,
   selectDisabledArrows,
@@ -20,7 +20,7 @@ export function ArrowButtons() {
   const period = useAppSelector(selectPeriod);
   const currentWeekIndex = useAppSelector(selectCurrentWeekIndex);
   const currentMonthIndex = useAppSelector(selectCurrentMonthIndex);
-  const currentQuarterIndex = useAppSelector(selectCurrenQuarterIndex);
+  const currentQuarterIndex = useAppSelector(selectCurrentQuarterIndex);
   const { disabledLeft, disabledRight } = useAppSelector(selectDisabledArrows);
   const dispatch = useAppDispatch();
 

@@ -28,34 +28,25 @@ export const selectCurrentMonthIndex = createSelector(
   (state) => state.currentMonthIndex
 );
 
-export const selectCurrenQuarterIndex = createSelector(
+export const selectCurrentQuarterIndex = createSelector(
   [selectAnalyticsState],
   (state) => state.currentQuarterIndex
 );
 
+export const selectCurrentIndexes = createSelector(
+  [selectCurrentWeekIndex, selectCurrentMonthIndex, selectCurrentQuarterIndex],
+  (currentWeekIndex, currentMonthIndex, currentQuarterIndex) => {
+    return {
+      [Period.Weekly]: currentWeekIndex,
+      [Period.Monthly]: currentMonthIndex,
+      [Period.Quarterly]: currentQuarterIndex,
+    };
+  }
+);
 export const selectReport = createSelector(
   [selectAnalyticsState],
   (state) => state.report
 );
-
-const groupTodosByTimeBucket = (
-  todos: Todo[],
-  timeFunc: (d: Date) => string
-) => {
-  return todos.reduce((acc, curr) => {
-    const { archivedDate } = curr;
-    if (archivedDate) {
-      const timeKey = timeFunc(archivedDate);
-      if (acc[timeKey]) {
-        acc[timeKey].push(curr);
-      } else {
-        acc[timeKey] = [curr];
-      }
-    }
-
-    return acc;
-  }, {} as Record<string, Todo[]>);
-};
 
 export const weekDisplay = (date: Date) => {
   const momentObj = moment(date);
@@ -65,14 +56,14 @@ export const weekDisplay = (date: Date) => {
   return `${weekStart} - ${weekEnd} ${year}`;
 };
 
-const monthDisplay = (date: Date) => {
+export const monthDisplay = (date: Date) => {
   const momentObj = moment(date);
   const year = momentObj.year();
   const month = momentObj.format("MMM");
   return `${month} ${year}`;
 };
 
-const quarterDisplay = (date: Date) => {
+export const quarterDisplay = (date: Date) => {
   const momentObj = moment(date);
   const monthInt = momentObj.format("MM");
   const year = momentObj.format("YYYY");
@@ -99,7 +90,33 @@ const quarterDisplay = (date: Date) => {
   }
 };
 
-const mapBucketObjToList = (bucket: Record<string, Todo[]>) => {
+export const groupArchivedTodosByTimeBucket = (
+  todos: Todo[],
+  timeFunc: (d: Date) => string
+) => {
+  return todos.reduce((acc, curr) => {
+    const { archivedDate } = curr;
+    if (archivedDate) {
+      const timeKey = timeFunc(archivedDate);
+      if (acc[timeKey]) {
+        acc[timeKey].push(curr);
+      } else {
+        acc[timeKey] = [curr];
+      }
+    }
+
+    return acc;
+  }, {} as Record<string, Todo[]>);
+};
+
+export interface TimeDisplayBucketPair {
+  timeDisplay: string;
+  todos: Todo[];
+}
+
+const mapBucketObjToList = (
+  bucket: Record<string, Todo[]>
+): TimeDisplayBucketPair[] => {
   return Object.keys(bucket).map((timeDisplay) => ({
     timeDisplay,
     todos: bucket[timeDisplay],
@@ -111,7 +128,7 @@ interface TimeBucketGroup {
   todos: Todo[];
 }
 
-const sortBucketsByDate = (a: TimeBucketGroup, b: TimeBucketGroup) => {
+export const sortBucketsByDate = (a: TimeBucketGroup, b: TimeBucketGroup) => {
   const aDate = new Date(a.todos[0].archivedDate as Date);
   const bDate = new Date(b.todos[0].archivedDate as Date);
   if (aDate === bDate) return 0;
@@ -120,62 +137,57 @@ const sortBucketsByDate = (a: TimeBucketGroup, b: TimeBucketGroup) => {
   return 0;
 };
 
+export interface GroupedTodos {
+  weekly: TimeDisplayBucketPair[];
+  monthly: TimeDisplayBucketPair[];
+  quarterly: TimeDisplayBucketPair[];
+}
+
 export const selectGroupedTodosByTimeBuckets = createSelector(
   [selectArchivedTodos],
   (todos) => {
-    const monthlyBuckets = groupTodosByTimeBucket(todos, monthDisplay);
-    const weeklyBuckets = groupTodosByTimeBucket(todos, weekDisplay);
-    const quarterlyBuckets = groupTodosByTimeBucket(todos, quarterDisplay);
+    const monthlyBuckets = groupArchivedTodosByTimeBucket(todos, monthDisplay);
+    const weeklyBuckets = groupArchivedTodosByTimeBucket(todos, weekDisplay);
+    const quarterlyBuckets = groupArchivedTodosByTimeBucket(
+      todos,
+      quarterDisplay
+    );
 
-    return {
+    const result: GroupedTodos = {
       monthly: mapBucketObjToList(monthlyBuckets).sort(sortBucketsByDate),
       weekly: mapBucketObjToList(weeklyBuckets).sort(sortBucketsByDate),
       quarterly: mapBucketObjToList(quarterlyBuckets).sort(sortBucketsByDate),
     };
+
+    return result;
+  }
+);
+
+export const selectCurrentIndexForPeriod = createSelector(
+  [selectCurrentIndexes, selectPeriod],
+  (currentIndexes, period) => {
+    return currentIndexes[period];
+  }
+);
+
+export const selectTotalBucketsForPeriod = createSelector(
+  [selectGroupedTodosByTimeBuckets, selectPeriod],
+  (groupedTodos, period) => {
+    return groupedTodos[period].length;
   }
 );
 
 export const selectDisabledArrows = createSelector(
-  [
-    selectPeriod,
-    selectCurrentWeekIndex,
-    selectCurrentMonthIndex,
-    selectCurrenQuarterIndex,
-    selectGroupedTodosByTimeBuckets,
-  ],
-  (
-    period,
-    currentWeekIndex,
-    currentMonthIndex,
-    currentQuarterIndex,
-    groupedTodos
-  ) => {
-    const totalWeeks = groupedTodos.weekly.length;
-    const totalMonths = groupedTodos.monthly.length;
-    const totalQuarters = groupedTodos.quarterly.length;
-    let disabledLeft = true;
-    let disabledRight = true;
-    if (period === Period.Weekly) {
-      if (currentWeekIndex !== 0) {
-        disabledLeft = false;
-      }
-      if (currentWeekIndex !== totalWeeks - 1) {
-        disabledRight = false;
-      }
-    } else if (period === Period.Monthly) {
-      if (currentMonthIndex !== 0) {
-        disabledLeft = false;
-      }
-      if (currentMonthIndex !== totalMonths - 1) {
-        disabledRight = false;
-      }
-    } else {
-      if (currentQuarterIndex !== 0) {
-        disabledLeft = false;
-      }
-      if (currentQuarterIndex !== totalQuarters - 1) {
-        disabledRight = false;
-      }
+  [selectCurrentIndexForPeriod, selectTotalBucketsForPeriod],
+  (indexForPeriod, totalBucketsForPeriod) => {
+    let disabledLeft = false;
+    let disabledRight = false;
+    if (indexForPeriod === 0) {
+      disabledLeft = true;
+    }
+
+    if (indexForPeriod === totalBucketsForPeriod - 1) {
+      disabledRight = true;
     }
 
     return { disabledLeft, disabledRight };
@@ -217,7 +229,7 @@ export const selectCurrentTodoBucket = createSelector(
     selectGroupedTodosByTimeBuckets,
     selectCurrentWeekIndex,
     selectCurrentMonthIndex,
-    selectCurrenQuarterIndex,
+    selectCurrentQuarterIndex,
   ],
   (
     period,
@@ -381,6 +393,8 @@ export const selectAllDaysForPeriod = createSelector(
   (period, currentTodoBucket) => {
     const date = currentTodoBucket?.todos[0].archivedDate || new Date();
     if (period === Period.Weekly) {
+      // eslint-disable-next-line no-warning-comments
+      // TODO: this seems redundant with the function above
       return generateAllDaysForWeek(date).map(formatMomentDay);
     } else if (period === Period.Monthly) {
       return generateAllDaysForMonth(date).map(formatMomentDay);
