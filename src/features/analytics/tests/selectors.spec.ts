@@ -25,7 +25,7 @@ import {
 const july11th = new Date("2022-07-11T00:31:37.000Z");
 const july12th = new Date("2022-07-12T00:31:37.000Z");
 const july18th = new Date("2022-07-18T00:31:37.000Z");
-const july19th = new Date("2022-07-18T00:31:37.000Z");
+const july19th = new Date("2022-07-19T00:31:37.000Z");
 
 describe("selectors", () => {
   describe("selectPeriod", () => {
