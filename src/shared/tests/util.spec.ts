@@ -15,7 +15,6 @@ import {
   sortTodos,
   convertMinutesToHours,
   getItemIdInfoForArrowSelection,
-  download,
   createCSVContents,
   canDeleteProject,
   arrayMove,

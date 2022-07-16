@@ -8,7 +8,7 @@ import {
   undo,
 } from "../shared";
 
-interface AnalyticsState {
+export interface AnalyticsState {
   period: Period;
   currentWeekIndex: number;
   currentMonthIndex: number;
