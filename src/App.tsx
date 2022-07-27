@@ -3,6 +3,7 @@ import "./App.css";
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
 import Todos from "./components/todos/Todos";
 import Projects from "./components/projects/Projects";
 import { NavTabs } from "./components/header/NavTabs";
@@ -15,9 +16,18 @@ import { modalMap } from "./components/modals/modalMap";
 import { useAppContext } from "./context/context";
 import { PomodoroDisplay } from "./components/PomodoroDisplay";
 import { Archive } from "./components/analytics/Archive";
+import { AuthPage } from "./components/AuthPage";
+import { auth } from "./firebase/firebase";
 
 export function App() {
   const { activeModal } = useAppContext();
+  const [user, loading] = useAuthState(auth);
+  if (loading) return <div>loading...</div>;
+
+  if (!user) {
+    return <AuthPage />;
+  }
+
   return (
     <Router>
       <Container>
