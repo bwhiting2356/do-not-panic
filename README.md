@@ -6,4 +6,4 @@
 [![todos.gif](https://s4.gifyu.com/images/todos.gif)](https://gifyu.com/image/STp4D)
 
 ### Analytics Page:
-[![analytics.gif](https://s4.gifyu.com/images/analytics.gif)](https://gifyu.com/image/STpcA)
+[![analytics049e53bcaca0f9ff.gif](https://s4.gifyu.com/images/analytics049e53bcaca0f9ff.gif)](https://gifyu.com/image/STpFW)
