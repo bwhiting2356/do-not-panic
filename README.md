@@ -8,3 +8,4 @@
 ### Analytics Page:
 [![analytics049e53bcaca0f9ff.gif](https://s4.gifyu.com/images/analytics049e53bcaca0f9ff.gif)](https://gifyu.com/image/STpFW)
 
+More features on the way.
