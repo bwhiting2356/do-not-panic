@@ -1,10 +1,10 @@
 import { Dropdown } from "react-bootstrap";
 import { ButtonGroup } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GroupedSubmenu } from "./GroupSubmenu";
 import { TemplateItem } from "./TemplateItem";
 import { groupTemplatesByGroupName } from "./helpers";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useReduxActionsWithContext } from "../../../context/context";
 import {
   selectCustomTemplates,
@@ -14,8 +14,11 @@ import { AddIconButton } from "../../icon-buttons/AddIconButton";
 
 import { ID } from "../../../shared/id.type";
 import { HoverDropdown } from "../../HoverDropdown";
+import { Template } from "../../../shared/template";
+import { addNewTemplate } from "../../../features/templates/templateSlice";
 
 export function TemplateButtons() {
+  const dispatch = useAppDispatch();
   const [showDropdown, setShowDropdown] = useState(false);
   const defaultTemplate = useAppSelector(selectDefaultTemplate);
   const customTemplates = useAppSelector(selectCustomTemplates);
@@ -29,6 +32,15 @@ export function TemplateButtons() {
     addTodoFromTemplateWithToast(id || "");
     setShowDropdown(false);
   };
+
+  useEffect(() => {
+    if (!defaultTemplate) {
+      const newTemplate = new Template();
+      newTemplate.templateTitle = "Default";
+      newTemplate.name = "To Do";
+      dispatch(addNewTemplate(newTemplate));
+    }
+  });
 
   return (
     <div>
@@ -57,6 +69,9 @@ export function TemplateButtons() {
                 />
               </Dropdown.Item>
             ))}
+            {groupedTemplateKeys.length === 0 && (
+              <Dropdown.Item disabled>No custom templates found</Dropdown.Item>
+            )}
           </HoverDropdown>
         )}
       </ButtonGroup>
