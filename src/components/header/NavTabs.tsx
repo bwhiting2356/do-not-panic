@@ -1,6 +1,8 @@
+import { signOut } from "firebase/auth";
 import { useState } from "react";
-import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
 
 export function NavTabs() {
   const [expanded, setExpanded] = useState(false);
@@ -15,6 +17,7 @@ export function NavTabs() {
     "/archive": "Archive",
   };
 
+  const onLogOut = () => signOut(auth);
   return (
     <Navbar bg="light" expand={false} expanded={expanded}>
       <Container fluid>
@@ -33,6 +36,7 @@ export function NavTabs() {
           <Offcanvas.Header closeButton onClick={() => setExpanded(false)}>
             <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
           </Offcanvas.Header>
+
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               {Object.keys(keyHeaderMap).map((pathKey) => (
@@ -45,6 +49,10 @@ export function NavTabs() {
                   {keyHeaderMap[pathKey]}
                 </Nav.Link>
               ))}
+
+              <div style={{ marginTop: "20px" }}>
+                <Button onClick={onLogOut}>Log Out</Button>
+              </div>
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
